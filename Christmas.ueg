@@ -1,0 +1,457 @@
+Christmas Present
+<>GAMEPARTSPLIT<>
+0
+<>GAMEPARTSPLIT<>
+0
+<>GAMEPARTSPLIT<>
+I'm going to start this off by doing something you hate! =D<>GETINTROSPLIT<>
+I'm sorry for being less-than-perfect. I want to be perfect for you. So...<>GETINTROSPLIT<>
+Thank you for being there for me, and thank you for yelling at me when I need yelling at. I spent a lot of time doing nothing, being lazy, and getting absolutely nothing done. So when you told me that I didn't do enough for you, I hatched this epic and ridiculous plan. And here we are! You might want to close the door and grab a box of tissues. =P
+<>GAMEPARTSPLIT<>
+Thank you for being the best lover-slash-best-friend I could ever ask for.<>ENDGAMESPLIT2<>Thank you for wanting to share your live, and everything you are, with me.<>ENDGAMESPLIT2<>Thank you, and Merry Christmas. =)<>ENDGAMESPLIT1<>
+placeholder endgame<>ENDGAMESPLIT2<>placeholder endgame
+<>GAMEPARTSPLIT<>
+false<>INVHAVESPLIT<>
+false
+<>GAMEPARTSPLIT<>
+Item1<>INVNAMESPLIT<>
+Item2
+<>GAMEPARTSPLIT<>
+ 
+<>GAMEPARTSPLIT<>
+3
+<>GAMEPARTSPLIT<>
+Welcome to Room 1! There's 9 rooms in this game, and at the end of each room, you'll have to solve a puzzle to get to the next room. I hope you followed directions and didn't touch your other two presents until you did this! To continue in a room, type "next"! Once you're at the puzzle, you can ask for a hint.<>DESCRIPTIONSMARKER2<>
+Like I said, I'm sorry. I really didn't appreciate you enough, and I took you for granted, and I didn't show you enough love. I know you told me I don't have to buy your love. And I know I don't. But I have to work for it, and I wasn't working for it. So I'm sorry.<>DESCRIPTIONSMARKER2<>
+And the sad part is that every time I say I'm sorry, you tell me to stop being sorry. And that just makes me want to apologize more, because I know if I had done better from the start, we wouldn't be in the mess in the first place! True love is always wanting to say you're sorry.<>DESCRIPTIONSMARKER2<>
+Tsk, tsk. You messed up, and you got sent backwards! Well, you're back in Room 1, so here's the puzzle again: Your floral gift contained a note. The contents of the note are irrelevant, but its position is rather important. If NEWS is your map, layer will be your X-marks-the-spot.
+<>DESCRIPTIONSMARKER1<>
+Welcome to Room 1! There's 9 rooms in this game, and at the end of each room, you'll have to solve a puzzle to get to the next room. I hope you followed directions and didn't touch your other two presents until you did this! To continue in a room, type "next"! Once you're at the puzzle, you can ask for a hint.<>SHORTDESCRIPTIONSMARKER2<>
+Like I said, I'm sorry. I really didn't appreciate you enough, and I took you for granted, and I didn't show you enough love. I know you told me I don't have to buy your love. And I know I don't. But I have to work for it, and I wasn't working for it. So I'm sorry.<>SHORTDESCRIPTIONSMARKER2<>
+And the sad part is that every time I say I'm sorry, you tell me to stop being sorry. And that just makes me want to apologize more, because I know if I had done better from the start, we wouldn't be in the mess in the first place! True love is always wanting to say you're sorry.<>SHORTDESCRIPTIONSMARKER2<>
+Tsk, tsk. You messed up, and you got sent backwards! Well, you're back in Room 1, so here's the puzzle again: Your floral gift contained a note. The contents of the note are irrelevant, but its position is rather important. If NEWS is your map, layer will be your X-marks-the-spot.
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint
+<>KEYSMARKER1<>
+Like I said, I'm sorry. I really didn't appreciate you enough, and I took you for granted, and I didn't show you enough love. I know you told me I don't have to buy your love. And I know I don't. But I have to work for it, and I wasn't working for it. So I'm sorry.<>EVENTSMARKER2<>
+And the sad part is that every time I say I'm sorry, you tell me to stop being sorry. And that just makes me want to apologize more, because I know if I had done better from the start, we wouldn't be in the mess in the first place! True love is always wanting to say you're sorry.<>EVENTSMARKER2<>
+Now for Room 1's puzzle! Your floral gift contained a note. The contents of the note are irrelevant, but its position is rather important. If NEWS is your map, layer will be your X-marks-the-spot.<>EVENTSMARKER2<>
+It would be a Cardinal sin to forget the NEWS.
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0100
+<>ROOMSPLIT<>
+So you either solved the puzzle or decided to just try to go each direction. I dunno! Either way, welcome to Room 2!<>DESCRIPTIONSMARKER2<>
+When you told me you were afraid we'd have some bumpy times for the first two months, I immediately reassured you. That's ridiculous! But I started thinking about it... and I thought back to EVERY SINGLE TIME I've EVER been with you. And we have ALWAYS managed to have fun, no matter the circumstances.<>DESCRIPTIONSMARKER2<>
+When we were in Cape May, we were tired, we were dehydrated, we just wanted to sleep but we couldn't. And we wandered around for two hours at midnight looking for a place that was open so we could buy some gatorade. And despite the dehydration, and the tiredness, and the cold, we had fun. True love is knowing you'll have fun no matter what.<>DESCRIPTIONSMARKER2<>
+Puzzle time! I hope you remember your modulus function for this one! To find the next room, you must be pretty good at following the NEWS, because your Time is Angled at Mod4.
+<>DESCRIPTIONSMARKER1<>
+So you either solved the puzzle or decided to just try to go each direction. I dunno! Either way, welcome to Room 2!<>SHORTDESCRIPTIONSMARKER2<>
+When you told me you were afraid we'd have some bumpy times for the first two months, I immediately reassured you. That's ridiculous! But I started thinking about it... and I thought back to EVERY SINGLE TIME I've EVER been with you. And we have ALWAYS managed to have fun, no matter the circumstances.<>SHORTDESCRIPTIONSMARKER2<>
+When we were in Cape May, we were tired, we were dehydrated, we just wanted to sleep but we couldn't. And we wandered around for two hours at midnight looking for a place that was open so we could buy some gatorade. And despite the dehydration, and the tiredness, and the cold, we had fun. True love is knowing you'll have fun no matter what.<>SHORTDESCRIPTIONSMARKER2<>
+Puzzle time! I hope you remember your modulus function for this one! To find the next room, you must be pretty good at following the NEWS, because your Time is Angled at NEWS Mod4.
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint
+<>KEYSMARKER1<>
+When you told me you were afraid we'd have some bumpy times for the first two months, I immediately reassured you. That's ridiculous! But I started thinking about it... and I thought back to EVERY SINGLE TIME I've EVER been with you. And we have ALWAYS managed to have fun, no matter the circumstances.<>EVENTSMARKER2<>
+When we were in Cape May, we were tired, we were dehydrated, we just wanted to sleep but we couldn't. And we wandered around for two hours at midnight looking for a place that was open so we could buy some gatorade. And despite the dehydration, and the tiredness, and the cold, we had fun. True love is knowing you'll have fun no matter what.<>EVENTSMARKER2<>
+Room 2 Puzzle time! I hope you remember your modulus function for this one! To find the next room, you must be pretty good at following the NEWS, because your Time is Angled at Mod4.<>EVENTSMARKER2<>
+arcsin(1/2) (degrees, not radians!)
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0200<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0
+<>ROOMSPLIT<>
+For the past three weeks, whenever I'm not with you, I wake up in the middle of the night, holding my pillow. One of the best feelings in the world is waking up next to you, and every time I wake up without you, I feel sad... I haven't been sleeping amazingly for a while.<>DESCRIPTIONSMARKER2<>
+But on the bright side, in less than a month, I'll be living with you. Every morning, I'll wake up to your bright face and think to myself, "This is happiness." I can't wait to wake up next to you every morning.<>DESCRIPTIONSMARKER2<>
+If I get to wake up every morning, and see your face, and smile at you, and see you smile back at me, every day, I will wake up ready to take on the world. True love is waking up, seeing the person next to you, and smiling.<>DESCRIPTIONSMARKER2<>
+Room 3 has an easy puzzle! The answer is the last letter of the first word of the disclaimer!
+<>DESCRIPTIONSMARKER1<>
+For the past three weeks, whenever I'm not with you, I wake up in the middle of the night, holding my pillow. One of the best feelings in the world is waking up next to you, and every time I wake up without you, I feel sad... I haven't been sleeping amazingly for a while.<>SHORTDESCRIPTIONSMARKER2<>
+But on the bright side, in less than a month, I'll be living with you. Every morning, I'll wake up to your bright face and think to myself, "This is happiness." I can't wait to wake up next to you every morning.<>SHORTDESCRIPTIONSMARKER2<>
+If I get to wake up every morning, and see your face, and smile at you, and see you smile back at me, every day, I will wake up ready to take on the world. True love is waking up, seeing the person next to you, and smiling.<>SHORTDESCRIPTIONSMARKER2<>
+Room 3 has an easy puzzle! The answer is the last letter of the first word of the disclaimer!
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint
+<>KEYSMARKER1<>
+But on the bright side, in less than a month, I'll be living with you. Every morning, I'll wake up to your bright face and think to myself, "This is happiness." I can't wait to wake up next to you every morning.<>EVENTSMARKER2<>
+If I get to wake up every morning, and see your face, and smile at you, and see you smile back at me, every day, I will wake up ready to take on the world. True love is waking up, seeing the person next to you, and smiling.<>EVENTSMARKER2<>
+Room 3 has an easy puzzle! The answer is the last letter of the first word of the disclaimer!<>EVENTSMARKER2<>
+You need a hint? C'moooooooon.
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0001<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0
+<>ROOMSPLIT<>
+This engine means something to me. And I hope it means something to you. To me, it was a symbol of our love. I resolved to finish this engine before Christmas because I wanted to make this game-present-thing for you. That's the sole reason I've been working so frantically on it. For you.<>DESCRIPTIONSMARKER2<>
+To me, this engine also means that when I set my mind to something, I succeed. And I set my mind to living with you, to not being dependent on my parents, to being able to take care of myself, and to love.<>DESCRIPTIONSMARKER2<>
+I want to make our apartment OURS. Not just the place we live. I want to make it our home, and I want to do it together. Right off the bat, I took over, and started organizing things, and you just went along with it. I want your input. I want you to decide one some things. I can't wait to have a place to call "our home." True love is finding someone with whom you want to make a home.<>DESCRIPTIONSMARKER2<>
+Room 4's puzzle is more trivia: The sun rises in the East, and sets in the West. Where is the sun at Noon?
+<>DESCRIPTIONSMARKER1<>
+This engine means something to me. And I hope it means something to you. To me, it was a symbol of our love. I resolved to finish this engine before Christmas because I wanted to make this game-present-thing for you. That's the sole reason I've been working so frantically on it. For you.<>SHORTDESCRIPTIONSMARKER2<>
+To me, this engine also means that when I set my mind to something, I succeed. And I set my mind to living with you, to not being dependent on my parents, to being able to take care of myself, and to love.<>SHORTDESCRIPTIONSMARKER2<>
+I want to make our apartment OURS. Not just the place we live. I want to make it our home, and I want to do it together. Right off the bat, I took over, and started organizing things, and you just went along with it. I want your input. I want you to decide one some things. I can't wait to have a place to call "our home." True love is finding someone with whom you want to make a home.<>SHORTDESCRIPTIONSMARKER2<>
+Room 4's puzzle is more trivia: The sun rises in the East, and sets in the West. Where is the sun at Noon?
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint
+<>KEYSMARKER1<>
+To me, this engine also means that when I set my mind to something, I succeed. And I set my mind to living with you, to not being dependent on my parents, to being able to take care of myself, and to love.<>EVENTSMARKER2<>
+I want to make our apartment OURS. Not just the place we live. I want to make it our home, and I want to do it together. Right off the bat, I took over, and started organizing things, and you just went along with it. I want your input. I want you to decide one some things. I can't wait to have a place to call "our home." True love is finding someone with whom you want to make a home.<>EVENTSMARKER2<>
+Room 4's puzzle is more trivia: The sun rises in the East, and sets in the West. Where is the sun at Noon?<>EVENTSMARKER2<>
+Hemisphere is important!
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0101<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0
+<>ROOMSPLIT<>
+On September 21st, 2008, all I wanted to do was impress you. I was rebounding hard, and I needed someone to love, and someone to love me. I wanted to make sure you had a good time. And I tried really hard to do just that. I think I managed.<>DESCRIPTIONSMARKER2<>
+Since then, I've tried (and failed at times) to do anything and everything to make you happy. I love you more than anything, and you're worth any effort I could ever make, and more.<>DESCRIPTIONSMARKER2<>
+I think the greatest testament to my love for you is... no, wait, I can't think of one shining example; I always try to do my best. Let's just say that: True love is being willing to do anything. (Even catching a grenade!)<>DESCRIPTIONSMARKER2<>
+Room 5's puzzle is a riddle!
+In spring four pillars hold me up, a shining dome above the earth.
+In summer two pillars support me, a doorway into mystery.
+In autumn three pillars stand beneath me, a temple of the Bright City.
+In winter my pillars are crumbled to dust, a ruin of ancient glory.
+<>DESCRIPTIONSMARKER1<>
+On September 21st, 2008, all I wanted to do was impress you. I was rebounding hard, and I needed someone to love, and someone to love me. I wanted to make sure you had a good time. And I tried really hard to do just that. I think I managed.<>SHORTDESCRIPTIONSMARKER2<>
+Since then, I've tried (and failed at times) to do anything and everything to make you happy. I love you more than anything, and you're worth any effort I could ever make, and more.<>SHORTDESCRIPTIONSMARKER2<>
+I think the greatest testament to my love for you is... no, wait, I can't think of one shining example; I always try to do my best. Let's just say that: True love is being willing to do anything. (Even catching a grenade!)<>SHORTDESCRIPTIONSMARKER2<>
+Room 5's puzzle is a riddle!
+In spring four pillars hold me up, a shining dome above the earth.
+In summer two pillars support me, a doorway into mystery.
+In autumn three pillars stand beneath me, a temple of the Bright City.
+In winter my pillars are crumbled to dust, a ruin of ancient glory.
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint<>KEYSMARKER3<>man
+<>KEYSMARKER1<>
+Since then, I've tried (and failed at times) to do anything and everything to make you happy. I love you more than anything, and you're worth any effort I could ever make, and more.<>EVENTSMARKER2<>
+I think the greatest testament to my love for you is... no, wait, I can't think of one shining example; I always try to do my best. Let's just say that: True love is being willing to do anything. (Even catching a grenade!)<>EVENTSMARKER2<>
+Room 5's puzzle is a riddle!
+In spring four pillars hold me up, a shining dome above the earth.
+In summer two pillars support me, a doorway into mystery.
+In autumn three pillars stand beneath me, a temple of the Bright City.
+In winter my pillars are crumbled to dust, a ruin of ancient glory.<>EVENTSMARKER2<>
+Pillars hold stuff up... what else does that?<>EVENTSMARKER3<>Good job, you got it! You should go north!
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0<>ROOMSTATEFACTORMARKER3<>0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0201<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0
+<>ROOMSPLIT<>
+We've been together for over two years, and we've never lived closer than 45 minutes of each other... but we managed. We see each other whenever possible and we talk to each other whenever it's not possible to see each other.<>DESCRIPTIONSMARKER2<>
+We have been at this game for far too long to ever consider giving up. Ever. And I just keep thinking to myself that if we didn't truly love each other, this would never have been possible. I'm so lucky to have found you.<>DESCRIPTIONSMARKER2<>
+The best part about our relationship is that we're both always willing to talk to each other. We never tell the other to go away or leave us alone. We're always close, even when we're miles apart. True love is knowing that no matter what, you're never far away.<>DESCRIPTIONSMARKER2<>
+Room 6 puzzle! ...I don't feel like making any more puzzles. Just go south. =P
+<>DESCRIPTIONSMARKER1<>
+We've been together for over two years, and we've never lived closer than 45 minutes of each other... but we managed. We see each other whenever possible and we talk to each other whenever it's not possible to see each other.<>SHORTDESCRIPTIONSMARKER2<>
+We have been at this game for far too long to ever consider giving up. Ever. And I just keep thinking to myself that if we didn't truly love each other, this would never have been possible. I'm so lucky to have found you.<>SHORTDESCRIPTIONSMARKER2<>
+The best part about our relationship is that we're both always willing to talk to each other. We never tell the other to go away or leave us alone. We're always close, even when we're miles apart. True love is knowing that no matter what, you're never far away.<>SHORTDESCRIPTIONSMARKER2<>
+Room 6 puzzle! ...I don't feel like making any more puzzles. Just go south. =P
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint
+<>KEYSMARKER1<>
+We have been at this game for far too long to ever consider giving up. Ever. And I just keep thinking to myself that if we didn't truly love each other, this would never have been possible. I'm so lucky to have found you.<>EVENTSMARKER2<>
+The best part about our relationship is that we're both always willing to talk to each other. We never tell the other to go away or leave us alone. We're always close, even when we're miles apart. True love is knowing that no matter what, you're never far away.<>EVENTSMARKER2<>
+Room 6 puzzle! ...I don't feel like making any more puzzles. Just go south. =P<>EVENTSMARKER2<>
+No, seriously, go south!
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0002<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0
+<>ROOMSPLIT<>
+Of the last two years, I have spent a large portion of them with you, talking to you, or doing something for you. I regret absolutely none of it. Your well-being and happiness are the greatest possible uses of my time.<>DESCRIPTIONSMARKER2<>
+If anything, I want to spend more time with you. For you. On you. In you (kekeke). I love you more than life itself, and I honestly feel qualified to say that.<>DESCRIPTIONSMARKER2<>
+The best part of all of this is that now I know that we're going to spend a lot of time together. We're going to have so much fun being together all the time, and we're going to share everything. True love is sharing your life.<>DESCRIPTIONSMARKER2<>
+What is love? Baby, don't hurt me, don't hurt me, no more... go west!
+<>DESCRIPTIONSMARKER1<>
+Of the last two years, I have spent a large portion of them with you, talking to you, or doing something for you. I regret absolutely none of it. Your well-being and happiness are the greatest possible uses of my time.<>SHORTDESCRIPTIONSMARKER2<>
+If anything, I want to spend more time with you. For you. On you. In you (kekeke). I love you more than life itself, and I honestly feel qualified to say that.<>SHORTDESCRIPTIONSMARKER2<>
+The best part of all of this is that now I know that we're going to spend a lot of time together. We're going to have so much fun being together all the time, and we're going to share everything. True love is sharing your life.<>SHORTDESCRIPTIONSMARKER2<>
+What is love? Baby, don't hurt me, don't hurt me, no more... go west!
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint
+<>KEYSMARKER1<>
+If anything, I want to spend more time with you. For you. On you. In you (kekeke). I love you more than life itself, and I honestly feel qualified to say that.<>EVENTSMARKER2<>
+The best part of all of this is that now I know that we're going to spend a lot of time together. We're going to have so much fun being together all the time, and we're going to share everything. True love is sharing your life.<>EVENTSMARKER2<>
+What is love? Baby, don't hurt me, don't hurt me, no more... go west!<>EVENTSMARKER2<>
+Go west, sillyface!
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0102
+<>ROOMSPLIT<>
+From the smallest quirks to my newfound ability to empathize, we have shared more than just our time. We've shared our quirks, our idiosyncracies, our personality traits, and our likes and dislikes (I swear, I used to like white grape juice...)<>DESCRIPTIONSMARKER2<>
+The first time I noticed (I dunno about you!) that we were sharing quirks was when I started saying "Khee!" to get your attention. It's such a cute noise, and I love it (but not as much as I love you!)<>DESCRIPTIONSMARKER2<>
+That's just the smallest bit, too! We share everything. Food, drink, saliva (kekeke), EVERYTHING. As far as I'm concerned, though, the most important is that we're becoming one another. We're meeting in the middle, and I feel like my sense of self is stronger than ever. True love is sharing who you are.<>DESCRIPTIONSMARKER2<>
+Don'tcha get it!? Just go east! You're almost there!
+<>DESCRIPTIONSMARKER1<>
+From the smallest quirks to my newfound ability to empathize, we have shared more than just our time. We've shared our quirks, our idiosyncracies, our personality traits, and our likes and dislikes (I swear, I used to like white grape juice...)<>SHORTDESCRIPTIONSMARKER2<>
+The first time I noticed (I dunno about you!) that we were sharing quirks was when I started saying "Khee!" to get your attention. It's such a cute noise, and I love it (but not as much as I love you!)<>SHORTDESCRIPTIONSMARKER2<>
+That's just the smallest bit, too! We share everything. Food, drink, saliva (kekeke), EVERYTHING. As far as I'm concerned, though, the most important is that we're becoming one another. We're meeting in the middle, and I feel like my sense of self is stronger than ever. True love is sharing who you are.<>SHORTDESCRIPTIONSMARKER2<>
+Don'tcha get it!? Just go east! You're almost there!
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+hint
+<>KEYSMARKER1<>
+The first time I noticed (I dunno about you!) that we were sharing quirks was when I started saying "Khee!" to get your attention. It's such a cute noise, and I love it (but not as much as I love you!)<>EVENTSMARKER2<>
+That's just the smallest bit, too! We share everything. Food, drink, saliva (kekeke), EVERYTHING. As far as I'm concerned, though, the most important is that we're becoming one another. We're meeting in the middle, and I feel like my sense of self is stronger than ever. True love is sharing who you are.<>EVENTSMARKER2<>
+Don'tcha get it!? Just go east! You're almost there!<>EVENTSMARKER2<>
+Goooo Nooooorth!
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+0
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0202<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0
+<>ROOMSPLIT<>
+Hopefully by now, you're swelling with love and joy and hope and every single positive emotion ever (maybe including horniness? o_O). That's kinda why I'm writing this.<>DESCRIPTIONSMARKER2<>
+I think you've noticed the pattern here, so, without further ado:<>DESCRIPTIONSMARKER2<>
+True love is what you and I share, Stephanie. I love you, and I'm in love with you. <4
+<>DESCRIPTIONSMARKER1<>
+Hopefully by now, you're swelling with love and joy and hope and every single positive emotion ever (maybe including horniness? o_O). That's kinda why I'm writing this.<>SHORTDESCRIPTIONSMARKER2<>
+I think you've noticed the pattern here, so, without further ado:<>SHORTDESCRIPTIONSMARKER2<>
+True love is what you and I share, Stephanie. I love you, and I'm in love with you. <4
+<>SHORTDESCRIPTIONSMARKER1<>
+next<>KEYSMARKER2<>
+next<>KEYSMARKER2<>
+next
+<>KEYSMARKER1<>
+I think you've noticed the pattern here, so, without further ado:<>EVENTSMARKER2<>
+True love is what you and I share, Stephanie. I love you, and I'm in love with you. <4<>EVENTSMARKER2<>
+Thank you for being there for me.
+<>EVENTSMARKER1<>
+1<>ROOMSTATEFACTORMARKER2<>
+1<>ROOMSTATEFACTORMARKER2<>
+100000
+<>ROOMSTATEFACTORMARKER1<>
+
+<>MANDATORYMARKER<>
+
+<>INVENTORYCHECKMARKER1<>
+
+<>INVENTORYUPDATEMARKER1<>
+10403<>MOVENORTHMARKER2<>
+10403<>MOVENORTHMARKER2<>
+0<>MOVENORTHMARKER1<>
+10403<>MOVEEASTMARKER2<>
+10403<>MOVEEASTMARKER2<>
+0<>MOVEEASTMARKER1<>
+10403<>MOVESOUTHMARKER2<>
+10403<>MOVESOUTHMARKER2<>
+0<>MOVESOUTHMARKER1<>
+10403<>MOVEWESTMARKER2<>
+10403<>MOVEWESTMARKER2<>
+0

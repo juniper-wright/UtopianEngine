@@ -1,0 +1,20 @@
+Scripting language
+
+All script commands are identified by $
+
+Script commands separated by |
+
+Script commands that require string arguments - arguments are double-quote encapsulated
+
+
+Commands to be added:
+
+	Output text
+	Item Requirement
+	Inventory modification
+	Roomstate change
+	Move to different room
+	Create a variable
+	Reference variables
+	Math...? I mean, do I really want to create operators? Probably. Very probably.
+	
