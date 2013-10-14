@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintStream;
 import java.util.Scanner;
+import javax.script.*;
 
 public class Game
 {
@@ -22,6 +23,9 @@ public class Game
 	public static String _helpMessage;				// Contains the help message to be displayed whenever the player types "help"
 	public static Room[][] _rooms;					// HUGE variable; contains all of the rooms
 	public static Scanner scanner = new Scanner(System.in);		// The scanner! I'm surprised I didn't name it scanly; I usually name my scanners scanly
+	ScriptEngineManager mgr = new ScriptEngineManager();
+	ScriptEngine js_engine = mgr.getEngineByName("js");
+    Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
 
 	public Game()	// Default constructor! Never used!
 	{
@@ -701,5 +705,103 @@ public class Game
 		System.out.print("\n\nPress enter...");
 		scanner.nextLine();
 		System.out.print("\n");
+	}
+	
+	public void runEvent(String event)
+	{
+		String[] events = event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
+		int command_count = 0;
+		Object score;
+	
+		for(int i = 0;i < events.length;i++)
+		{
+			if(!stringIn(events[i], new String[]{"<utopiascript>", "</utopiascript>"}, false))
+			{
+				command_count++;
+			}
+		}
+		String[] commands = new String[command_count];
+		boolean[] uscript = new boolean[command_count];
+		int x = 0;
+		boolean uscript_flag = false;
+		for(int i = 0;i < events.length;i++)
+		{
+			if(!stringIn(events[i], new String[]{"<utopiascript>", "</utopiascript>"}, false))
+			{
+				commands[x] = events[i];
+				uscript[x] = uscript_flag;
+				x++;
+			}
+			else if(events[i].equalsIgnoreCase("<utopiascript>"))
+			{
+				uscript_flag = true;
+			}
+			else
+			{
+				uscript_flag = false;
+			}
+		}
+		
+		for(int i = 0;i < commands.length;i++)
+		{
+			if(uscript[i])
+			{
+				String[] uscript_array = commands[i].split(";");
+				for(int j = 0;j < uscript_array.length;j++)
+				{
+					uscript_array[j] = uscript_array[j].trim();
+					utopiaCommand(commands[i]);
+				}
+			}
+			else
+			{
+		    	try
+		    	{
+		    		js_engine.eval(commands[i]);
+		    	}
+		    	catch(ScriptException e)
+		    	{
+		    		System.out.println(e.getMessage());
+		    		System.out.println(e.getStackTrace());
+		    	}
+			}
+		}
+		score = js_binding.get("UtopiaScore");
+		try
+		{
+			System.out.printf("%.0f\n", Double.parseDouble(score.toString()));
+		}
+		catch(Exception e)
+		{
+			
+		}
+	}
+	
+	private void utopiaCommand(String command)
+	{
+		String arr[] = command.split("\\s*", 2);
+		String function = arr[0];
+		String args = arr[1];
+		switch(function)
+		{
+			case "1":
+				
+		}		
+	}
+	
+	public boolean stringIn(String needle, String haystack[], boolean caseSensitive)
+	{
+	    for(int i = 0;i < haystack.length;i++)
+	    {
+	        if(caseSensitive)
+	        {
+	            if(needle.equals(haystack[i])) return true;
+	        }
+	        else
+	        {
+	            if(needle.equalsIgnoreCase(haystack[i])) return true;
+	        }
+	    }
+	    return false;
 	}
 }
