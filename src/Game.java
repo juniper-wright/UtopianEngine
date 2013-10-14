@@ -98,7 +98,7 @@ public class Game
 					for (int i = 0; i < _intro.length; i++)
 					{
 						System.out.print(_intro[i]);
-						Pause();
+						pause();
 					}
 					
 				}
@@ -140,7 +140,7 @@ public class Game
 					if (_endgames[_endgame][i].equals(""))
 						continue;
 					System.out.print(_endgames[_endgame][i]);
-					Pause();
+					pause();
 				}
 			}
 		}
@@ -700,11 +700,18 @@ public class Game
 	}
 
 	// Pauses, waiting for the player to press enter
-	public static void Pause()
+	public static void pause()
 	{
 		System.out.print("\n\nPress enter...");
 		scanner.nextLine();
-		System.out.print("\n");
+		System.out.println();
+	}
+	
+	public static void pause(String prompt)
+	{
+		System.out.print("\n\n" + prompt);
+		scanner.nextLine();
+		System.out.println();
 	}
 	
 	public void runEvent(String event)
@@ -779,14 +786,31 @@ public class Game
 	
 	private void utopiaCommand(String command)
 	{
-		String arr[] = command.split("\\s*", 2);
-		String function = arr[0];
+		String arr[] = command.trim().split("\\s*", 2);
+		String function = arr[0].toLowerCase().trim();
 		String args = arr[1];
 		switch(function)
 		{
-			case "1":
-				
-		}		
+			case "requireitem":
+				break;
+			case "additem":
+				break;
+			case "takeitem":
+				break;
+			case "roomstate":
+				break;
+			case "go":
+				break;
+			case "goto":
+				break;
+			case "loadgame":
+				break;
+			case "pause":
+				pause();
+				break;
+			default:
+				break;
+		}
 	}
 	
 	public boolean stringIn(String needle, String haystack[], boolean caseSensitive)
