@@ -749,6 +749,22 @@ public class Game
 			}
 		}
 		
+		// Runs all of the commands in a loop. Placed in a function to allow premature ending if one of the commands fails.
+		runCommands(commands, uscript);
+		
+		score = js_binding.get("UtopiaScore");
+		try
+		{
+			System.out.printf("%.0f\n", Double.parseDouble(score.toString()));
+		}
+		catch(Exception e)
+		{
+			
+		}
+	}
+	
+	private void runCommands(String[] commands, boolean[] uscript)
+	{
 		for(int i = 0;i < commands.length;i++)
 		{
 			if(uscript[i])
@@ -757,7 +773,10 @@ public class Game
 				for(int j = 0;j < uscript_array.length;j++)
 				{
 					uscript_array[j] = uscript_array[j].trim();
-					utopiaCommand(commands[i]);
+					if(!utopiaCommand(commands[i]))
+					{
+						return;
+					}
 				}
 			}
 			else
@@ -773,18 +792,9 @@ public class Game
 		    	}
 			}
 		}
-		score = js_binding.get("UtopiaScore");
-		try
-		{
-			System.out.printf("%.0f\n", Double.parseDouble(score.toString()));
-		}
-		catch(Exception e)
-		{
-			
-		}
 	}
 	
-	private void utopiaCommand(String command)
+	private boolean utopiaCommand(String command)
 	{
 		String arr[] = command.trim().split("\\s*", 2);
 		String function = arr[0].toLowerCase().trim();
@@ -792,25 +802,60 @@ public class Game
 		switch(function)
 		{
 			case "requireitem":
-				break;
+				return usRequireItem(args);
 			case "additem":
-				break;
+				return usAddItem(args);
 			case "takeitem":
-				break;
+				return usTakeItem(args);
 			case "roomstate":
-				break;
+				return usRoomstate(args);
 			case "go":
-				break;
+				return usGo(args);
 			case "goto":
-				break;
+				return usGoto(args);
 			case "loadgame":
-				break;
+				return usLoadGame(args);
 			case "pause":
 				pause();
-				break;
+				return true;
 			default:
-				break;
+				return false;
 		}
+	}
+
+	public boolean usRequireItem(String args)
+	{
+		return true;
+	}
+
+	public boolean usAddItem(String args)
+	{
+		return true;
+	}
+
+	public boolean usTakeItem(String args)
+	{
+		return true;
+	}
+
+	public boolean usRoomstate(String args)
+	{
+		return true;
+	}
+
+	public boolean usGo(String args)
+	{
+		return true;
+	}
+
+	public boolean usGoto(String args)
+	{
+		return true;
+	}
+
+	public boolean usLoadGame(String args)
+	{
+		return true;
 	}
 	
 	public boolean stringIn(String needle, String haystack[], boolean caseSensitive)
