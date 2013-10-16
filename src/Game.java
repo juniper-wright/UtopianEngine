@@ -3,7 +3,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.script.*;
 
 public class Game
@@ -26,6 +31,7 @@ public class Game
 	ScriptEngineManager mgr = new ScriptEngineManager();
 	ScriptEngine js_engine = mgr.getEngineByName("js");
     Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
+	Object score;
 
 	public Game()	// Default constructor! Never used!
 	{
@@ -705,20 +711,31 @@ public class Game
 		System.out.print("\n\nPress enter...");
 		scanner.nextLine();
 		System.out.println();
+		return;
 	}
 	
 	public static void pause(String prompt)
 	{
-		System.out.print("\n\n" + prompt);
-		scanner.nextLine();
-		System.out.println();
+		if(prompt.length() == 0)
+		{
+			pause();
+		}
+		else
+		{
+			System.out.print("\n\n" + prompt);
+			scanner.nextLine();
+			System.out.println();
+		}
 	}
 	
+	/**
+	 * Runs the event gotten from a key.
+	 * @String event, the combination JavaScript and UtopiaScript corresponding to the matched event.
+	 */
 	public void runEvent(String event)
 	{
 		String[] events = event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
 		int command_count = 0;
-		Object score;
 	
 		for(int i = 0;i < events.length;i++)
 		{
@@ -750,9 +767,64 @@ public class Game
 		}
 		
 		// Runs all of the commands in a loop. Placed in a function to allow premature ending if one of the commands fails.
-		runCommands(commands, uscript);
+		try
+		{
+			runCommands(commands, uscript);
+			updateScore();
+		}
+		catch(ScriptException e)
+		{
+			// TODO: Better exception-handling
+	    	System.out.println(e.getMessage());
+	    	System.out.println(e.getStackTrace());
+		}
+		catch(UtopiaException e)
+		{
+			// TODO: Better exception-handling
+	    	System.out.println(e.getMessage());
+	    	System.out.println(e.getStackTrace());
+		}
 		
-		score = js_binding.get("UtopiaScore");
+	}
+	
+	private void runCommands(String[] commands, boolean[] uscript) throws ScriptException, UtopiaException
+	{
+		for(int i = 0;i < commands.length;i++)
+		{
+			if(uscript[i])
+			{
+				List<String> uscript_array = new ArrayList<String>();
+				try
+				{
+					Pattern regex = Pattern.compile("(?:\\\\.|[^;\\\\]++)*");
+					Matcher regexMatcher = regex.matcher(commands[i]);
+					while (regexMatcher.find())
+					{
+						uscript_array.add(regexMatcher.group());
+					}
+				}
+				catch(Exception e)
+				{
+					
+				}
+				for(int j = 0;j < uscript_array.size();j++)
+				{
+					if(!utopiaCommand(uscript_array.get(j).trim()))
+					{
+						return;
+					}
+				}
+			}
+			else
+			{
+		    	js_engine.eval(commands[i]);
+			}
+		}
+	}
+	
+	private void updateScore() throws ScriptException
+	{
+		Double score = (Double) js_engine.eval("UtopiaScore;");//js_binding.get("UtopiaScore");
 		try
 		{
 			System.out.printf("%.0f\n", Double.parseDouble(score.toString()));
@@ -763,42 +835,11 @@ public class Game
 		}
 	}
 	
-	private void runCommands(String[] commands, boolean[] uscript)
+	private boolean utopiaCommand(String command) throws UtopiaException
 	{
-		for(int i = 0;i < commands.length;i++)
-		{
-			if(uscript[i])
-			{
-				String[] uscript_array = commands[i].split(";");
-				for(int j = 0;j < uscript_array.length;j++)
-				{
-					uscript_array[j] = uscript_array[j].trim();
-					if(!utopiaCommand(commands[i]))
-					{
-						return;
-					}
-				}
-			}
-			else
-			{
-		    	try
-		    	{
-		    		js_engine.eval(commands[i]);
-		    	}
-		    	catch(ScriptException e)
-		    	{
-		    		System.out.println(e.getMessage());
-		    		System.out.println(e.getStackTrace());
-		    	}
-			}
-		}
-	}
-	
-	private boolean utopiaCommand(String command)
-	{
-		String arr[] = command.trim().split("\\s*", 2);
+		String arr[] = command.trim().split("[ ]+", 2);
 		String function = arr[0].toLowerCase().trim();
-		String args = arr[1];
+		String args = (arr.length > 1 ? arr[1] : "");
 		switch(function)
 		{
 			case "requireitem":
@@ -816,10 +857,10 @@ public class Game
 			case "loadgame":
 				return usLoadGame(args);
 			case "pause":
-				pause();
+				usPause(args);
 				return true;
 			default:
-				return false;
+				throw new UtopiaException("Command not found: " + function);
 		}
 	}
 
@@ -855,6 +896,12 @@ public class Game
 
 	public boolean usLoadGame(String args)
 	{
+		return true;
+	}
+	
+	public boolean usPause(String args)
+	{
+		pause(args);
 		return true;
 	}
 	
