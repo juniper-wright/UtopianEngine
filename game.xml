@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<game name="Egerfortia" width="1" height="1">
+	<commands>
+		<help>
+			<!--
+			default:
+			<javascript>print("To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.");</javascript>
+			-->
+			<javascript></javascript>
+			<utopiascript></utopiascript>
+		</help>
+		<inventory>
+		</inventory>
+		<directions>
+			<!--
+			If any direction is not specified, then the following code is the default
+			<direction direction="n">
+				<utopiascript>go north</utopiascript>
+			</direction>
+			-->
+			<direction direction="n">
+				<javascript></javascript>
+				<utopiascript></utopiascript>
+			</direction>
+			<direction direction="e">
+				<javascript></javascript>
+				<utopiascript></utopiascript>
+			</direction>
+			<direction direction="s">
+				<javascript></javascript>
+				<utopiascript></utopiascript>
+			</direction>
+			<direction direction="w">
+				<javascript></javascript>
+				<utopiascript></utopiascript>
+			</direction>
+		</directions>
+	</commands>
+	<items>
+		<item id="0">Item Zero</item>
+		<item id="1">Item One</item>
+		<item id="2">Item Two</item>
+		<item id="3">Item Three</item>
+		<item id="4">Item Four</item>
+		<item id="5">Item Five</item>
+	</items>
+	<rooms>
+		<room x="0" y="0">
+			<roomstate>
+				<key match="text_to_match">
+					<javascript></javascript>
+					<utopiascript></utopiascript>
+				</key>
+				<key match="text_to_match">
+					<javascript></javascript>
+					<utopiascript></utopiascript>
+				</key>
+				<key match="text_to_match">
+					<javascript></javascript>
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+	</rooms>
+</game>
