@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintStream;
 import java.util.Scanner;
+import javax.script.*;
 
 public class Game
 {
@@ -22,6 +23,9 @@ public class Game
 	public static String _helpMessage;				// Contains the help message to be displayed whenever the player types "help"
 	public static Room[][] _rooms;					// HUGE variable; contains all of the rooms
 	public static Scanner scanner = new Scanner(System.in);		// The scanner! I'm surprised I didn't name it scanly; I usually name my scanners scanly
+	ScriptEngineManager mgr = new ScriptEngineManager();
+	ScriptEngine js_engine = mgr.getEngineByName("js");
+    Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
 
 	public Game()	// Default constructor! Never used!
 	{
@@ -94,7 +98,7 @@ public class Game
 					for (int i = 0; i < _intro.length; i++)
 					{
 						System.out.print(_intro[i]);
-						Pause();
+						pause();
 					}
 					
 				}
@@ -136,7 +140,7 @@ public class Game
 					if (_endgames[_endgame][i].equals(""))
 						continue;
 					System.out.print(_endgames[_endgame][i]);
-					Pause();
+					pause();
 				}
 			}
 		}
@@ -696,10 +700,177 @@ public class Game
 	}
 
 	// Pauses, waiting for the player to press enter
-	public static void Pause()
+	public static void pause()
 	{
 		System.out.print("\n\nPress enter...");
 		scanner.nextLine();
-		System.out.print("\n");
+		System.out.println();
+	}
+	
+	public static void pause(String prompt)
+	{
+		System.out.print("\n\n" + prompt);
+		scanner.nextLine();
+		System.out.println();
+	}
+	
+	public void runEvent(String event)
+	{
+		String[] events = event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
+		int command_count = 0;
+		Object score;
+	
+		for(int i = 0;i < events.length;i++)
+		{
+			if(!stringIn(events[i], new String[]{"<utopiascript>", "</utopiascript>"}, false))
+			{
+				command_count++;
+			}
+		}
+		String[] commands = new String[command_count];
+		boolean[] uscript = new boolean[command_count];
+		int x = 0;
+		boolean uscript_flag = false;
+		for(int i = 0;i < events.length;i++)
+		{
+			if(!stringIn(events[i], new String[]{"<utopiascript>", "</utopiascript>"}, false))
+			{
+				commands[x] = events[i];
+				uscript[x] = uscript_flag;
+				x++;
+			}
+			else if(events[i].equalsIgnoreCase("<utopiascript>"))
+			{
+				uscript_flag = true;
+			}
+			else
+			{
+				uscript_flag = false;
+			}
+		}
+		
+		// Runs all of the commands in a loop. Placed in a function to allow premature ending if one of the commands fails.
+		runCommands(commands, uscript);
+		
+		score = js_binding.get("UtopiaScore");
+		try
+		{
+			System.out.printf("%.0f\n", Double.parseDouble(score.toString()));
+		}
+		catch(Exception e)
+		{
+			
+		}
+	}
+	
+	private void runCommands(String[] commands, boolean[] uscript)
+	{
+		for(int i = 0;i < commands.length;i++)
+		{
+			if(uscript[i])
+			{
+				String[] uscript_array = commands[i].split(";");
+				for(int j = 0;j < uscript_array.length;j++)
+				{
+					uscript_array[j] = uscript_array[j].trim();
+					if(!utopiaCommand(commands[i]))
+					{
+						return;
+					}
+				}
+			}
+			else
+			{
+		    	try
+		    	{
+		    		js_engine.eval(commands[i]);
+		    	}
+		    	catch(ScriptException e)
+		    	{
+		    		System.out.println(e.getMessage());
+		    		System.out.println(e.getStackTrace());
+		    	}
+			}
+		}
+	}
+	
+	private boolean utopiaCommand(String command)
+	{
+		String arr[] = command.trim().split("\\s*", 2);
+		String function = arr[0].toLowerCase().trim();
+		String args = arr[1];
+		switch(function)
+		{
+			case "requireitem":
+				return usRequireItem(args);
+			case "additem":
+				return usAddItem(args);
+			case "takeitem":
+				return usTakeItem(args);
+			case "roomstate":
+				return usRoomstate(args);
+			case "go":
+				return usGo(args);
+			case "goto":
+				return usGoto(args);
+			case "loadgame":
+				return usLoadGame(args);
+			case "pause":
+				pause();
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	public boolean usRequireItem(String args)
+	{
+		return true;
+	}
+
+	public boolean usAddItem(String args)
+	{
+		return true;
+	}
+
+	public boolean usTakeItem(String args)
+	{
+		return true;
+	}
+
+	public boolean usRoomstate(String args)
+	{
+		return true;
+	}
+
+	public boolean usGo(String args)
+	{
+		return true;
+	}
+
+	public boolean usGoto(String args)
+	{
+		return true;
+	}
+
+	public boolean usLoadGame(String args)
+	{
+		return true;
+	}
+	
+	public boolean stringIn(String needle, String haystack[], boolean caseSensitive)
+	{
+	    for(int i = 0;i < haystack.length;i++)
+	    {
+	        if(caseSensitive)
+	        {
+	            if(needle.equals(haystack[i])) return true;
+	        }
+	        else
+	        {
+	            if(needle.equalsIgnoreCase(haystack[i])) return true;
+	        }
+	    }
+	    return false;
 	}
 }
