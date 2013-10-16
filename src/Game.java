@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,6 +9,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.script.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class Game
 {
@@ -896,6 +902,44 @@ public class Game
 
 	public boolean usLoadGame(String args)
 	{
+		try
+		{
+			File fXmlFile = new File("staff.xml");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+			
+			//optional, but recommended
+			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+			doc.getDocumentElement().normalize();
+			
+			Element gameNode = (Element)doc.getDocumentElement();
+			
+			System.out.println(gameNode.getAttribute("name"));
+			
+			NodeList nList = doc.getElementsByTagName("staff");
+			
+			System.out.println("----------------------------");
+			
+			for (int temp = 0; temp < nList.getLength(); temp++)
+			{
+				Node nNode = nList.item(temp);
+				System.out.println("\nCurrent Element :" + nNode.getNodeName());
+				if (nNode.getNodeType() == Node.ELEMENT_NODE)
+				{
+					Element eElement = (Element) nNode;
+					System.out.println("Staff id : " + eElement.getAttribute("id"));
+					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
+					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
+					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
+					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		return true;
 	}
 	
