@@ -20,4 +20,10 @@ public class Roomstate
 		}
 		return this._shortDescription;
 	}
+
+	public String description(boolean check)
+	{
+		this._seen = true;
+		return this._description;
+	}
 }

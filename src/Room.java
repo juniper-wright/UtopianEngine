@@ -46,8 +46,7 @@ public class Room
 	// Returns the long description; this function is used whenever the player inputs the "look" (or similar) command
 	public String description(boolean check)
 	{
-		this._seen = true;
-		return this._description[this._roomstate];
+		return this._roomstates[this._roomstate].description(check);
 	}
 
 	// Updates roomstate based on roomstatefactor
@@ -62,27 +61,8 @@ public class Room
 		this._roomstate = newRoomstate;
 	}
 	
-	// Checks what the result of moving north would be
-	public int checkNorth()
+	public boolean canTravel()
 	{
-		return this._moveNorth[this._roomstate];
-	}
-	
-	// Checks what the result of moving east would be
-	public int checkEast()
-	{
-		return this._moveEast[this._roomstate];
-	}
-	
-	// Checks what the result of moving south would be
-	public int checkSouth()
-	{
-		return this._moveSouth[this._roomstate];
-	}
-	
-	// Checks what the result of moving west would be
-	public int checkWest()
-	{
-		return this._moveWest[this._roomstate];
+		return this._can_travel;
 	}
 }
