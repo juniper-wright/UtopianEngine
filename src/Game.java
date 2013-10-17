@@ -738,8 +738,9 @@ public class Game
 	 * Runs the event gotten from a key.
 	 * @String event, the combination JavaScript and UtopiaScript corresponding to the matched event.
 	 */
-	public void runEvent(String event)
+	public void runEvent(String key, String event)
 	{
+		js_engine.put("key", key);
 		String[] events = event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
 		int command_count = 0;
 	
