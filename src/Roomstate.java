@@ -3,12 +3,18 @@ public class Roomstate
 	boolean _seen = false;
 	String _description;		// This is the long description for this roomstate
 	String _shortDescription;	// This is the short description for this roomstate
-	String[] _keyCombos;		// This is a list of key
+	KeyCombo[] _keyCombos;		// This is a list of keyCombos
 
 
+	// Default constructor. Never used.
 	public Roomstate()
 	{
-		
+	}
+	
+	// Main constructor.
+	public Roomstate(KeyCombo[] keyCombos)
+	{
+		this._keyCombos = keyCombos;
 	}
 	
 	public String description()

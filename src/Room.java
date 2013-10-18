@@ -12,17 +12,16 @@ public class Room
 								// Each roomstate basically functions as its own room, but only one can exist at a time
 								// and they will all always occupy the same space in the two-dimensional grid of rooms
 
-	// Constructor 0
-	public Room()		// Default constructor. _can_travel keeps the player from entering the Room.
+	// Default constructor. _can_travel keeps the player from entering the Room.
+	public Room()		
 	{
-		_can_travel = false;
+		this._can_travel = false;
 	}
 	
-	// Constructor 1: Euclidean geometry, no items required, no items given
-	public Room(Roomstate roomstates)
+	// Main constructor. Assumes that the roomstates have been built already.
+	public Room(Roomstate[] roomstates)
 	{
-		// TODO: Make the generateRoomstates function, and make it take an XML node
-		// _roomstates = generateRoomstates();
+		this._roomstates = roomstates;
 	}
 	
 	
@@ -34,7 +33,7 @@ public class Room
 
 	public void checkKeys(String in)
 	{
-		// Make this do things. This essentially will ask the Roomstate if it has a
+		// Make this do things. This essentially will ask the Roomstate if it has the key.
 	}
 	
 	// Returns the long description if it has not been seen, or the short description otherwise
