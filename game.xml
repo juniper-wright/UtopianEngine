@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <game name="Egerfortia" width="1" height="1">
+	<x>2</x>
+	<y>3</y>
 	<commands>
 		<help>
 			<!--
