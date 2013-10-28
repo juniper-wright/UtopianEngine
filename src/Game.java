@@ -19,21 +19,21 @@ import org.w3c.dom.NodeList;
 
 public class Game
 {
-	public static String _name;						// The name of the game.
-	public static int _x;							// The current x coordinate of the player
-	public static int _y;							// The current y coordinate of the player
-	public static int _endgame;						// The "endgame" state. If less than 100000, then the game continues
-	public static String[] _intro;					// List of intro phrases; will be output in a row, pausing while the player reads inbetween
+	public String _name;						// The name of the game.
+	public int _x;							// The current x coordinate of the player
+	public int _y;							// The current y coordinate of the player
+	public int _endgame;						// The "endgame" state. If less than 100000, then the game continues
+	public String[] _intro;					// List of intro phrases; will be output in a row, pausing while the player reads inbetween
 													// Only outputs when the game begins
-	public static String[][] _endgames;				// Contains a list of endgame descriptions
-	public static String _in;						// Used to hold user's input and modify it (everything is toLower()'d)
-	public static String _out;						// Used to create and edit the output
-	public static boolean[] _invHave;				// Used to hold a list of items the player has
-	public static boolean[] _invHaveBackup;			// Used when outputting; makes sure nothing gets deleted by accident
-	public static String[] _invNames;				// Contains the names of the items available
-	public static String _helpMessage;				// Contains the help message to be displayed whenever the player types "help"
-	public static Room[][] _rooms;					// HUGE variable; contains all of the rooms
-	public static Scanner scanner = new Scanner(System.in);		// The scanner! I'm surprised I didn't name it scanly; I usually name my scanners scanly
+	public String[][] _endgames;				// Contains a list of endgame descriptions
+	public String _in;						// Used to hold user's input and modify it (everything is toLower()'d)
+	public String _out;						// Used to create and edit the output
+	public boolean[] _invHave;				// Used to hold a list of items the player has
+	public boolean[] _invHaveBackup;			// Used when outputting; makes sure nothing gets deleted by accident
+	public String[] _invNames;				// Contains the names of the items available
+	public String _helpMessage;				// Contains the help message to be displayed whenever the player types "help"
+	public Room[][] _rooms;					// HUGE variable; contains all of the rooms
+	public Scanner scanner = new Scanner(System.in);		// The scanner! I'm surprised I didn't name it scanly; I usually name my scanners scanly
 	ScriptEngineManager mgr = new ScriptEngineManager();
 	ScriptEngine js_engine = mgr.getEngineByName("js");
     Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
@@ -41,31 +41,136 @@ public class Game
 
 	public Game()	// Default constructor! Never used!
 	{
-		_name = "";
-		_x = 0;
-		_y = 0;
-		_rooms = new Room[1][1];
 	}
 
 	// Constructor. Very simple one at that.
-	public Game(String name, int x, int y, String[] intro, String[][] endgames, boolean[] invHave, String[] invNames, String helpMessage, Room[][] rooms)
+	// This function just passes through to buildGameFromFile(),
+	// because that function needs to be able to rebuild the game if given the loadGame utopiaScript command 
+	public Game(String filename)
 	{
-		_name = name;
-		_x = x;
-		_y = y;
-		_intro = intro;
-		_endgames = endgames;
-		_invHave = invHave;
-		_invHaveBackup = invHave;
-		_invNames = invNames;
-		_rooms = rooms;
+		buildGameFromFile(filename);
+	}
+	
+	private void buildGameFromFile(String filename)
+	{
+		String name;
+		String s_x;
+		String s_y;
+		String s_width;
+		String s_height;
+		int x;
+		int y;
+		int width;
+		int height;
+		String progress = "";
+		Room[][] rooms;
+		try
+		{
+			File fXmlFile = new File(filename);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+			
+			doc.getDocumentElement().normalize();
+
+			Element gameNode = (Element)doc.getDocumentElement();
+			
+			if(!gameNode.getNodeName().equalsIgnoreCase("game"))
+			{
+				throw new LoadGameException("Game node is not first node in file.");
+			}
+			
+			name = gameNode.getAttribute("name");
+			s_x = gameNode.getAttribute("x");
+			s_y = gameNode.getAttribute("y");
+			s_width = gameNode.getAttribute("width");
+			s_height = gameNode.getAttribute("height");
+			
+			if(name.equals(""))
+			{
+				throw new LoadGameException("Name of game is not specified, or empty string.");
+			}
+			
+			try
+			{
+				progress = "x";
+				if(s_x.equals(""))
+				{
+					x = 0;
+				}
+				x = Integer.parseInt(s_x);
+				
+				progress = "y";
+				if(s_y.equals(""))
+				{
+					y = 0;
+				}
+				y = Integer.parseInt(s_y);
+				
+				progress = "width";
+				if(s_width.equals(""))
+				{
+					throw new LoadGameException("Parameter width on Game node is not specified.");
+				}
+				width = Integer.parseInt(s_width);
+				
+				progress = "height";
+				if(s_height.equals(""))
+				{
+					throw new LoadGameException("Parameter height on Game node is not specified.");
+				}
+				height = Integer.parseInt(s_height);
+				
+				if(x > width || y > height)
+				{
+					throw new LoadGameException("Starting coordinates are outside game boundaries.");
+				}
+			}
+			catch(NumberFormatException e)
+			{			
+				throw new LoadGameException("Parameter " + progress + " on Game node is unparsable as Integer.");
+			}
+			rooms = new Room[width][height];
+			for(int i = 0;i < width;i++)
+			{
+				for(int j = 0;j < height;j++)
+				{
+					// Instantiate each room with default constructor, to ensure that they are initialized
+					rooms[i][j] = new Room();
+				}
+			}
+			
+			Node n = doc.getElementsByTagName("rooms").item(0);
+			
+			NodeList nList = n.getChildNodes();
+			
+			System.out.println("----------------------------");
+			
+			for (int temp = 0; temp < nList.getLength(); temp++)
+			{
+				Node nNode = nList.item(temp);
+				System.out.println("\nCurrent Element :" + nNode.getNodeName());
+				if (nNode.getNodeType() == Node.ELEMENT_NODE)
+				{
+					Element eElement = (Element) nNode;
+					System.out.println("x: " + eElement.getAttribute("x"));
+					System.out.println("y: " + eElement.getAttribute("y"));
+					System.out.println("Shortdesc: " + eElement.getElementsByTagName("shortdesc").item(0).getTextContent().trim());
+					System.out.println("Longdesc: " + eElement.getElementsByTagName("longdesc").item(0).getTextContent().trim());
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	// Main function of the Game class.
 	// The run function will continue to loop until the player hits an endgame or quits.
-	public static void run()
+	public void run()
 	{
-		System.out.print("\nWelcome to " + _name + "!");	// Welcomes the user to the game.
+		System.out.print("\nWelcome to " + this._name + "!");	// Welcomes the user to the game.
 		do													// do-while loops usually aren't my thing, but it's a huge code block
 		{      
 			while (true)									// Probably not a good idea to use a while(true) with a break...
@@ -121,8 +226,8 @@ public class Game
 					{
 						for (int j = 0; j < _rooms[i].length; j++)
 						{
-							_rooms[i][j].setRoomstate(0);
-							_rooms[i][j]._seen = false;
+							this._rooms[i][j].setRoomstate(0);
+							this._rooms[i][j]._seen = false;
 						}
 					}
 					
