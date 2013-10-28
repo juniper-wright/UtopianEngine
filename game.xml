@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<game name="Egerfortia" width="1" height="1">
-	<x>2</x>
-	<y>3</y>
+<game name="Egerfortia" width="1" height="1" x="0" y="0">
 	<commands>
 		<help>
 			<!--
@@ -38,6 +36,8 @@
 			</direction>
 		</directions>
 	</commands>
+	<globalKeys>
+	</globalKeys>
 	<items>
 		<item id="0">Item Zero</item>
 		<item id="1">Item One</item>
@@ -47,6 +47,7 @@
 		<item id="5">Item Five</item>
 	</items>
 	<rooms>
+		<!-- If you specify the X and Y coordinates of a room, you need to specify it for all of them -->
 		<room x="0" y="0">
 			<roomstate>
 				<key match="text_to_match">
