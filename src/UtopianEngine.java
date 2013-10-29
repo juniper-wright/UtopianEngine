@@ -444,6 +444,10 @@ public class UtopianEngine
 
 	public static void main(String[] args)
 	{
+		if(args.length > 0)
+		{
+			Game game = new Game(args[0]);
+		}
 		String instring = "";
 		String outstring = "";
 		
