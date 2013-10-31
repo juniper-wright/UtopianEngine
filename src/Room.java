@@ -4,6 +4,11 @@
 
 // This class represents a room, and contains all pertinent data. See variable declaration for explanation of variable usage.
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 public class Room
 {
 	boolean _can_travel = true;
@@ -19,9 +24,9 @@ public class Room
 	}
 	
 	// Main constructor. Assumes that the roomstates have been built already.
-	public Room(Roomstate[] roomstates)
+	public Room(Element eRoom)
 	{
-		this._roomstates = roomstates;
+		return;
 	}
 	
 	

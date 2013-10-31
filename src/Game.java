@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,11 +12,13 @@ import java.util.regex.Pattern;
 import javax.script.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class Game
 {
@@ -63,7 +66,6 @@ public class Game
 		int width;
 		int height;
 		String progress = "";
-		Room[][] rooms;
 		try
 		{
 			File fXmlFile = new File(filename);
@@ -96,16 +98,16 @@ public class Game
 				progress = "x";
 				if(s_x.equals(""))
 				{
-					x = 0;
+					_x = 0;
 				}
-				x = Integer.parseInt(s_x);
+				_x = Integer.parseInt(s_x);
 				
 				progress = "y";
 				if(s_y.equals(""))
 				{
-					y = 0;
+					_y = 0;
 				}
-				y = Integer.parseInt(s_y);
+				_y = Integer.parseInt(s_y);
 				
 				progress = "width";
 				if(s_width.equals(""))
@@ -121,7 +123,7 @@ public class Game
 				}
 				height = Integer.parseInt(s_height);
 				
-				if(x > width || y > height)
+				if(_x > width || _y > height)
 				{
 					throw new LoadGameException("Starting coordinates are outside game boundaries.");
 				}
@@ -130,38 +132,97 @@ public class Game
 			{			
 				throw new LoadGameException("Parameter " + progress + " on Game node is unparsable as Integer.");
 			}
-			rooms = new Room[width][height];
+
+			_rooms = new Room[width][height];
+			// Instantiate each room with default constructor, to ensure that they are initialized
 			for(int i = 0;i < width;i++)
 			{
 				for(int j = 0;j < height;j++)
 				{
-					// Instantiate each room with default constructor, to ensure that they are initialized
-					rooms[i][j] = new Room();
+					_rooms[i][j] = new Room();
 				}
 			}
 			
-			Node n = doc.getElementsByTagName("rooms").item(0);
+			// Add <commands> and <inventory> parsing
 			
-			NodeList nList = n.getChildNodes();
+			Node roomsNode = doc.getElementsByTagName("rooms").item(0);
 			
-			System.out.println("----------------------------");
+			NodeList roomNodes = roomsNode.getChildNodes();
 			
-			for (int temp = 0; temp < nList.getLength(); temp++)
+			int i = 0;
+			int j = 0;
+			for(int index = 0; index < roomNodes.getLength(); index++)
 			{
-				Node nNode = nList.item(temp);
-				System.out.println("\nCurrent Element :" + nNode.getNodeName());
-				if (nNode.getNodeType() == Node.ELEMENT_NODE)
+				Node nRoom = roomNodes.item(index);
+				if(!nRoom.getNodeName().equalsIgnoreCase("room"))
 				{
-					Element eElement = (Element) nNode;
-					System.out.println("x: " + eElement.getAttribute("x"));
-					System.out.println("y: " + eElement.getAttribute("y"));
-					System.out.println("Shortdesc: " + eElement.getElementsByTagName("shortdesc").item(0).getTextContent().trim());
-					System.out.println("Longdesc: " + eElement.getElementsByTagName("longdesc").item(0).getTextContent().trim());
+					throw new LoadGameException("Non-room node found in the rooms node");
+				}
+				
+				Element eRoom = (Element)nRoom;
+				
+				// x and y are unspecified on the room node; place it in the first available space.
+				if(eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
+				{
+					// Find the next open slot in the rooms array.
+					while(_rooms[i][j].canTravel())
+					{
+						i++;
+						if(i > width)
+						{
+							i = 0;
+							j++;
+						}
+					}
+					
+					_rooms[i][j] = new Room(eRoom);
+					
+					// Continue through the _rooms array
+					i++;
+					if(i > width)
+					{
+						i = 0;
+						j++;
+					}
+				}
+				// x and y are BOTH specified on the room node.
+				else if(!eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
+				{
+					try
+					{
+						x = Integer.parseInt(eRoom.getAttribute("x"));
+						y = Integer.parseInt(eRoom.getAttribute("y"));
+					}
+					catch(NumberFormatException e)
+					{
+						throw new LoadGameException("Coordinates on room node " + (index+1) + " are unparsable as Integer.");
+					}
+
+					// Check to see if the coordinate specified already has a room in it.
+					if(_rooms[x][y].canTravel())
+					{
+						throw new LoadGameException("Two rooms specified for the same position: (" + x + "," + y + ")");
+					}
+				}
+				else
+				{
+					throw new LoadGameException("Either x or y is unspecified on room node " + (index+1));
 				}
 			}
 		}
-		catch (Exception e)
+		catch (ParserConfigurationException e)
 		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (SAXException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
