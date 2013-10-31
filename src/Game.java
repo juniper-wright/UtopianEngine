@@ -100,14 +100,20 @@ public class Game
 				{
 					_x = 0;
 				}
-				_x = Integer.parseInt(s_x);
+				else
+				{
+					_x = Integer.parseInt(s_x);
+				}
 				
 				progress = "y";
 				if(s_y.equals(""))
 				{
 					_y = 0;
 				}
-				_y = Integer.parseInt(s_y);
+				else
+				{
+					_y = Integer.parseInt(s_y);
+				}
 				
 				progress = "width";
 				if(s_width.equals(""))
