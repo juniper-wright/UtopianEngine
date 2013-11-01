@@ -9,44 +9,50 @@
 			<javascript></javascript>
 			<utopiascript></utopiascript>
 		</help>
-		<directions>
-			<!--
-			If any direction is not specified, then the following code is the default
-			<direction direction="n">
-				<utopiascript>go north</utopiascript>
-			</direction>
-			-->
-			<direction direction="n">
-				<utopiascript>go +0/+1;</utopiascript>
-			</direction>
-			<direction direction="e">
-				<utopiascript>go +1/+0;</utopiascript>
-			</direction>
-			<direction direction="s">
-				<utopiascript>go +0/-1;</utopiascript>
-			</direction>
-			<direction direction="w">
-				<utopiascript>go -1/+0;</utopiascript>
-			</direction>
-			<direction direction="up">
-				<utopiascript>print YES! THIS WORKS! ASTOUNDING!; go +10 +0</utopiascript>
-			</direction>
-		</directions>
-		<key match="regex">
-			<javascript></javascript>
-			<utopiascript></utopiascript>
-		</key
+		<!--
+		If any direction is not specified, then the following code is the default
+		<direction direction="n">
+			<utopiascript>go north</utopiascript>
+		</direction>
+		-->
+		<direction direction="n">
+			<utopiascript>go +0/+1;</utopiascript>
+		</direction>
+		<direction direction="e">
+			<utopiascript>go +1/+0;</utopiascript>
+		</direction>
+		<direction direction="s">
+			<utopiascript>go +0/-1;</utopiascript>
+		</direction>
+		<direction direction="w">
+			<utopiascript>go -1/+0;</utopiascript>
+		</direction>
+		<direction direction="up">
+			<utopiascript>print YES! THIS WORKS! ASTOUNDING!; go +10 +0</utopiascript>
+		</direction>
+		<globalkeys>
+			<key match="regex">
+				<javascript></javascript>
+				<utopiascript></utopiascript>
+			</key
+		</globalkeys>
 	</commands>
 	<items>
-		<item id="0">Item Zero</item>
-		<item id="1">Item One</item>
-		<item id="2">Item Two</item>
-		<item id="3">Item Three</item>
-		<item id="4">Item Four</item>
-		<item id="5">Item Five</item>
+		<item id="0" quantity="0">Item Zero</item>
+		<item id="1" quantity="1">Item One</item>
+		<item id="2" quantity="2">Item Two</item>
+		<item id="3" quantity="3">Item Three</item>
+		<item id="4" quantity="4">Item Four</item>
+		<item id="5" quantity="5">Item Five</item>
 	</items>
 	<rooms>
 		<room x="0" y="0">
+			<roomkeys>
+				<key match="regex">
+					<javascript></javascript>
+					<utopiascript></utopiascript>
+				</key>
+			</roomkeys>
 			<roomstate>
 				<key match="text_to_match">
 					<javascript></javascript>
@@ -63,4 +69,8 @@
 			</roomstate>
 		</room>
 	</rooms>
+	<setup>
+		<javascript></javascript>
+		<utopiascript></utopiascript>
+	</setup>
 </game>
