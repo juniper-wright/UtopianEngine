@@ -22,20 +22,13 @@ import org.xml.sax.SAXException;
 
 public class Game
 {
-	public String _name;						// The name of the game.
+	public String _name;					// The name of the game.
 	public int _x;							// The current x coordinate of the player
 	public int _y;							// The current y coordinate of the player
-	public int _endgame;						// The "endgame" state. If less than 100000, then the game continues
-	public String[] _intro;					// List of intro phrases; will be output in a row, pausing while the player reads inbetween
-													// Only outputs when the game begins
-	public String[][] _endgames;				// Contains a list of endgame descriptions
 	public String _in;						// Used to hold user's input and modify it (everything is toLower()'d)
 	public String _out;						// Used to create and edit the output
-	public boolean[] _invHave;				// Used to hold a list of items the player has
-	public boolean[] _invHaveBackup;			// Used when outputting; makes sure nothing gets deleted by accident
-	public String[] _invNames;				// Contains the names of the items available
-	public String _helpMessage;				// Contains the help message to be displayed whenever the player types "help"
 	public Room[][] _rooms;					// HUGE variable; contains all of the rooms
+	public KeyCombo[] _globalkeys;			// 
 	public Scanner scanner = new Scanner(System.in);		// The scanner! I'm surprised I didn't name it scanly; I usually name my scanners scanly
 	ScriptEngineManager mgr = new ScriptEngineManager();
 	ScriptEngine js_engine = mgr.getEngineByName("js");
@@ -138,7 +131,81 @@ public class Game
 			{			
 				throw new LoadGameException("Parameter " + progress + " on Game node is unparsable as Integer.");
 			}
+			
+			
+			// TODO: Add <commands> parsing
+			Element commands = (Element)gameNode.getElementsByTagName("commands").item(0);
+			
+			Node helpNode = commands.getElementsByTagName("help").item(0);
+			NodeList directionNodes = commands.getElementsByTagName("direction");
+			NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes();
+			
+			// N, E, S, and W.
+			int direction_list_length = 4;
+			
+			for(int i = 0;i < directionNodes.getLength();i++)
+			{
+				if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false))
+				{
+					direction_list_length++;
+				}
+			}
+			
+			_globalkeys = new KeyCombo[6+direction_list_length+globalKeys.getLength()];
+			
+			_globalkeys[0] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
+			
+			if(helpNode == null)
+			{
+				_globalkeys[1] = new KeyCombo("^help$", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
+			}
+			else
+			{
+				_globalkeys[1] = new KeyCombo(helpNode);
+			}
 
+			_globalkeys[2] = new KeyCombo("(move )?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
+			_globalkeys[3] = new KeyCombo("(move )?e(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
+			_globalkeys[4] = new KeyCombo("(move )?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
+			_globalkeys[5] = new KeyCombo("(move )?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
+			
+			int gk_index = 6;
+			for(int i = 0; i < directionNodes.getLength(); i++)
+			{
+				Element directionCommand = (Element)directionNodes.item(i);
+				
+				String direction = directionCommand.getAttribute("direction");
+				if(direction.equals("n"))
+				{
+					_globalkeys[2] = new KeyCombo(directionCommand);
+				}
+				else if(direction.equals("e"))
+				{
+					_globalkeys[3] = new KeyCombo(directionCommand);
+				}
+				else if(direction.equals("s"))
+				{
+					_globalkeys[4] = new KeyCombo(directionCommand);
+				}
+				else if(direction.equals("w"))
+				{
+					_globalkeys[5] = new KeyCombo(directionCommand);
+				}
+				else
+				{
+					_globalkeys[gk_index] = new KeyCombo(directionCommand);
+					gk_index++;
+				}
+			}
+			
+			for(int i = 0; i < globalKeys.getLength(); i++)
+			{
+				_globalkeys[gk_index] = new KeyCombo(globalKeys.item(i));
+				gk_index++;
+			}
+			
+			// TODO: Add <items> parsing
+			
 			_rooms = new Room[width][height];
 			// Instantiate each room with default constructor, to ensure that they are initialized
 			for(int i = 0;i < width;i++)
@@ -148,8 +215,6 @@ public class Game
 					_rooms[i][j] = new Room();
 				}
 			}
-			
-			// Add <commands> and <inventory> parsing
 			
 			Node roomsNode = doc.getElementsByTagName("rooms").item(0);
 			
@@ -212,7 +277,7 @@ public class Game
 				}
 				else
 				{
-					throw new LoadGameException("Either x or y is unspecified on room node " + (index+1));
+					throw new LoadGameException("Either x or y is unspecified on room node " + (index+1) + ". Specify either both or neither.");
 				}
 			}
 		}
