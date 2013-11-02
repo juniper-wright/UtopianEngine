@@ -1259,12 +1259,106 @@ public class Game
 
 	public boolean usAddItem(String args)
 	{
+		String itemNumString;
+		int itemNum;
+		String quantityString;
+		int quantity;
+
+		Pattern itemNumPattern = Pattern.compile("[^(]*");
+		Matcher itemNumMatcher = itemNumPattern.matcher(args);
+		itemNumString = itemNumMatcher.group();
+		try
+		{
+			itemNum = Integer.parseInt(itemNumString);
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Invalid format for command addItem: `" + itemNumString + "` is unparseable as an integer");
+		}
+		
+		if(itemNum > this._itemnames.length)
+		{
+			throw new UtopiaException("Invalid argument for command addItem: `" + itemNum + "` is out of bounds for items list.");
+		}
+		
+		if(args.contains("(") && args.contains(")"))
+		{	
+			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
+			Matcher quantityMatcher = quantityPattern.matcher(args);
+			quantityString = quantityMatcher.group(1);
+			try
+			{
+				quantity = Integer.parseInt(itemNumString); 
+			}
+			catch(NumberFormatException e)
+			{
+				throw new UtopiaException("Invalid format for command addItem: `" + quantityString + "` is unparseable as an integer.");
+			}
+		}
+		else
+		{
+			quantity = 1;
+		}
+		
+		this._itemquantities[itemNum] += quantity;
+		
 		return true;
 	}
 
 	public boolean usTakeItem(String args)
 	{
-		return true;
+		String[] args_arr = args.split(" ", 2);
+		String itemNumString;
+		int itemNum;
+		String quantityString;
+		int quantity;
+
+		Pattern itemNumPattern = Pattern.compile("[^(]*");
+		Matcher itemNumMatcher = itemNumPattern.matcher(args_arr[0]);
+		itemNumString = itemNumMatcher.group();
+		try
+		{
+			itemNum = Integer.parseInt(itemNumString);
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Invalid format for command takeItem: `" + itemNumString + "` is unparseable as an integer");
+		}
+		
+		if(itemNum > this._itemnames.length)
+		{
+			throw new UtopiaException("Invalid argument for command takeItem: `" + itemNum + "` is out of bounds for items list.");
+		}
+		
+		if(args_arr[0].contains("(") && args_arr[0].contains(")"))
+		{	
+			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
+			Matcher quantityMatcher = quantityPattern.matcher(args_arr[0]);
+			quantityString = quantityMatcher.group(1);
+			try
+			{
+				quantity = Integer.parseInt(itemNumString); 
+			}
+			catch(NumberFormatException e)
+			{
+				throw new UtopiaException("Invalid format for command takeItem: `" + quantityString + "` is unparseable as an integer.");
+			}
+		}
+		else
+		{
+			quantity = 1;
+		}
+		
+		if(this._itemquantities[itemNum] < quantity && args_arr.length > 1)
+		{
+			usPrintln(args_arr[1]);
+			return false;
+		}
+		else
+		{
+			this._itemquantities[itemNum] -= Math.min(this._itemquantities[itemNum], quantity);
+			return true;
+		}
 	}
 
 	public boolean usRoomstate(String args)
