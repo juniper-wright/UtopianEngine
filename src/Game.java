@@ -141,43 +141,13 @@ public class Game
 			
 			
 			
-			/**		BEGIN <COMMANDS> PARSING	**/
+			/**		<COMMANDS> PARSING		**/
 			this.buildGameCommands(gameNode.getElementsByTagName("commands").item(0));
-			// TODO: Add <commands> error-checking
-			
-			/**		END <COMMANDS> PARSING	**/
 			
 			
-			/**		BEGIN <ITEMS> PARSING	**/
+			/**		<ITEMS> PARSING			**/
 			// Potential point of failure. If any of the three chained function calls fails, possible potential for exception.
-			NodeList itemNodes = gameNode.getElementsByTagName("items").item(0).getChildNodes();
-			
-			_itemnames = new String[itemNodes.getLength()];
-			_itemquantities = new int[itemNodes.getLength()];
-			
-			for(int i = 0;i < itemNodes.getLength(); i++)
-			{
-				Node itemNode = itemNodes.item(i);
-				
-				item_quantity = ((Element)itemNode).getAttribute("quantity");
-				
-				_itemnames[i] = itemNode.getTextContent().trim();
-				try
-				{
-					if(item_quantity.equals(""))
-					{
-						_itemquantities[i] = 0;
-					}
-					else
-					{
-						_itemquantities[i] = Integer.parseInt(item_quantity);
-					}
-				}
-				catch(NumberFormatException e)
-				{			
-					throw new LoadGameException("Parameter \"quantity\" on item node " + i + " is unparsable as Integer.");
-				}
-			}
+			this.buildGameItems(gameNode.getElementsByTagName("items").item(0));
 			/**		END <ITEMS> PARSING		**/
 			
 			
@@ -280,7 +250,7 @@ public class Game
 	/**
 	 * Builds the game's _globalkeys array from the <commands> node parsed from the XML
 	 * @param commandsNode the <commands> node from the game XML
-	 * @return Void; directly modifies the object's _globalkeys array
+	 * @return Void; directly modifies the object's _globalkeys member
 	 */
 	private void buildGameCommands(Node commandsNode)
 	{
@@ -359,9 +329,43 @@ public class Game
 		}
 	}
 	
+	/**
+	 * Builds the _itemnames and _itemquantities arrays from the <items> node
+	 * @param itemsNode the <items> node in the game XML
+	 * @return Void; directly modifies the _itemnames and _itemquantities members
+	 */
 	private void buildGameItems(Node itemsNode)
 	{
+		String item_quantity;	// temporary variable
 		
+		NodeList itemNodes = itemsNode.getChildNodes();
+		
+		_itemnames = new String[itemNodes.getLength()];
+		_itemquantities = new int[itemNodes.getLength()];
+		
+		for(int i = 0;i < itemNodes.getLength(); i++)
+		{
+			Node itemNode = itemNodes.item(i);
+			
+			item_quantity = ((Element)itemNode).getAttribute("quantity");
+			
+			_itemnames[i] = itemNode.getTextContent().trim();
+			try
+			{
+				if(item_quantity.equals(""))
+				{
+					_itemquantities[i] = 0;
+				}
+				else
+				{
+					_itemquantities[i] = Integer.parseInt(item_quantity);
+				}
+			}
+			catch(NumberFormatException e)
+			{			
+				throw new LoadGameException("Parameter \"quantity\" on item node " + i + " is unparsable as Integer.");
+			}
+		}
 	}
 	
 	private void buildGameRooms(Node roomsNode)
