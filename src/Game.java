@@ -1029,15 +1029,12 @@ public class Game
 	}
 
 	// Pauses, waiting for the player to press enter
-	public static void pause()
+	public void pause()
 	{
-		System.out.print("\n\nPress enter...");
-		scanner.nextLine();
-		System.out.println();
-		return;
+		pause("Press enter...");
 	}
 	
-	public static void pause(String prompt)
+	public void pause(String prompt)
 	{
 		if(prompt.length() == 0)
 		{
@@ -1045,9 +1042,9 @@ public class Game
 		}
 		else
 		{
-			System.out.print("\n\n" + prompt);
+			usPrint("\n\n" + prompt);
 			scanner.nextLine();
-			System.out.println();
+			usPrintln("");
 		}
 	}
 	
@@ -1369,6 +1366,12 @@ public class Game
 	public boolean usGo(String args)
 	{
 		// TODO: Make the player move.
+		// Let's say:
+		//	args == "+0/-1"
+		String[] args_arr = args.split("/| ", 2);
+		// In theory:
+		//	args_arr[0] == "+0";
+		//	args_arr[1] == "-1";
 		return usDescription("");
 	}
 
@@ -1420,7 +1423,8 @@ public class Game
 
 	private boolean usQuitGame(String args)
 	{
-		return true;
+		usPause(args);
+		throw new GameEndException("");
 	}
 	
 	private boolean usInventory(String args)
