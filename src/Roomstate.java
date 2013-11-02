@@ -1,7 +1,12 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 public class Roomstate
 {
 	boolean _seen = false;
-	String _description;		// This is the long description for this roomstate
+	String _longDescription;	// This is the long description for this roomstate
 	String _shortDescription;	// This is the short description for this roomstate
 	KeyCombo[] _keyCombos;		// This is a list of keyCombos
 
@@ -12,24 +17,31 @@ public class Roomstate
 	}
 	
 	// Main constructor.
-	public Roomstate(KeyCombo[] keyCombos)
+	public Roomstate(Node roomstateNode)
 	{
-		this._keyCombos = keyCombos;
-	}
-	
-	public String description()
-	{
-		if (!this._seen)
+		this._longDescription = ((Element)roomstateNode).getElementsByTagName("longdescription").item(0).getTextContent().trim();
+				
+		this._shortDescription = ((Element)roomstateNode).getElementsByTagName("shortdescription").item(0).getTextContent().trim();
+		
+		NodeList keyCombos = ((Element)roomstateNode).getElementsByTagName("key");
+		
+		this._keyCombos = new KeyCombo[keyCombos.getLength()];
+		
+		for(int i = 0; i < keyCombos.getLength(); i++)
 		{
-			this._seen = true;
-			return this._description;
+			this._keyCombos[i] = new KeyCombo(keyCombos.item(i));
 		}
-		return this._shortDescription;
 	}
 
-	public String description(boolean check)
+	public String description(boolean longDesc)
 	{
-		this._seen = true;
-		return this._description;
+		// If the long description has not been seen, or it is specifically requested, show that.
+		// Otherwise, just show the short description.
+		if(!this._seen || longDesc)
+		{
+			this._seen = true;
+			return this._longDescription;
+		}
+		return this._shortDescription;
 	}
 }
