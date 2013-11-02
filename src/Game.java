@@ -142,80 +142,9 @@ public class Game
 			
 			
 			/**		BEGIN <COMMANDS> PARSING	**/
+			this.buildGameCommands(gameNode.getElementsByTagName("commands").item(0));
 			// TODO: Add <commands> error-checking
-			Element commands = (Element)gameNode.getElementsByTagName("commands").item(0);
 			
-			Node helpNode = commands.getElementsByTagName("help").item(0);
-			NodeList directionNodes = commands.getElementsByTagName("direction");
-			NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes(); // TODO: Potential point of failure
-			
-			// N, E, S, and W.
-			int direction_list_length = 4;
-			
-			for(int i = 0;i < directionNodes.getLength();i++)
-			{
-				if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false)) // TODO: Potential point of failure
-				{
-					direction_list_length++;
-				}
-			}
-			
-			_globalkeys = new KeyCombo[6+direction_list_length+globalKeys.getLength()];
-			
-			_globalkeys[0] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
-			
-			if(helpNode == null)
-			{
-				_globalkeys[1] = new KeyCombo("^help$", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
-			}
-			else
-			{
-				_globalkeys[1] = new KeyCombo(helpNode);
-			}
-
-			_globalkeys[2] = new KeyCombo("(move )?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
-			_globalkeys[3] = new KeyCombo("(move )?e(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
-			_globalkeys[4] = new KeyCombo("(move )?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
-			_globalkeys[5] = new KeyCombo("(move )?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
-			
-			int global_key_index = 6;
-			for(int i = 0; i < directionNodes.getLength(); i++)
-			{
-				Element directionCommand = (Element)directionNodes.item(i);
-				
-				String direction = directionCommand.getAttribute("direction");
-				if(direction.equals("n"))
-				{
-					_globalkeys[2] = new KeyCombo(directionCommand);
-				}
-				else if(direction.equals("e"))
-				{
-					_globalkeys[3] = new KeyCombo(directionCommand);
-				}
-				else if(direction.equals("s"))
-				{
-					_globalkeys[4] = new KeyCombo(directionCommand);
-				}
-				else if(direction.equals("w"))
-				{
-					_globalkeys[5] = new KeyCombo(directionCommand);
-				}
-				else if(!direction.equals(""))
-				{
-					_globalkeys[global_key_index] = new KeyCombo(directionCommand);
-					global_key_index++;
-				}
-				else
-				{
-					throw new LoadGameException("Direction found without a direction name");
-				}
-			}
-			
-			for(int i = 0; i < globalKeys.getLength(); i++)
-			{
-				_globalkeys[global_key_index] = new KeyCombo(globalKeys.item(i));
-				global_key_index++;
-			}
 			/**		END <COMMANDS> PARSING	**/
 			
 			
@@ -345,6 +274,99 @@ public class Game
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	// TODO: Add error-checking to the buildGameCommands function.
+	/**
+	 * Builds the game's _globalkeys array from the <commands> node parsed from the XML
+	 * @param commandsNode the <commands> node from the game XML
+	 * @return Void; directly modifies the object's _globalkeys array
+	 */
+	private void buildGameCommands(Node commandsNode)
+	{
+		Element commands = (Element)commandsNode;
+		
+		Node helpNode = commands.getElementsByTagName("help").item(0);
+		NodeList directionNodes = commands.getElementsByTagName("direction");
+		NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes(); // TODO: Potential point of failure
+		
+		// N, E, S, and W.
+		int direction_list_length = 4;
+		
+		for(int i = 0;i < directionNodes.getLength();i++)
+		{
+			if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false)) // TODO: Potential point of failure
+			{
+				direction_list_length++;
+			}
+		}
+		
+		_globalkeys = new KeyCombo[6+direction_list_length+globalKeys.getLength()];
+		
+		_globalkeys[0] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
+		
+		if(helpNode == null)
+		{
+			_globalkeys[1] = new KeyCombo("^help$", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
+		}
+		else
+		{
+			_globalkeys[1] = new KeyCombo(helpNode);
+		}
+
+		_globalkeys[2] = new KeyCombo("(move )?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
+		_globalkeys[3] = new KeyCombo("(move )?e(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
+		_globalkeys[4] = new KeyCombo("(move )?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
+		_globalkeys[5] = new KeyCombo("(move )?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
+		
+		int global_key_index = 6;
+		for(int i = 0; i < directionNodes.getLength(); i++)
+		{
+			Element directionCommand = (Element)directionNodes.item(i);
+			
+			String direction = directionCommand.getAttribute("direction");
+			if(direction.equals("n"))
+			{
+				_globalkeys[2] = new KeyCombo(directionCommand);
+			}
+			else if(direction.equals("e"))
+			{
+				_globalkeys[3] = new KeyCombo(directionCommand);
+			}
+			else if(direction.equals("s"))
+			{
+				_globalkeys[4] = new KeyCombo(directionCommand);
+			}
+			else if(direction.equals("w"))
+			{
+				_globalkeys[5] = new KeyCombo(directionCommand);
+			}
+			else if(!direction.equals(""))
+			{
+				_globalkeys[global_key_index] = new KeyCombo(directionCommand);
+				global_key_index++;
+			}
+			else
+			{
+				throw new LoadGameException("Direction found without a direction name");
+			}
+		}
+		
+		for(int i = 0; i < globalKeys.getLength(); i++)
+		{
+			_globalkeys[global_key_index] = new KeyCombo(globalKeys.item(i));
+			global_key_index++;
+		}
+	}
+	
+	private void buildGameItems(Node itemsNode)
+	{
+		
+	}
+	
+	private void buildGameRooms(Node roomsNode)
+	{
+		
 	}
 
 	// Main function of the Game class.
