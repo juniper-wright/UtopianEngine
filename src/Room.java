@@ -56,19 +56,15 @@ public class Room
 
 	public void checkKeys(String in)
 	{
-		// Make this do things. This essentially will ask the Roomstate if it has the key.
+		// TODO: Check _roomkeys for a match
+		// TODO: Failing that, check the roomstate for a match.
+		// TODO: Failing that, return generic failure message.
 	}
 	
-	// Returns the long description if it has not been seen, or the short description otherwise
-	public String description()
+	// Passthrough to the Roomstate class's description function.
+	public String description(boolean longDesc)
 	{
-		return this._roomstates[this._roomstate].description();
-	}
-	
-	// Returns the long description; this function is used whenever the player inputs the "look" (or similar) command
-	public String description(boolean check)
-	{
-		return this._roomstates[this._roomstate].description(check);
+		return this._roomstates[this._roomstate].description(longDesc);
 	}
 
 	// Updates roomstate based on roomstatefactor
