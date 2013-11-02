@@ -4,16 +4,14 @@
 		<help>
 			<!--
 			default:
-			<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>
+				<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>
+			Additional <help> nodes will be ignored. Only the first is considered
 			-->
 			<javascript></javascript>
 			<utopiascript></utopiascript>
 		</help>
 		<!--
-		If any direction is not specified, then the following code is the default
-		<direction direction="n">
-			<utopiascript>go north</utopiascript>
-		</direction>
+			Actual North direction key: "(move )?n(orth)?"
 		-->
 		<direction direction="n">
 			<utopiascript>go +0/+1;</utopiascript>
@@ -27,6 +25,9 @@
 		<direction direction="w">
 			<utopiascript>go -1/+0;</utopiascript>
 		</direction>
+		<!--
+			Recommended direction format: direction="(move )?DIRECTION"
+		-->
 		<direction direction="up">
 			<utopiascript>print YES! THIS WORKS! ASTOUNDING!; go +10 +0</utopiascript>
 		</direction>
@@ -38,12 +39,12 @@
 		</globalkeys>
 	</commands>
 	<items>
-		<item id="0" quantity="0">Item Zero</item>
-		<item id="1" quantity="1">Item One</item>
-		<item id="2" quantity="2">Item Two</item>
-		<item id="3" quantity="3">Item Three</item>
-		<item id="4" quantity="4">Item Four</item>
-		<item id="5" quantity="5">Item Five</item>
+		<item quantity="0">Item Zero</item>
+		<item quantity="1">Item One</item>
+		<item quantity="2">Item Two</item>
+		<item quantity="3">Item Three</item>
+		<item quantity="4">Item Four</item>
+		<item quantity="5">Item Five</item>
 	</items>
 	<rooms>
 		<room x="0" y="0">
