@@ -1221,12 +1221,14 @@ public class Game
 
 	public boolean usGo(String args)
 	{
-		return true;
+		// TODO: Make the player move.
+		return usDescription("");
 	}
 
 	public boolean usGoto(String args)
 	{
-		return true;
+		// TODO: Make the player move.
+		return usDescription("");
 	}
 
 	public boolean usLoadGame(String args)
@@ -1256,7 +1258,12 @@ public class Game
 
 	private boolean usDescription(String args)
 	{
-		return true;
+		boolean longDesc = true;
+		if(args.equalsIgnoreCase("short"))
+		{
+			longDesc = false;
+		}
+		return usPrintln(this._rooms[this._x][this._y].description(longDesc));
 	}
 	
 	private boolean usScore(String args)
