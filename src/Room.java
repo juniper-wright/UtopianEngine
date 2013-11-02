@@ -13,6 +13,7 @@ public class Room
 {
 	boolean _can_travel = true;
 	Roomstate[] _roomstates;
+	KeyCombo[] _roomkeys;		// Room-global keys! In case you want to do something regardless of the roomstate
 	int _roomstate = 0;			// roomstate is the state of the room. Rooms may have anywhere from 1 to 2147483647 roomstates.
 								// Each roomstate basically functions as its own room, but only one can exist at a time
 								// and they will all always occupy the same space in the two-dimensional grid of rooms
@@ -23,10 +24,27 @@ public class Room
 		this._can_travel = false;
 	}
 	
-	// Main constructor. Assumes that the roomstates have been built already.
-	public Room(Element eRoom)
+	// Main constructor.
+	public Room(Node roomNode)
 	{
-		return;
+		NodeList roomkeys = ((Element)roomNode).getElementsByTagName("roomkey");
+		
+		this._roomkeys = new KeyCombo[roomkeys.getLength()];
+		
+		for(int i = 0; i < roomkeys.getLength(); i++)
+		{
+			this._roomkeys[i] = new KeyCombo(roomkeys.item(i));
+		}
+		
+		
+		NodeList roomstates = ((Element)roomNode).getElementsByTagName("roomstate");
+		
+		this._roomstates = new Roomstate[roomstates.getLength()];
+		
+		for(int i = 0;i < roomstates.getLength(); i++)
+		{
+			this._roomstates[i] = new Roomstate(roomstates.item(i));
+		}
 	}
 	
 	
