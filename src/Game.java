@@ -1098,13 +1098,13 @@ public class Game
 		}
 		catch(ScriptException e)
 		{
-			// TODO: Better exception-handling
+			// TODO: Real exception-handling
 	    	System.out.println(e.getMessage());
 	    	System.out.println(e.getStackTrace());
 		}
 		catch(UtopiaException e)
 		{
-			// TODO: Better exception-handling
+			// TODO: Real exception-handling
 	    	System.out.println(e.getMessage());
 	    	System.out.println(e.getStackTrace());
 		}
@@ -1129,7 +1129,7 @@ public class Game
 				}
 				catch(Exception e)
 				{
-					
+					// TODO: Add exception handling. No clue what kind of exceptions are even thrown.
 				}
 				for(int j = 0;j < uscript_array.size();j++)
 				{
@@ -1201,7 +1201,60 @@ public class Game
 
 	public boolean usRequireItem(String args)
 	{
-		return true;
+		String[] args_arr = args.split(" ", 2);
+		String itemNumString;
+		int itemNum;
+		String quantityString;
+		int quantity;
+
+		Pattern itemNumPattern = Pattern.compile("[^(]*");
+		Matcher itemNumMatcher = itemNumPattern.matcher(args_arr[0]);
+		itemNumString = itemNumMatcher.group();
+		try
+		{
+			itemNum = Integer.parseInt(itemNumString);
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Invalid format for command requireItem: `" + itemNumString + "` is unparseable as an integer");
+		}
+		
+		if(itemNum > this._itemnames.length)
+		{
+			throw new UtopiaException("Invalid argument for command requireItem: `" + itemNum + "` is out of bounds for items list.");
+		}
+		
+		if(args_arr[0].contains("(") && args_arr[0].contains(")"))
+		{	
+			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
+			Matcher quantityMatcher = quantityPattern.matcher(args_arr[0]);
+			quantityString = quantityMatcher.group(1);
+			try
+			{
+				quantity = Integer.parseInt(itemNumString); 
+			}
+			catch(NumberFormatException e)
+			{
+				throw new UtopiaException("Invalid format for command requireItem: `" + quantityString + "` is unparseable as an integer.");
+			}
+		}
+		else
+		{
+			quantity = 1;
+		}
+		
+		if(this._itemquantities[itemNum] < quantity)
+		{
+			if(args_arr.length > 1)
+			{
+				usPrintln(args_arr[1]);
+			}
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	public boolean usAddItem(String args)
@@ -1246,13 +1299,13 @@ public class Game
 	// All system output will be done through these two functions. Thus, it will be easy to change them if need be. 	
 	private boolean usPrint(String args)
 	{
-		System.out.print(args.replace("\\;", ";"));
+		System.out.print(args.replace("\\;", ";").replace("\\\\", "\\"));
 		return true;
 	}
 
 	private boolean usPrintln(String args)
 	{
-		System.out.println(args.replace("\\;", ";"));
+		System.out.println(args.replace("\\;", ";").replace("\\\\", "\\"));
 		return true;
 	}
 
