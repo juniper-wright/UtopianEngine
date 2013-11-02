@@ -53,7 +53,6 @@ public class Game
 	{
 		/**		BEGIN TEMPORARY VARIABLES	**/
 		String name;
-		String item_quantity;
 		String progress = "";
 		String s_x;
 		String s_y;
@@ -169,7 +168,6 @@ public class Game
 		}
 	}
 	
-	// TODO: Add error-checking to the buildGameCommands function.
 	/**
 	 * Builds the game's _globalkeys array from the <commands> node parsed from the XML
 	 * @param commandsNode the <commands> node from the game XML
@@ -181,14 +179,14 @@ public class Game
 		
 		Node helpNode = commands.getElementsByTagName("help").item(0);
 		NodeList directionNodes = commands.getElementsByTagName("direction");
-		NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes(); // TODO: Potential point of failure
+		NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes();
 		
 		// N, E, S, and W.
 		int direction_list_length = 4;
 		
 		for(int i = 0;i < directionNodes.getLength();i++)
 		{
-			if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false)) // TODO: Potential point of failure
+			if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false))
 			{
 				direction_list_length++;
 			}
@@ -196,23 +194,25 @@ public class Game
 		
 		_globalkeys = new KeyCombo[6+direction_list_length+globalKeys.getLength()];
 		
-		_globalkeys[0] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
+		_globalkeys[0] = new KeyCombo("", "");
+		
+		_globalkeys[1] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
 		
 		if(helpNode == null)
 		{
-			_globalkeys[1] = new KeyCombo("^help$", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
+			_globalkeys[2] = new KeyCombo("^help$", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
 		}
 		else
 		{
-			_globalkeys[1] = new KeyCombo(helpNode);
+			_globalkeys[2] = new KeyCombo(helpNode);
 		}
 
-		_globalkeys[2] = new KeyCombo("(move )?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
-		_globalkeys[3] = new KeyCombo("(move )?e(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
-		_globalkeys[4] = new KeyCombo("(move )?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
-		_globalkeys[5] = new KeyCombo("(move )?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
+		_globalkeys[3] = new KeyCombo("(move )?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
+		_globalkeys[4] = new KeyCombo("(move )?e(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
+		_globalkeys[5] = new KeyCombo("(move )?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
+		_globalkeys[6] = new KeyCombo("(move )?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
 		
-		int global_key_index = 6;
+		int global_key_index = 7;
 		for(int i = 0; i < directionNodes.getLength(); i++)
 		{
 			Element directionCommand = (Element)directionNodes.item(i);
@@ -220,19 +220,19 @@ public class Game
 			String direction = directionCommand.getAttribute("direction");
 			if(direction.equals("n"))
 			{
-				_globalkeys[2] = new KeyCombo(directionCommand);
+				_globalkeys[3] = new KeyCombo(directionCommand);
 			}
 			else if(direction.equals("e"))
 			{
-				_globalkeys[3] = new KeyCombo(directionCommand);
+				_globalkeys[4] = new KeyCombo(directionCommand);
 			}
 			else if(direction.equals("s"))
 			{
-				_globalkeys[4] = new KeyCombo(directionCommand);
+				_globalkeys[5] = new KeyCombo(directionCommand);
 			}
 			else if(direction.equals("w"))
 			{
-				_globalkeys[5] = new KeyCombo(directionCommand);
+				_globalkeys[6] = new KeyCombo(directionCommand);
 			}
 			else if(!direction.equals(""))
 			{
@@ -341,7 +341,7 @@ public class Game
 					}
 				}
 				
-				_rooms[i][j] = new Room(eRoom);
+				_rooms[i][j] = new Room(nRoom);
 				
 				// Continue through the _rooms array
 				i++;
@@ -1181,10 +1181,21 @@ public class Game
 			case "loadgame":
 				return usLoadGame(args);
 			case "pause":
-				usPause(args);
-				return true;
+				return usPause(args);
+			case "print":
+				return usPrint(args);
+			case "println":
+				return usPrintln(args);
+			case "description":
+				return usDescription(args);
+			case "score":
+				return usScore(args);
+			case "quitgame":
+				return usQuitGame(args);
+			case "inventory":
+				return usInventory(args);
 			default:
-				throw new UtopiaException("Command not found: " + function);
+				throw new UtopiaException(function + ": Command not found.");
 		}
 	}
 
@@ -1220,44 +1231,7 @@ public class Game
 
 	public boolean usLoadGame(String args)
 	{
-		try
-		{
-			File fXmlFile = new File("staff.xml");
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(fXmlFile);
-			
-			//optional, but recommended
-			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-			doc.getDocumentElement().normalize();
-			
-			Element gameNode = (Element)doc.getDocumentElement();
-			
-			System.out.println(gameNode.getAttribute("name"));
-			
-			NodeList nList = doc.getElementsByTagName("staff");
-			
-			System.out.println("----------------------------");
-			
-			for (int temp = 0; temp < nList.getLength(); temp++)
-			{
-				Node nNode = nList.item(temp);
-				System.out.println("\nCurrent Element :" + nNode.getNodeName());
-				if (nNode.getNodeType() == Node.ELEMENT_NODE)
-				{
-					Element eElement = (Element) nNode;
-					System.out.println("Staff id : " + eElement.getAttribute("id"));
-					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
-					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		buildGameFromFile(args);
 		return true;
 	}
 	
@@ -1265,6 +1239,46 @@ public class Game
 	{
 		pause(args);
 		return true;
+	}
+
+	// All system output will be done through these two functions. Thus, it will be easy to change them if need be. 	
+	private boolean usPrint(String args)
+	{
+		System.out.print(args.replace("\\;", ";"));
+		return true;
+	}
+
+	private boolean usPrintln(String args)
+	{
+		System.out.println(args.replace("\\;", ";"));
+		return true;
+	}
+
+	private boolean usDescription(String args)
+	{
+		return true;
+	}
+	
+	private boolean usScore(String args)
+	{
+		return true;
+	}
+
+	private boolean usQuitGame(String args)
+	{
+		return true;
+	}
+	
+	private boolean usInventory(String args)
+	{
+		for(int i = 0;i < this._itemnames.length; i++)
+		{
+			if(this._itemquantities[i] > 0)
+			{
+				usPrintln(String.format("%-50sx%s", this._itemnames[i], this._itemquantities[i]));
+			}
+		}
+		return usPrintln("");
 	}
 	
 	public boolean stringIn(String needle, String haystack[], boolean caseSensitive)
