@@ -48,13 +48,17 @@
 	</items>
 	<rooms>
 		<room x="0" y="0">
-			<roomkeys>
-				<key match="regex">
-					<javascript></javascript>
-					<utopiascript></utopiascript>
-				</key>
-			</roomkeys>
+			<roomkey match="regex">
+				<javascript></javascript>
+				<utopiascript></utopiascript>
+			</roomkey>
+			<roomkey match="regex2">
+				<javascript></javascript>
+				<utopiascript></utopiascript>
+			</roomkey>
 			<roomstate>
+				<shortdescription>THIS IS A SHORT DESCRIPTION.</shortdescription>
+				<longdescription>THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILS ABOUT THE ROOM.</longdescription>
 				<key match="text_to_match">
 					<javascript></javascript>
 					<utopiascript></utopiascript>
