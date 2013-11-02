@@ -139,95 +139,18 @@ public class Game
 			}
 			
 			
-			
-			
 			/**		<COMMANDS> PARSING		**/
 			this.buildGameCommands(gameNode.getElementsByTagName("commands").item(0));
 			
 			
 			/**		<ITEMS> PARSING			**/
-			// Potential point of failure. If any of the three chained function calls fails, possible potential for exception.
 			this.buildGameItems(gameNode.getElementsByTagName("items").item(0));
-			/**		END <ITEMS> PARSING		**/
 			
 			
+			/**		<ROOMS> PARSING			**/
+			this.buildGameRooms(gameNode.getElementsByTagName("rooms").item(0), width, height);
 			
-			/**		BEGIN <ROOMS> PARSING	**/
-			_rooms = new Room[width][height];
-			// Instantiate each room with default constructor, to ensure that they are initialized
-			for(int i = 0;i < width;i++)
-			{
-				for(int j = 0;j < height;j++)
-				{
-					_rooms[i][j] = new Room();
-				}
-			}
 			
-			Node roomsNode = doc.getElementsByTagName("rooms").item(0);
-			
-			NodeList roomNodes = roomsNode.getChildNodes();
-			
-			int i = 0;
-			int j = 0;
-			for(int index = 0; index < roomNodes.getLength(); index++)
-			{
-				Node nRoom = roomNodes.item(index);
-				if(!nRoom.getNodeName().equalsIgnoreCase("room"))
-				{
-					throw new LoadGameException("Non-room node found in the rooms node");
-				}
-				
-				Element eRoom = (Element)nRoom;
-				
-				// x and y are unspecified on the room node; place it in the first available space.
-				if(eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
-				{
-					// Find the next open slot in the rooms array.
-					while(_rooms[i][j].canTravel())
-					{
-						i++;
-						if(i > width)
-						{
-							i = 0;
-							j++;
-						}
-					}
-					
-					_rooms[i][j] = new Room(eRoom);
-					
-					// Continue through the _rooms array
-					i++;
-					if(i > width)
-					{
-						i = 0;
-						j++;
-					}
-				}
-				// x and y are BOTH specified on the room node.
-				else if(!eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
-				{
-					try
-					{
-						x = Integer.parseInt(eRoom.getAttribute("x"));
-						y = Integer.parseInt(eRoom.getAttribute("y"));
-					}
-					catch(NumberFormatException e)
-					{
-						throw new LoadGameException("Coordinates on room node " + index + " are unparsable as Integer.");
-					}
-
-					// Check to see if the coordinate specified already has a room in it.
-					if(_rooms[x][y].canTravel())
-					{
-						throw new LoadGameException("Two rooms specified for the same position: (" + x + "," + y + ")");
-					}
-				}
-				else
-				{
-					throw new LoadGameException("Either x or y is unspecified on room node " + index + ". Specify either both or neither.");
-				}
-			}
-			/**		END <ROOMS> PARSING		**/
 		}
 		catch (ParserConfigurationException e)
 		{
@@ -330,7 +253,7 @@ public class Game
 	}
 	
 	/**
-	 * Builds the _itemnames and _itemquantities arrays from the <items> node
+	 * Builds the game's _itemnames and _itemquantities arrays from the <items> node
 	 * @param itemsNode the <items> node in the game XML
 	 * @return Void; directly modifies the _itemnames and _itemquantities members
 	 */
@@ -368,9 +291,91 @@ public class Game
 		}
 	}
 	
-	private void buildGameRooms(Node roomsNode)
+	/**
+	 * Builds the game's _rooms array from the <rooms> node
+	 * @param roomsNode the <rooms> node parsed from the XML
+	 * @param width the width attribute from the <game> node
+	 * @param height the height attribute from the <game> node
+	 * @return Void; directly modifies the _rooms member
+	 */
+	private void buildGameRooms(Node roomsNode, int width, int height)
 	{
+		int x;	// temporary variable
+		int y;	// temporary variable
 		
+		_rooms = new Room[width][height];
+		// Instantiate each room with default constructor, to ensure that they are initialized
+		for(int i = 0;i < width;i++)
+		{
+			for(int j = 0;j < height;j++)
+			{
+				_rooms[i][j] = new Room();
+			}
+		}
+		
+		NodeList roomNodes = roomsNode.getChildNodes();
+		
+		int i = 0;
+		int j = 0;
+		for(int index = 0; index < roomNodes.getLength(); index++)
+		{
+			Node nRoom = roomNodes.item(index);
+			if(!nRoom.getNodeName().equalsIgnoreCase("room"))
+			{
+				throw new LoadGameException("Non-room node found in the rooms node");
+			}
+			
+			Element eRoom = (Element)nRoom;
+			
+			// x and y are unspecified on the room node; place it in the first available space.
+			if(eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
+			{
+				// Find the next open slot in the rooms array.
+				while(_rooms[i][j].canTravel())
+				{
+					i++;
+					if(i > width)
+					{
+						i = 0;
+						j++;
+					}
+				}
+				
+				_rooms[i][j] = new Room(eRoom);
+				
+				// Continue through the _rooms array
+				i++;
+				if(i > width)
+				{
+					i = 0;
+					j++;
+				}
+			}
+			// x and y are BOTH specified on the room node.
+			else if(!eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
+			{
+				try
+				{
+					x = Integer.parseInt(eRoom.getAttribute("x"));
+					y = Integer.parseInt(eRoom.getAttribute("y"));
+				}
+				catch(NumberFormatException e)
+				{
+					throw new LoadGameException("Coordinates on room node " + index + " are unparsable as Integer.");
+				}
+
+				// Check to see if the coordinate specified already has a room in it.
+				if(_rooms[x][y].canTravel())
+				{
+					throw new LoadGameException("Two rooms specified for the same position: (" + x + "," + y + ")");
+				}
+			}
+			else
+			{
+				throw new LoadGameException("Either x or y is unspecified on room node " + index + ". Specify either both or neither.");
+			}
+		}
+
 	}
 
 	// Main function of the Game class.
