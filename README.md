@@ -9,6 +9,7 @@ Version 2.0 of the Utopian Engine will feature:
 * A fully-fledged built-in Scripting Language, named UtopiaScript. At this time, the UtopiaScript functions are:
 	* Print - Print a string to the player's console
 	* Println - Same as Print, but with a trailing endline
+	* Pause - Pauses the game's operation until the player presses enter
 	* Description - Prints out a predefined description for the room the user is in
 	* RequireItem - Require that the player possess one or more of an item to continue
 	* AddItem - Give the player one or more of an item
