@@ -24,11 +24,12 @@ class KeyCombo
 	
 	public KeyCombo(Node keycomboNode)
 	{
-		
+		this(((Element)keycomboNode).getAttribute("match").trim(), ((Element)keycomboNode).getTextContent().trim());
 	}
 	
 	public String getResults(String key)
 	{
+		// TODO: THIS ABSOLUTELY NEEDS TO BE FIXED TO USE REGULAR FUCKING EXPRESSIONS.
 		if(this._keyname.equalsIgnoreCase(key))
 		{
 			return this._uscript;
