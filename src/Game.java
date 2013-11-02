@@ -1365,19 +1365,33 @@ public class Game
 
 	public boolean usGo(String args)
 	{
-		// TODO: Make the player move.
-		// Let's say:
-		//	args == "+0/-1"
 		String[] args_arr = args.split("/| ", 2);
-		// In theory:
-		//	args_arr[0] == "+0";
-		//	args_arr[1] == "-1";
+		try
+		{
+			this._x += Integer.parseInt(args_arr[0]);
+			this._y += Integer.parseInt(args_arr[1]);
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Go command is formatted improperly. Arguments passed: " + args);
+		}
+		
 		return usDescription("");
 	}
 
 	public boolean usGoto(String args)
 	{
-		// TODO: Make the player move.
+		String[] args_arr = args.split("/| ", 2);
+
+		try
+		{
+			this._x = Integer.parseInt(args_arr[0]);
+			this._y = Integer.parseInt(args_arr[1]);
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("GoTo command is formatted improperly. Arguments passed: " + args);
+		}
 		return usDescription("");
 	}
 
