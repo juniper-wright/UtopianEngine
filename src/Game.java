@@ -29,6 +29,8 @@ public class Game
 	public String _out;						// Used to create and edit the output
 	public Room[][] _rooms;					// HUGE variable; contains all of the rooms
 	public KeyCombo[] _globalkeys;			// 
+	public String[] _itemnames;				//
+	public int[] _itemquantities;			//
 	public Scanner scanner = new Scanner(System.in);		// The scanner! I'm surprised I didn't name it scanly; I usually name my scanners scanly
 	ScriptEngineManager mgr = new ScriptEngineManager();
 	ScriptEngine js_engine = mgr.getEngineByName("js");
@@ -49,7 +51,10 @@ public class Game
 	
 	private void buildGameFromFile(String filename)
 	{
+		/**		BEGIN TEMPORARY VARIABLES	**/
 		String name;
+		String item_quantity;
+		String progress = "";
 		String s_x;
 		String s_y;
 		String s_width;
@@ -58,7 +63,8 @@ public class Game
 		int y;
 		int width;
 		int height;
-		String progress = "";
+		/**		END TEMPORARY VARIABLES		**/
+		
 		try
 		{
 			File fXmlFile = new File(filename);
@@ -129,23 +135,26 @@ public class Game
 			}
 			catch(NumberFormatException e)
 			{			
-				throw new LoadGameException("Parameter " + progress + " on Game node is unparsable as Integer.");
+				throw new LoadGameException("Parameter \"" + progress + "\" on Game node is unparsable as Integer.");
 			}
 			
 			
-			// TODO: Add <commands> parsing
+			
+			
+			/**		BEGIN <COMMANDS> PARSING	**/
+			// TODO: Add <commands> error-checking
 			Element commands = (Element)gameNode.getElementsByTagName("commands").item(0);
 			
 			Node helpNode = commands.getElementsByTagName("help").item(0);
 			NodeList directionNodes = commands.getElementsByTagName("direction");
-			NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes();
+			NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes(); // TODO: Potential point of failure
 			
 			// N, E, S, and W.
 			int direction_list_length = 4;
 			
 			for(int i = 0;i < directionNodes.getLength();i++)
 			{
-				if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false))
+				if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false)) // TODO: Potential point of failure
 				{
 					direction_list_length++;
 				}
@@ -169,7 +178,7 @@ public class Game
 			_globalkeys[4] = new KeyCombo("(move )?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
 			_globalkeys[5] = new KeyCombo("(move )?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
 			
-			int gk_index = 6;
+			int global_key_index = 6;
 			for(int i = 0; i < directionNodes.getLength(); i++)
 			{
 				Element directionCommand = (Element)directionNodes.item(i);
@@ -191,21 +200,60 @@ public class Game
 				{
 					_globalkeys[5] = new KeyCombo(directionCommand);
 				}
+				else if(!direction.equals(""))
+				{
+					_globalkeys[global_key_index] = new KeyCombo(directionCommand);
+					global_key_index++;
+				}
 				else
 				{
-					_globalkeys[gk_index] = new KeyCombo(directionCommand);
-					gk_index++;
+					throw new LoadGameException("Direction found without a direction name");
 				}
 			}
 			
 			for(int i = 0; i < globalKeys.getLength(); i++)
 			{
-				_globalkeys[gk_index] = new KeyCombo(globalKeys.item(i));
-				gk_index++;
+				_globalkeys[global_key_index] = new KeyCombo(globalKeys.item(i));
+				global_key_index++;
 			}
+			/**		END <COMMANDS> PARSING	**/
 			
-			// TODO: Add <items> parsing
 			
+			/**		BEGIN <ITEMS> PARSING	**/
+			// Potential point of failure. If any of the three chained function calls fails, possible potential for exception.
+			NodeList itemNodes = gameNode.getElementsByTagName("items").item(0).getChildNodes();
+			
+			_itemnames = new String[itemNodes.getLength()];
+			_itemquantities = new int[itemNodes.getLength()];
+			
+			for(int i = 0;i < itemNodes.getLength(); i++)
+			{
+				Node itemNode = itemNodes.item(i);
+				
+				item_quantity = ((Element)itemNode).getAttribute("quantity");
+				
+				_itemnames[i] = itemNode.getTextContent().trim();
+				try
+				{
+					if(item_quantity.equals(""))
+					{
+						_itemquantities[i] = 0;
+					}
+					else
+					{
+						_itemquantities[i] = Integer.parseInt(item_quantity);
+					}
+				}
+				catch(NumberFormatException e)
+				{			
+					throw new LoadGameException("Parameter \"quantity\" on item node " + i + " is unparsable as Integer.");
+				}
+			}
+			/**		END <ITEMS> PARSING		**/
+			
+			
+			
+			/**		BEGIN <ROOMS> PARSING	**/
 			_rooms = new Room[width][height];
 			// Instantiate each room with default constructor, to ensure that they are initialized
 			for(int i = 0;i < width;i++)
@@ -266,7 +314,7 @@ public class Game
 					}
 					catch(NumberFormatException e)
 					{
-						throw new LoadGameException("Coordinates on room node " + (index+1) + " are unparsable as Integer.");
+						throw new LoadGameException("Coordinates on room node " + index + " are unparsable as Integer.");
 					}
 
 					// Check to see if the coordinate specified already has a room in it.
@@ -277,9 +325,10 @@ public class Game
 				}
 				else
 				{
-					throw new LoadGameException("Either x or y is unspecified on room node " + (index+1) + ". Specify either both or neither.");
+					throw new LoadGameException("Either x or y is unspecified on room node " + index + ". Specify either both or neither.");
 				}
 			}
+			/**		END <ROOMS> PARSING		**/
 		}
 		catch (ParserConfigurationException e)
 		{
