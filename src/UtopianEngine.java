@@ -107,10 +107,6 @@ public class UtopianEngine
 		String progress = "";
 		String s_x;
 		String s_y;
-		String s_width;
-		String s_height;
-		int width;
-		int height;
 		/**		END TEMPORARY VARIABLES		**/
 		
 		try
@@ -132,8 +128,6 @@ public class UtopianEngine
 			name = gameNode.getAttribute("name");
 			s_x = gameNode.getAttribute("x");
 			s_y = gameNode.getAttribute("y");
-			s_width = gameNode.getAttribute("width");
-			s_height = gameNode.getAttribute("height");
 			
 			if(name.equals(""))
 			{
@@ -161,25 +155,6 @@ public class UtopianEngine
 				{
 					_y = Integer.parseInt(s_y);
 				}
-				
-				progress = "width";
-				if(s_width.equals(""))
-				{
-					throw new LoadGameException("Parameter width on Game node is not specified.");
-				}
-				width = Integer.parseInt(s_width);
-				
-				progress = "height";
-				if(s_height.equals(""))
-				{
-					throw new LoadGameException("Parameter height on Game node is not specified.");
-				}
-				height = Integer.parseInt(s_height);
-				
-				if(_x > width || _y > height)
-				{
-					throw new LoadGameException("Starting coordinates are outside game boundaries.");
-				}
 			}
 			catch(NumberFormatException e)
 			{			
@@ -196,7 +171,7 @@ public class UtopianEngine
 			
 			
 			/**		<ROOMS> PARSING			**/
-			buildGameRooms(gameNode.getElementsByTagName("rooms").item(0), width, height);
+			buildGameRooms(gameNode.getElementsByTagName("rooms").item(0));
 			
 			
 		}
@@ -347,10 +322,43 @@ public class UtopianEngine
 	 * @param height the height attribute from the <game> node
 	 * @return Void; directly modifies the _rooms member
 	 */
-	private static void buildGameRooms(Node roomsNode, int width, int height)
+	private static void buildGameRooms(Node roomsNode)
 	{
-		int x;	// temporary variable
-		int y;	// temporary variable
+		int x;		// temporary variable
+		int y;		// temporary variable
+		int width;	// temporary variable
+		int height;	// temporary variable
+		String s_width;
+		String s_height;
+		String progress = "";
+
+		s_width = ((Element)roomsNode).getAttribute("width");
+		s_height = ((Element)roomsNode).getAttribute("height");
+		try
+		{
+			progress = "width";
+			if(s_width.equals(""))
+			{
+				throw new LoadGameException("Parameter width on Rooms node is not specified.");
+			}
+			width = Integer.parseInt(s_width);
+			
+			progress = "height";
+			if(s_height.equals(""))
+			{
+				throw new LoadGameException("Parameter height on Rooms node is not specified.");
+			}
+			height = Integer.parseInt(s_height);
+			
+			if(_x > width || _y > height)
+			{
+				throw new LoadGameException("Starting coordinates are outside game boundaries.");
+			}
+		}
+		catch(NumberFormatException e)
+		{			
+			throw new LoadGameException("Parameter `" + progress + "` on Rooms node is unparsable as Integer.");
+		}
 		
 		_rooms = new Room[width][height];
 		// Instantiate each room with default constructor, to ensure that they are initialized
@@ -634,7 +642,7 @@ public class UtopianEngine
 	
 	private static void pushScore() throws ScriptException
 	{
-		js_engine.eval("var UtopiaScore = " + _score);
+		js_engine.eval("var UtopiaScore = " + _score + ";");
 	}
 	
 	private static void runCommands(String[] commands, boolean[] uscript) throws ScriptException
@@ -946,8 +954,7 @@ public class UtopianEngine
 
 	private static boolean usPrintln(String args)
 	{
-		System.out.println(args.replace("\\;", ";").replace("\\\\", "\\"));
-		return true;
+		return usPrint(args + "\n");
 	}
 
 	private static boolean usDescription(String args)
