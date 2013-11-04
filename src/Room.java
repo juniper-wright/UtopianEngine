@@ -54,11 +54,18 @@ public class Room
 		return this._roomstate;
 	}
 
-	public void checkKeys(String in)
+	public String checkKeys(String key)
 	{
-		// TODO: Check _roomkeys for a match
-		// TODO: Failing that, check the roomstate for a match.
-		// TODO: Failing that, return generic failure message.
+		String script = "";
+		for(int i = 0; i < _roomkeys.length && script.isEmpty(); i++)
+		{
+			script = _roomkeys[i].checkKey(key);
+		}
+		for(int i = 0; i < _roomstates.length && script.isEmpty(); i++)
+		{
+			script = _roomstates[i].checkKeys(key);
+		}
+		return script;
 	}
 	
 	// Passthrough to the Roomstate class's description function.

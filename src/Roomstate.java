@@ -44,4 +44,14 @@ public class Roomstate
 		}
 		return this._shortDescription;
 	}
+	
+	public String checkKeys(String key)
+	{
+		String script = "";
+		for(int i = 0;i < _keyCombos.length && script.isEmpty(); i++)
+		{
+			script = _keyCombos[i].checkKey(key);
+		}
+		return script;
+	}
 }

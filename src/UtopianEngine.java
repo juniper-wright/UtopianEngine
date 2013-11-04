@@ -49,7 +49,7 @@ public class UtopianEngine
 	static String _name;				// The name of the game.
 	static int _x;						// The current x coordinate of the player
 	static int _y;						// The current y coordinate of the player
-	static String _in;					// Used to hold user's input and modify it (everything is toLower()'d)
+	static String _key;					// Used to hold user's input and modify it (everything is toLower()'d)
 	static String _out;					// Used to create and edit the output
 	static Room[][] _rooms;				// HUGE variable; contains all of the rooms
 	static KeyCombo[] _globalkeys;		// 
@@ -444,11 +444,19 @@ public class UtopianEngine
 		{
 			while(true)
 			{
-				_in = scanner.nextLine().toLowerCase();
-				// check _globalkeys
-				// check _rooms[_x][_y]'s keys
 				String event = "";
-				runEvent(_in, event);
+				_key = scanner.nextLine().toLowerCase();
+				
+				for(int i = 0; i < _globalkeys.length && event.isEmpty(); i++)
+				{
+					event = _globalkeys[i].checkKey(_key);
+				}
+				if(event.isEmpty())
+				{
+					_rooms[_x][_x].checkKeys(_key);
+				}
+						
+				runEvent(_key, event);
 			}
 		}
 		catch(GameEndException e)
