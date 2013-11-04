@@ -1437,8 +1437,7 @@ public class Game
 
 	private boolean usQuitGame(String args)
 	{
-		usPause(args);
-		throw new GameEndException("");
+		throw new GameEndException(args);
 	}
 	
 	private boolean usInventory(String args)
