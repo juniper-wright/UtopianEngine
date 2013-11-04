@@ -59,6 +59,7 @@ public class UtopianEngine
 	static ScriptEngine js_engine = mgr.getEngineByName("js");
     static Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
 	static Object score;
+	static double _score;
 	
 	public static void main(String[] args)
 	{
@@ -426,7 +427,9 @@ public class UtopianEngine
 
 	}
 
-	// Main function of the Game class.
+	/**
+	 * Main function of the UtopianEngine class. Runs in a loop until the Game ends.
+	 */
 	private static void run()
 	{
 		try
@@ -542,15 +545,21 @@ public class UtopianEngine
 */
 	}
 	
-	// Pauses, waiting for the player to press enter
+	/**
+	 * Pauses, waiting for the player to press enter
+	 */
 	private static void pause()
 	{
 		pause("Press enter...");
 	}
 	
+	/**
+	 * Pauses, waiting for the player to press enter
+	 * @param prompt The prompt that 
+	 */
 	private static void pause(String prompt)
 	{
-		if(prompt.length() == 0)
+		if(prompt.isEmpty())
 		{
 			pause();
 		}
@@ -604,8 +613,9 @@ public class UtopianEngine
 		// Runs all of the commands in a loop. Placed in a function to allow premature ending if one of the commands fails.
 		try
 		{
+			pushScore();
 			runCommands(commands, uscript);
-			updateScore();
+			pullScore();
 		}
 		catch(ScriptException e)
 		{
@@ -620,6 +630,11 @@ public class UtopianEngine
 	    	System.out.println(e.getStackTrace());
 		}
 		
+	}
+	
+	private static void pushScore() throws ScriptException
+	{
+		js_engine.eval("var UtopiaScore = " + _score);
 	}
 	
 	private static void runCommands(String[] commands, boolean[] uscript) throws ScriptException
@@ -657,12 +672,13 @@ public class UtopianEngine
 		}
 	}
 	
-	private static void updateScore() throws ScriptException
+	private static void pullScore() throws ScriptException
 	{
 		Double score = (Double) js_engine.eval("UtopiaScore;");//js_binding.get("UtopiaScore");
 		try
 		{
-			System.out.printf("%.0f\n", Double.parseDouble(score.toString()));
+			_score = Double.parseDouble(score.toString());
+			System.out.printf("%.0f\n", _score);
 		}
 		catch(Exception e)
 		{
