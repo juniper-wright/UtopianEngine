@@ -813,6 +813,21 @@ public class UtopianEngine
 
 	private static boolean usRoomstate(String args)
 	{
+		try
+		{
+			if(args.matches("^=[0-9]{1,9}$"))
+			{
+				_rooms[_x][_y]._roomstate = Integer.parseInt(args.substring(1));
+			}
+			else
+			{
+				_rooms[_x][_y]._roomstate += Integer.parseInt(args);
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Invalid format for Roomstate command. \"" + args + "\" is unparseable as an integer.");
+		}
 		return true;
 	}
 
