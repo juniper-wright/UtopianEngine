@@ -1,3 +1,6 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,8 +33,21 @@ class KeyCombo
 	
 	public String checkKey(String key)
 	{
-		if(this._keyname.toLowerCase().matches(key))
+		Pattern p = Pattern.compile(this._keyname);
+		Matcher m = p.matcher(key);
+		if(m.find())
 		{
+			try
+			{
+				if(!m.group(1).equals(""))
+				{
+					return this._uscript.replace("{COMMAND PARAMETER}", m.group(1));
+				}
+			}
+			catch(Exception e)
+			{
+				// Deliberately empty.
+			}
 			return this._uscript;
 		}
 		else
