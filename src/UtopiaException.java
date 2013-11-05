@@ -4,6 +4,6 @@ public class UtopiaException extends RuntimeException
 	
 	public UtopiaException(String message)
 	{
-		super(message);
+		super("Error parsing UtopiaScript: `" + message + "`");
 	}
 }
