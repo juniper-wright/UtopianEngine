@@ -66,6 +66,8 @@ public class UtopianEngine
 		if(args.length > 0)
 		{
 			buildGameFromFile(args[0]);
+			run();
+			return;
 		}
 		String instring = "";
 		
@@ -464,101 +466,6 @@ public class UtopianEngine
 			usPrintln(e.getMessage());
 		}
 		return;
-/*		
-		System.out.print("\nWelcome to " + this._name + "!");	// Welcomes the user to the game.
-		do													// do-while loops usually aren't my thing, but it's a huge code block
-		{      
-			while (true)									// Probably not a good idea to use a while(true) with a break...
-			{
-				System.out.print("\n\nYou may play a New Game, Load Game, Delete Game, or Quit.\n\n> ");
-				_in = scanner.nextLine().toLowerCase();		// toLowerCase() is very important, because EVERY key is lowercase.
-															// A much better way to handle this is to use equalsIgnoreCase() when comparing strings.
-				while ((!_in.equals("new game")) && (!_in.equals("new")) && (!_in.equals("load game")) && (!_in.equals("load")) && (!_in.equals("quit game")) && (!_in.equals("quit")) && (!_in.equals("delete game")) && (!_in.equals("delete")))
-				{
-					System.out.print("\nInvalid response. New Game, Load Game, or Quit?\n\n> ");
-					_in = scanner.nextLine().toLowerCase();
-				}
-				
-				// If the player wants to load their game, then load it.
-				if ((_in.equals("load game")) || (_in.equals("load")))
-				{
-					System.out.print("\n");
-					_endgame = 50000;
-					if (!loadState())		// If there's no game to load, go back to the in-game menu.
-					{
-						_endgame = 2147483646;
-					}
-				}
-				else if ((_in.equals("delete game")) || (_in.equals("delete")))
-				{
-					System.out.print("\n");
-					deleteGame();
-					_endgame = 2147483646;	// If they delete their game, go back to the in-game menu.
-				}
-				else if ((_in.equals("quit game")) || (_in.equals("quit")))
-				{
-					_endgame = 2147483647;	// If they quit, go back to the in-game menu, at which point the game will close.
-				}
-				else
-				{
-					_endgame = 0;
-				}
-	
-				if (_endgame < 10000)		// First time in the game, game will output the intro
-				{
-					System.out.print("\n");
-					for (int i = 0; i < _intro.length; i++)
-					{
-						System.out.print(_intro[i]);
-						pause();
-					}
-					
-				}
-	
-				if (_endgame < 100000)		// Then initialize the rooms
-				{
-					for (int i = 0; i < _rooms.length; i++)
-					{
-						for (int j = 0; j < _rooms[i].length; j++)
-						{
-							this._rooms[i][j].setRoomstate(0);
-							this._rooms[i][j]._seen = false;
-						}
-					}
-					
-					_invHave = _invHaveBackup;
-					System.out.print(_rooms[_x][_y].description() + "\n\n> ");
-				}
-				while (_endgame < 100000)									// MAIN GAME LOOP.
-				{															// THIS LOOP WILL CONTINUE UNTIL THE PLAYER ENDS IT
-					_in = scanner.nextLine().toLowerCase();					// BY HITTING AN ENDGAME OR BY QUITTING
-					System.out.print("\n");
-					_endgame = iterate(_in);
-					if ((_endgame > 99999) && (_endgame != 2147483647))
-					{
-						_endgame -= 100000;
-						break;
-					}
-					if (_endgame == 2147483647)
-						continue;
-					System.out.print("\n\n> ");
-				}
-				
-				if ((_endgame == 2147483647) || (_endgame == 2147483646))
-					break;
-				System.out.print("\n\n");
-				for (int i = 0; i < _endgames[_endgame].length; i++)
-				{
-					if (_endgames[_endgame][i].equals(""))
-						continue;
-					System.out.print(_endgames[_endgame][i]);
-					pause();
-				}
-			}
-		}
-		while ((_endgame == 2147483646) || (_endgame != 2147483647));
-	System.out.print("\n");
-*/
 	}
 	
 	/**
@@ -759,12 +666,12 @@ public class UtopianEngine
 		}
 		catch(NumberFormatException e)
 		{
-			throw new UtopiaException("Invalid format for command requireItem: `" + itemNumString + "` is unparseable as an integer");
+			throw new UtopiaException("Invalid format for command requireItem: \"" + itemNumString + "\" is unparseable as an integer");
 		}
 		
 		if(itemNum > _itemnames.length)
 		{
-			throw new UtopiaException("Invalid argument for command requireItem: `" + itemNum + "` is out of bounds for items list.");
+			throw new UtopiaException("Invalid argument for command requireItem: \"" + itemNum + "\" is out of bounds for items list.");
 		}
 		
 		if(args_arr[0].contains("(") && args_arr[0].contains(")"))
@@ -778,7 +685,7 @@ public class UtopianEngine
 			}
 			catch(NumberFormatException e)
 			{
-				throw new UtopiaException("Invalid format for command requireItem: `" + quantityString + "` is unparseable as an integer.");
+				throw new UtopiaException("Invalid format for command requireItem: \"" + quantityString + "\" is unparseable as an integer.");
 			}
 		}
 		else
@@ -816,12 +723,12 @@ public class UtopianEngine
 		}
 		catch(NumberFormatException e)
 		{
-			throw new UtopiaException("Invalid format for command addItem: `" + itemNumString + "` is unparseable as an integer");
+			throw new UtopiaException("Invalid format for command addItem: \"" + itemNumString + "\" is unparseable as an integer");
 		}
 		
 		if(itemNum > _itemnames.length)
 		{
-			throw new UtopiaException("Invalid argument for command addItem: `" + itemNum + "` is out of bounds for items list.");
+			throw new UtopiaException("Invalid argument for command addItem: \"" + itemNum + "\" is out of bounds for items list.");
 		}
 		
 		if(args.contains("(") && args.contains(")"))
@@ -835,7 +742,7 @@ public class UtopianEngine
 			}
 			catch(NumberFormatException e)
 			{
-				throw new UtopiaException("Invalid format for command addItem: `" + quantityString + "` is unparseable as an integer.");
+				throw new UtopiaException("Invalid format for command addItem: \"" + quantityString + "\" is unparseable as an integer.");
 			}
 		}
 		else
@@ -865,12 +772,12 @@ public class UtopianEngine
 		}
 		catch(NumberFormatException e)
 		{
-			throw new UtopiaException("Invalid format for command takeItem: `" + itemNumString + "` is unparseable as an integer");
+			throw new UtopiaException("Invalid format for command takeItem: \"" + itemNumString + "\" is unparseable as an integer");
 		}
 		
 		if(itemNum > _itemnames.length)
 		{
-			throw new UtopiaException("Invalid argument for command takeItem: `" + itemNum + "` is out of bounds for items list.");
+			throw new UtopiaException("Invalid argument for command takeItem: \"" + itemNum + "\" is out of bounds for items list.");
 		}
 		
 		if(args_arr[0].contains("(") && args_arr[0].contains(")"))
@@ -884,7 +791,7 @@ public class UtopianEngine
 			}
 			catch(NumberFormatException e)
 			{
-				throw new UtopiaException("Invalid format for command takeItem: `" + quantityString + "` is unparseable as an integer.");
+				throw new UtopiaException("Invalid format for command takeItem: \"" + quantityString + "\" is unparseable as an integer.");
 			}
 		}
 		else
@@ -953,7 +860,7 @@ public class UtopianEngine
 		return true;
 	}
 
-	// All system output will be done through these two functions. Thus, it will be easy to change them if need be. 	
+	// All system output will be done through the usPrint function. Thus, it will be easy to change if need be. 	
 	private static boolean usPrint(String args)
 	{
 		System.out.print(args.replace("\\;", ";").replace("\\\\", "\\"));
@@ -977,6 +884,21 @@ public class UtopianEngine
 	
 	private static boolean usScore(String args)
 	{
+		try
+		{
+			if(args.matches("^=[0-9]{1,9}$"))
+			{
+				_score = Integer.parseInt(args.substring(1));
+			}
+			else
+			{
+				_score += Integer.parseInt(args);
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Invalid format for Score command. \"" + args + "\" is unparseable as an integer.");
+		}
 		return true;
 	}
 
