@@ -591,6 +591,7 @@ public class UtopianEngine
 			else
 			{
 		    	js_engine.eval(commands[i]);
+		    	pullScore();
 			}
 		}
 	}
@@ -914,6 +915,16 @@ public class UtopianEngine
 		{
 			throw new UtopiaException("Invalid format for Score command. \"" + args + "\" is unparseable as an integer.");
 		}
+		
+		try
+		{
+			pushScore();
+		}
+		catch(ScriptException e)
+		{
+			throw new UtopiaException(e.getMessage());
+		}
+		
 		return true;
 	}
 
