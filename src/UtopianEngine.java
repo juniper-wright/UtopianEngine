@@ -605,7 +605,7 @@ public class UtopianEngine
 		}
 		catch(Exception e)
 		{
-			throw new GameEndException("FATAL ERROR: Unable to parse the UtopiaScore variable from JavaScript as a number. Value: `" + score + "`");
+			throw new UtopiaException("FATAL ERROR: Unable to parse the UtopiaScore variable from JavaScript as a number. Value: `" + score + "`");
 		}
 	}
 	
