@@ -18,6 +18,8 @@ Version 2.0 of the Utopian Engine will feature:
 	* GoTo x y- Send the player to any room in the game
 	* Go x/y - Send the player to x rooms horizontally, and y rooms vertically (can be negative)
 	* Score - Modify the user's score
+	* SaveState - Save a user's position, score, inventory, roomstates
+	* LoadState - Load a state saved with the above
 	* LoadGame - LOAD A NEW GAME. Basically, I put this in for episodic gaming. More on this later.
 	* QuitGame - Ends the game. Used to denote winning or losing, or just quitting. The Utopian Engine does not discriminate.
 	* Inventory - Prints the user's inventory. If the user inputs "inv" or "inventory" at any time, this happens, but game developers can add it to another event if they'd like.
