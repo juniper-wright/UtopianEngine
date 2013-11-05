@@ -233,10 +233,10 @@ public class UtopianEngine
 			_globalkeys[2] = new KeyCombo(helpNode);
 		}
 
-		_globalkeys[3] = new KeyCombo("(move )?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
-		_globalkeys[4] = new KeyCombo("(move )?e(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
-		_globalkeys[5] = new KeyCombo("(move )?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
-		_globalkeys[6] = new KeyCombo("(move )?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
+		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
+		_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
+		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)??", "<utopiascript>go -0/-1;</utopiascript>");
+		_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
 		
 		int global_key_index = 7;
 		for(int i = 0; i < directionNodes.getLength(); i++)
