@@ -954,39 +954,24 @@ public class UtopianEngine
 	{
 		try
 		{
-			String[] command = new String[4];
-			int index = 0;
-			command[0] = "cmd";
-			command[1] = "/C";
-			command[2] = "dir";
-			command[3] = "*.ueg";
-			Process p = Runtime.getRuntime().exec(command);
-			// runs cmd to open a command prompt with /C option to close upon finishing
-			// dir *.ueg returns a list of files with the *.ueg file extension
-
-			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-			String s = null;
-			for (int i = 0; i < 5; i++)	// Skips the first five lines of the output (superfluous data from the command prompt)
-			{
-				s = stdInput.readLine();
-			}
-			while ((s = stdInput.readLine()) != null)	// until the end of the buffered reader
-			{
-				index = s.indexOf(".ueg");				// find ".ueg"
-				if (index == -1)						// if it doesn't exist,
-					continue;							// go to the next line
-				for (int i = 1; i < s.length(); i++)	// otherwise, backtrack through the string
-				{										// to the first whitespace character.
-					if (s.charAt(index - i) != ' ')		// in other words, the beginning of the filename
-						continue;
-					s = s.substring(index - (i - 1));	// Get the filename
-					System.out.println(s);				// Print the filename
-					break;
-				}
-
-			}
-
+			  // Directory path here
+			  String path = "."; 
+			 
+			  String filename;
+			  File folder = new File(path);
+			  File[] listOfFiles = folder.listFiles(); 
+			 
+			  for (int i = 0; i < listOfFiles.length; i++) 
+			  {
+				  if (listOfFiles[i].isFile()) 
+				  {
+					  filename = listOfFiles[i].getName();
+					  if (filename.toLowerCase().endsWith(".ueg"))
+					  {
+						  usPrintln(filename);
+					  }
+				  }
+			  }
 		}
 		catch (Exception e)								// Generic exception handling
 		{
