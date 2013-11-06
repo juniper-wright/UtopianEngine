@@ -8,7 +8,7 @@ import org.w3c.dom.NodeList;
 
 class KeyCombo
 {
-	private String _keyname;
+	public String _keyname;
 	private String _uscript;
 	
 	// Default constructor. Never used.
@@ -28,7 +28,9 @@ class KeyCombo
 	public KeyCombo(Node keycomboNode)
 	{
 		// Call the KeyCombo(String, String) constructor with the "match" attribute as keyname and contents of the node as uscript
-		this ( ((Element)keycomboNode).getAttribute("match").trim(), ((Element)keycomboNode).getTextContent().trim() );
+		//System.out.println(keycomboNode.getNodeName());
+		this ( ((Element)keycomboNode).getAttribute("match").trim(),
+				((Element)keycomboNode).getTextContent().trim() );
 	}
 	
 	public String checkKey(String key)

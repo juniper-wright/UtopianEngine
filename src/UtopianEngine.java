@@ -66,40 +66,85 @@ public class UtopianEngine
 		if(args.length > 0)
 		{
 			buildGameFromFile(args[0]);
+			if(args.length > 1)
+			{
+				usLoadState(args[1]);
+			}
 			run();
 			return;
 		}
 		String instring = "";
 		
-		System.out.print("Welcome to the Utopian Engine. Below you will find a list of games you have\nplaced in the appropriate folder. In order to play a game, simply type the name\nof the file.\n\n");
+		usPrint("Welcome to the Utopian Engine. Below you will find a list of games you have\nplaced in the appropriate folder. In order to play a game, simply type the name\nof the file.\n\n");
 		
 		printGameList();				// Outputs a list of available games.
-		System.out.print("\n> ");
-		instring = scanner.nextLine();	// Gets input.
-		if ((instring.equals("quit")) || (instring.equals("exit")))
+
+		File f;
+		do
 		{
-			System.out.println();
-		}
-		else
-		{
+			instring = getKey();	// Gets input.
 			if (instring.indexOf(".ueg") == -1)
 			{
 				instring = instring + ".ueg";
 			}
-			File f = new File(instring);
-			while (!f.exists())		// Makes sure the game exists
+			f = new File(instring);
+			if(!f.exists())		// Makes sure the game exists
 			{
-				System.out.print("\nSorry, game not found. Please try again.\n\n> ");
-				instring = scanner.nextLine();
+				usPrintln("Sorry, game not found. Please try again.");
 				if (instring.indexOf(".ueg") == -1)
 				{
 					instring = instring + ".ueg";
 				}
-				f = new File(instring);
 			}
-//			Game game = loadGame(instring);		// Loads game
-			run();		// Runs game
 		}
+		while(!f.exists());
+
+		buildGameFromFile(instring);
+		run();		// Runs game
+	}
+
+	/**
+	 * Main function of the UtopianEngine class. Runs in a loop until the Game ends.
+	 */
+	private static void run()
+	{
+		try
+		{
+			while(true)
+			{
+				String event = "";
+				_key = getKey();
+
+				for(int i = 0; i < _globalkeys.length && "".equals(event); i++)
+				{
+					System.out.println("==>" + event + "<==");
+					event = _globalkeys[i].checkKey(_key);
+				}
+				if("".equals(event))
+				{
+					_rooms[_x][_x].checkKeys(_key);
+				}
+						
+				runEvent(_key, event);
+			}
+		}
+		catch(GameEndException e)
+		{
+			if(_score != 0)
+			{
+				usPrint(String.format("%80s", "Score: " + _score));
+			}
+			usPrintln(e.getMessage());
+		}
+		return;
+	}
+	
+	private static String getKey()
+	{
+		usPrint("\n> ");
+		String key = scanner.nextLine().toLowerCase();
+		usPrintln();
+		return key;
 	}
 	
 	private static void buildGameFromFile(String filename)
@@ -126,6 +171,8 @@ public class UtopianEngine
 			{
 				throw new LoadGameException("Game node is not first node in file.");
 			}
+			
+			gameNode = (Element)cleanNode((Node)gameNode);
 			
 			name = gameNode.getAttribute("name");
 			s_x = gameNode.getAttribute("x");
@@ -193,6 +240,39 @@ public class UtopianEngine
 			e.printStackTrace();
 		}
 	}
+
+	private static Node cleanNode(Node node)
+	{
+		NodeList childNodes = node.getChildNodes();
+
+		for (int n = childNodes.getLength() - 1; n >= 0; n--)
+		{
+			Node child = childNodes.item(n);
+			short nodeType = child.getNodeType();
+
+			if (nodeType == Node.ELEMENT_NODE)
+			{
+				cleanNode(child);
+			}
+			else if (nodeType == Node.TEXT_NODE)
+			{
+				String trimmedNodeVal = child.getNodeValue().trim();
+				if (trimmedNodeVal.length() == 0)
+				{
+					node.removeChild(child);
+				}
+				else
+				{
+					child.setNodeValue(trimmedNodeVal);
+				}
+			}
+			else if (nodeType == Node.COMMENT_NODE)
+			{
+				node.removeChild(child);
+			}
+		}
+		return node;
+	}
 	
 	/**
 	 * Builds the game's _globalkeys array from the <commands> node parsed from the XML
@@ -220,7 +300,7 @@ public class UtopianEngine
 		
 		_globalkeys = new KeyCombo[6+direction_list_length+globalKeys.getLength()];
 		
-		_globalkeys[0] = new KeyCombo("", "");
+		_globalkeys[0] = new KeyCombo("THIS SHOULD BE DESCRIBE/LOOK/SEE/ETC; JIMINY CHRISTMAS", "");
 		
 		_globalkeys[1] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
 		
@@ -411,7 +491,7 @@ public class UtopianEngine
 				}
 			}
 			// x and y are BOTH specified on the room node.
-			else if(!eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
+			else if(!eRoom.getAttribute("x").equals("") && !eRoom.getAttribute("y").equals(""))
 			{
 				try
 				{
@@ -436,37 +516,6 @@ public class UtopianEngine
 		}
 
 	}
-
-	/**
-	 * Main function of the UtopianEngine class. Runs in a loop until the Game ends.
-	 */
-	private static void run()
-	{
-		try
-		{
-			while(true)
-			{
-				String event = "";
-				_key = scanner.nextLine().toLowerCase();
-				
-				for(int i = 0; i < _globalkeys.length && event.isEmpty(); i++)
-				{
-					event = _globalkeys[i].checkKey(_key);
-				}
-				if(event.isEmpty())
-				{
-					_rooms[_x][_x].checkKeys(_key);
-				}
-						
-				runEvent(_key, event);
-			}
-		}
-		catch(GameEndException e)
-		{
-			usPrintln(e.getMessage());
-		}
-		return;
-	}
 	
 	/**
 	 * Pauses, waiting for the player to press enter
@@ -482,7 +531,7 @@ public class UtopianEngine
 	 */
 	private static void pause(String prompt)
 	{
-		if(prompt.isEmpty())
+		if("".equals(prompt))
 		{
 			pause();
 		}
@@ -490,7 +539,7 @@ public class UtopianEngine
 		{
 			usPrint("\n\n" + prompt);
 			scanner.nextLine();
-			usPrintln("");
+			usPrintln();
 		}
 	}
 	
@@ -602,7 +651,7 @@ public class UtopianEngine
 		try
 		{
 			_score = Double.parseDouble(score.toString());
-			System.out.printf("%.0f\n", _score);
+			//System.out.printf("%.0f\n", _score);
 		}
 		catch(Exception e)
 		{
@@ -645,6 +694,10 @@ public class UtopianEngine
 				return usQuitGame(args);
 			case "inventory":
 				return usInventory(args);
+			case "savestate":
+				return usSaveState(args);
+			case "loadstate":
+				return usLoadState(args);
 			default:
 				throw new UtopiaException(function + ": Command not found.");
 		}
@@ -883,6 +936,11 @@ public class UtopianEngine
 		return true;
 	}
 
+	private static boolean usPrintln()
+	{
+		return usPrint("\n");
+	}
+	
 	private static boolean usPrintln(String args)
 	{
 		return usPrint(args + "\n");
@@ -942,7 +1000,17 @@ public class UtopianEngine
 				usPrintln(String.format("%-50sx%s", _itemnames[i], _itemquantities[i]));
 			}
 		}
-		return usPrintln("");
+		return usPrintln();
+	}
+	
+	private static boolean usLoadState(String args)
+	{
+		return true;
+	}
+	
+	private static boolean usSaveState(String args)
+	{
+		return true;
 	}
 	
 	private static boolean stringIn(String needle, String haystack[], boolean caseSensitive)
