@@ -117,14 +117,13 @@ public class UtopianEngine
 
 				for(int i = 0; i < _globalkeys.length && "".equals(event); i++)
 				{
-					System.out.println("==>" + event + "<==");
 					event = _globalkeys[i].checkKey(_key);
 				}
 				if("".equals(event))
 				{
-					_rooms[_x][_x].checkKeys(_key);
+					event = _rooms[_x][_y].checkKeys(_key);
 				}
-						
+
 				runEvent(_key, event);
 			}
 		}
@@ -281,6 +280,8 @@ public class UtopianEngine
 	 */
 	private static void buildGameCommands(Node commandsNode)
 	{
+		int numkeys = 7;
+		
 		Element commands = (Element)commandsNode;
 		
 		Node helpNode = commands.getElementsByTagName("help").item(0);
@@ -288,25 +289,39 @@ public class UtopianEngine
 		NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes();
 		
 		// N, E, S, and W.
-		int direction_list_length = 4;
 		
-		for(int i = 0;i < directionNodes.getLength();i++)
+		for(int i = 0; i < directionNodes.getLength(); i++)
 		{
 			if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false))
 			{
-				direction_list_length++;
+				numkeys++;
 			}
 		}
 		
-		_globalkeys = new KeyCombo[6+direction_list_length+globalKeys.getLength()];
+		for(int i = 0;i < globalKeys.getLength(); i++)
+		{
+			if(globalKeys.item(i) != null)
+			{
+				numkeys++;
+			}
+		}
+		
+		_globalkeys = new KeyCombo[numkeys];
+		
+		for(int i = 0; i < numkeys; i++)
+		{
+			_globalkeys[i] = new KeyCombo();
+		}
 		
 		_globalkeys[0] = new KeyCombo("THIS SHOULD BE DESCRIBE/LOOK/SEE/ETC; JIMINY CHRISTMAS", "");
 		
 		_globalkeys[1] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
 		
-		if(helpNode == null)
+		System.out.println(helpNode.getNamespaceURI());
+
+		if(helpNode.getNamespaceURI() == null)
 		{
-			_globalkeys[2] = new KeyCombo("^help$", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
+			_globalkeys[2] = new KeyCombo("help", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
 		}
 		else
 		{
@@ -315,7 +330,7 @@ public class UtopianEngine
 
 		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
 		_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
-		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)??", "<utopiascript>go -0/-1;</utopiascript>");
+		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
 		_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
 		
 		int global_key_index = 7;
@@ -326,23 +341,23 @@ public class UtopianEngine
 			String direction = directionCommand.getAttribute("direction");
 			if(direction.equals("n"))
 			{
-				_globalkeys[3] = new KeyCombo(directionCommand);
+				_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", directionCommand.getTextContent().trim());
 			}
 			else if(direction.equals("e"))
 			{
-				_globalkeys[4] = new KeyCombo(directionCommand);
+				_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", directionCommand.getTextContent().trim());
 			}
 			else if(direction.equals("s"))
 			{
-				_globalkeys[5] = new KeyCombo(directionCommand);
+				_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", directionCommand.getTextContent().trim());
 			}
 			else if(direction.equals("w"))
 			{
-				_globalkeys[6] = new KeyCombo(directionCommand);
+				_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", directionCommand.getTextContent().trim());
 			}
 			else if(!direction.equals(""))
 			{
-				_globalkeys[global_key_index] = new KeyCombo(directionCommand);
+				_globalkeys[global_key_index] = new KeyCombo(direction, directionCommand.getTextContent().trim());
 				global_key_index++;
 			}
 			else

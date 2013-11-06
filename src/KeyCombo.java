@@ -8,14 +8,12 @@ import org.w3c.dom.NodeList;
 
 class KeyCombo
 {
-	public String _keyname;
-	private String _uscript;
+	public String _keyname = "a^"; // unmatchable regular expression
+	private String _uscript = "";
 	
-	// Default constructor. Never used.
+	// Default constructor.
 	public KeyCombo()
 	{
-		this._keyname = "DUMMY_KEY";
-		this._uscript = "";
 	}
 	
 	// 
@@ -28,13 +26,15 @@ class KeyCombo
 	public KeyCombo(Node keycomboNode)
 	{
 		// Call the KeyCombo(String, String) constructor with the "match" attribute as keyname and contents of the node as uscript
-		//System.out.println(keycomboNode.getNodeName());
-		this ( ((Element)keycomboNode).getAttribute("match").trim(),
-				((Element)keycomboNode).getTextContent().trim() );
+		System.out.println(((Element)keycomboNode).getAttribute("match").trim() + ",==");
+		System.out.println(((Element)keycomboNode).getTextContent().trim() + "<==");
+//		this ( ((Element)keycomboNode).getAttribute("match").trim(),
+//				((Element)keycomboNode).getTextContent().trim() );
 	}
 	
 	public String checkKey(String key)
 	{
+		System.out.println("Comparing `" + key + "` to `" + this._keyname + "`");
 		Pattern p = Pattern.compile(this._keyname);
 		Matcher m = p.matcher(key);
 		if(m.find())

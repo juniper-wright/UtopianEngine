@@ -14,6 +14,12 @@ public class Roomstate
 	// Default constructor. Never used.
 	public Roomstate()
 	{
+		this._longDescription = "";
+		
+		this._shortDescription = "";
+		
+		this._keyCombos = new KeyCombo[1];
+		this._keyCombos[0] = new KeyCombo();
 	}
 	
 	// Main constructor.
@@ -50,6 +56,7 @@ public class Roomstate
 		String script = "";
 		for(int i = 0;i < _keyCombos.length && script.isEmpty(); i++)
 		{
+			System.out.println("Calling _keycombos[" + i + "].checkKey()");
 			script = _keyCombos[i].checkKey(key);
 		}
 		return script;
