@@ -1,5 +1,13 @@
+import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,16 +33,19 @@ class KeyCombo
 	
 	public KeyCombo(Node keycomboNode)
 	{
-		// Call the KeyCombo(String, String) constructor with the "match" attribute as keyname and contents of the node as uscript
-		System.out.println(((Element)keycomboNode).getAttribute("match").trim() + ",==");
-		System.out.println(((Element)keycomboNode).getTextContent().trim() + "<==");
-//		this ( ((Element)keycomboNode).getAttribute("match").trim(),
-//				((Element)keycomboNode).getTextContent().trim() );
+		String uscript = "";
+		NodeList nodes = keycomboNode.getChildNodes();
+		for(int i = 0; i < nodes.getLength(); i++)
+		{
+			uscript = uscript + nodeToString(nodes.item(i)).trim() + "\n";
+		}
+		
+		this._keyname = "^" + ((Element)keycomboNode).getAttribute("match").trim() + "$";
+		this._uscript = uscript.trim();
 	}
 	
 	public String checkKey(String key)
 	{
-		System.out.println("Comparing `" + key + "` to `" + this._keyname + "`");
 		Pattern p = Pattern.compile(this._keyname);
 		Matcher m = p.matcher(key);
 		if(m.find())
@@ -56,5 +67,22 @@ class KeyCombo
 		{
 			return "";
 		}
+	}
+	
+	private String nodeToString(Node node)
+	{
+		StringWriter sw = new StringWriter();
+		try
+		{
+			Transformer t = TransformerFactory.newInstance().newTransformer();
+			t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			t.transform(new DOMSource(node), new StreamResult(sw));
+		}
+		catch
+		(TransformerException te)
+		{
+			System.out.println("nodeToString Transformer Exception");
+		}
+		return sw.toString();
 	}
 }

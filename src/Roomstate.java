@@ -56,7 +56,6 @@ public class Roomstate
 		String script = "";
 		for(int i = 0;i < _keyCombos.length && script.isEmpty(); i++)
 		{
-			System.out.println("Calling _keycombos[" + i + "].checkKey()");
 			script = _keyCombos[i].checkKey(key);
 		}
 		return script;

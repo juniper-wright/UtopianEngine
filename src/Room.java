@@ -66,12 +66,10 @@ public class Room
 		String script = "";
 		for(int i = 0; i < _roomkeys.length && script.isEmpty(); i++)
 		{
-			System.out.println("Calling _roomkeys[" + i + "].checkKey()");
 			script = _roomkeys[i].checkKey(key);
 		}
 		for(int i = 0; i < _roomstates.length && script.isEmpty(); i++)
 		{
-			System.out.println("Calling _roomstates[" + i + "].checkKeys()");
 			script = _roomstates[i].checkKeys(key);
 		}
 		return script;

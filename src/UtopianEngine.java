@@ -564,7 +564,6 @@ public class UtopianEngine
 	 */
 	private static void runEvent(String key, String event)
 	{
-		js_engine.put("key", key);
 		String[] events = event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
 		int command_count = 0;
 	
@@ -600,7 +599,9 @@ public class UtopianEngine
 		// Runs all of the commands in a loop. Placed in a function to allow premature ending if one of the commands fails.
 		try
 		{
+			System.out.println(commands[0]);
 			pushScore();
+	    	js_engine.eval("key = '" + key + "';");
 			runCommands(commands, uscript);
 			pullScore();
 		}

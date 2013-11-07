@@ -33,8 +33,8 @@
 		</direction>
 		<globalkeys>
 			<key match="regex">
-				<javascript></javascript>
-				<utopiascript></utopiascript>
+				<javascript>print("js_code");</javascript>
+				<utopiascript>print us_code;</utopiascript>
 			</key>
 		</globalkeys>
 	</commands>
