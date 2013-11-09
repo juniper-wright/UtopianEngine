@@ -244,19 +244,19 @@ public class UtopianEngine
 	{
 		NodeList childNodes = node.getChildNodes();
 
-		for (int n = childNodes.getLength() - 1; n >= 0; n--)
+		for(int n = childNodes.getLength() - 1; n >= 0; n--)
 		{
 			Node child = childNodes.item(n);
 			short nodeType = child.getNodeType();
 
-			if (nodeType == Node.ELEMENT_NODE)
+			if(nodeType == Node.ELEMENT_NODE)
 			{
 				cleanNode(child);
 			}
-			else if (nodeType == Node.TEXT_NODE)
+			else if(nodeType == Node.TEXT_NODE)
 			{
 				String trimmedNodeVal = child.getNodeValue().trim();
-				if (trimmedNodeVal.length() == 0)
+				if(trimmedNodeVal.length() == 0)
 				{
 					node.removeChild(child);
 				}
