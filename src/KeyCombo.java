@@ -17,7 +17,7 @@ import org.w3c.dom.NodeList;
 class KeyCombo
 {
 	public String _keyname = "a^"; // unmatchable regular expression
-	private String _uscript = "";
+	private NodeList _uscript;
 	
 	// Default constructor.
 	public KeyCombo()
@@ -25,13 +25,13 @@ class KeyCombo
 	}
 	
 	// 
-	public KeyCombo(String keyname, String uscript)
+	public KeyCombo(String keyname, NodeList uscript)
 	{
 		this._keyname = "^" + keyname + "$";
 		this._uscript = uscript;
 	}
 	
-	public KeyCombo(Node keycomboNode)
+	public KeyCombo(Element keycomboNode)
 	{
 		String uscript = "";
 		NodeList nodes = keycomboNode.getChildNodes();
@@ -40,11 +40,12 @@ class KeyCombo
 			uscript = uscript + nodeToString(nodes.item(i)).trim() + "\n";
 		}
 		
-		this._keyname = "^" + ((Element)keycomboNode).getAttribute("match").trim() + "$";
-		this._uscript = uscript.trim();
+		this._keyname = "^" + keycomboNode.getAttribute("match").trim() + "$";
+		// TODO: Make sure that _uscript actually has a list of nodes in it, and make sure that all of them are either <javascript> or <utopiascript> nodes. Throw a GameLoadException otherwise. 
+		this._uscript = keycomboNode.getChildNodes();
 	}
 	
-	public String checkKey(String key)
+	public NodeList checkKey(String key)
 	{
 		Pattern p = Pattern.compile(this._keyname);
 		Matcher m = p.matcher(key);
@@ -54,7 +55,7 @@ class KeyCombo
 			{
 				if(!m.group(1).equals(""))
 				{
-					return this._uscript.replace("{COMMAND PARAMETER}", m.group(1));
+					return this._uscript;//.replace("{COMMAND PARAMETER}", m.group(1));
 				}
 			}
 			catch(Exception e)
@@ -65,7 +66,8 @@ class KeyCombo
 		}
 		else
 		{
-			return "";
+			// TODO: This seems REALLY hacky.
+			return this._uscript.item(0).getChildNodes();
 		}
 	}
 	
