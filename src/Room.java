@@ -39,7 +39,7 @@ public class Room
 		
 		for(int i = 0; i < roomkeys.getLength(); i++)
 		{
-			this._roomkeys[i] = new KeyCombo(roomkeys.item(i));
+			this._roomkeys[i] = new KeyCombo((Element)roomkeys.item(i));
 		}
 		
 		
@@ -60,17 +60,19 @@ public class Room
 		return this._roomstate;
 	}
 
-	public String checkKeys(String key)
+	public NodeList checkKeys(String key)
 	{
 		System.out.println("In room::checkKeys();");
-		String script = "";
-		for(int i = 0; i < _roomkeys.length && script.isEmpty(); i++)
+		NodeList script = null;
+		for(int i = 0; i < _roomkeys.length; i++)
 		{
 			script = _roomkeys[i].checkKey(key);
+			// TODO: Break out once you find it.
 		}
-		for(int i = 0; i < _roomstates.length && script.isEmpty(); i++)
+		for(int i = 0; i < _roomstates.length; i++)
 		{
 			script = _roomstates[i].checkKeys(key);
+			// TODO: Break out if you already have one from _roomkeys, or if you find it in _roomstates[i]
 		}
 		return script;
 	}

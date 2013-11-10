@@ -112,7 +112,7 @@ public class UtopianEngine
 		{
 			while(true)
 			{
-				String event = "";
+				NodeList event;
 				_key = getKey();
 
 				for(int i = 0; i < _globalkeys.length && "".equals(event); i++)
@@ -313,7 +313,7 @@ public class UtopianEngine
 			_globalkeys[i] = new KeyCombo();
 		}
 		
-		_globalkeys[0] = new KeyCombo("THIS SHOULD BE DESCRIBE/LOOK/SEE/ETC; JIMINY CHRISTMAS", "");
+		_globalkeys[0] = new KeyCombo("THIS SHOULD BE DESCRIBE/LOOK/SEE/ETC; JIMINY CHRISTMAS", null);
 		
 		_globalkeys[1] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
 		
@@ -325,7 +325,7 @@ public class UtopianEngine
 		}
 		else
 		{
-			_globalkeys[2] = new KeyCombo(helpNode);
+			_globalkeys[2] = new KeyCombo((Element)helpNode);
 		}
 
 		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
@@ -368,7 +368,7 @@ public class UtopianEngine
 		
 		for(int i = 0; i < globalKeys.getLength(); i++)
 		{
-			_globalkeys[global_key_index] = new KeyCombo(globalKeys.item(i));
+			_globalkeys[global_key_index] = new KeyCombo((Element)globalKeys.item(i));
 			global_key_index++;
 		}
 	}
@@ -562,9 +562,10 @@ public class UtopianEngine
 	 * Runs the event gotten from a key.
 	 * @String event, the combination JavaScript and UtopiaScript corresponding to the matched event.
 	 */
-	private static void runEvent(String key, String event)
+	private static void runEvent(String key, NodeList event)
 	{
-		String[] events = event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
+		// TODO: Completely revamp this function to use the NodeList
+		String[] events = new String[1]; //event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
 		int command_count = 0;
 	
 		for(int i = 0;i < events.length;i++)

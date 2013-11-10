@@ -35,7 +35,7 @@ public class Roomstate
 		
 		for(int i = 0; i < keyCombos.getLength(); i++)
 		{
-			this._keyCombos[i] = new KeyCombo(keyCombos.item(i));
+			this._keyCombos[i] = new KeyCombo((Element)keyCombos.item(i));
 		}
 	}
 
@@ -51,12 +51,16 @@ public class Roomstate
 		return this._shortDescription;
 	}
 	
-	public String checkKeys(String key)
+	public NodeList checkKeys(String key)
 	{
-		String script = "";
-		for(int i = 0;i < _keyCombos.length && script.isEmpty(); i++)
+		NodeList script = null;
+		for(int i = 0;i < _keyCombos.length; i++)
 		{
 			script = _keyCombos[i].checkKey(key);
+			if(script.getLength() > 0)
+			{
+				break;
+			}
 		}
 		return script;
 	}
