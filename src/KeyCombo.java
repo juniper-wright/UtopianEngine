@@ -17,7 +17,7 @@ import org.w3c.dom.NodeList;
 class KeyCombo
 {
 	public String _keyname = "a^"; // unmatchable regular expression
-	private NodeList _uscript;
+	private NodeList _uscript = null;
 	
 	// Default constructor.
 	public KeyCombo()
@@ -66,8 +66,7 @@ class KeyCombo
 		}
 		else
 		{
-			// TODO: This seems REALLY hacky.
-			return this._uscript.item(0).getChildNodes();
+			return null;
 		}
 	}
 	

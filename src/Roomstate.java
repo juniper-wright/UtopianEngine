@@ -54,13 +54,9 @@ public class Roomstate
 	public NodeList checkKeys(String key)
 	{
 		NodeList script = null;
-		for(int i = 0;i < _keyCombos.length; i++)
+		for(int i = 0;i < _keyCombos.length && script == null; i++)
 		{
 			script = _keyCombos[i].checkKey(key);
-			if(script.getLength() > 0)
-			{
-				break;
-			}
 		}
 		return script;
 	}

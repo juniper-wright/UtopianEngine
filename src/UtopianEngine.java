@@ -16,6 +16,7 @@
 // * the player could advance or regress the state of the room - thereby changing the room
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -112,14 +113,14 @@ public class UtopianEngine
 		{
 			while(true)
 			{
-				NodeList event;
+				NodeList event = null;
 				_key = getKey();
 
-				for(int i = 0; i < _globalkeys.length && "".equals(event); i++)
+				for(int i = 0; i < _globalkeys.length && event == null; i++)
 				{
 					event = _globalkeys[i].checkKey(_key);
 				}
-				if("".equals(event))
+				if(event == null)
 				{
 					event = _rooms[_x][_y].checkKeys(_key);
 				}
@@ -313,25 +314,25 @@ public class UtopianEngine
 			_globalkeys[i] = new KeyCombo();
 		}
 		
-		_globalkeys[0] = new KeyCombo("THIS SHOULD BE DESCRIBE/LOOK/SEE/ETC; JIMINY CHRISTMAS", null);
+		_globalkeys[0] = new KeyCombo("(describe)|(look)|(see)", stringToNodeList(""));
 		
-		_globalkeys[1] = new KeyCombo("inv(entory)?", "<utopiascript>inventory;</utopiascript>");
+		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory;</utopiascript>"));
 		
 		System.out.println(helpNode.getNamespaceURI());
 
 		if(helpNode.getNamespaceURI() == null)
 		{
-			_globalkeys[2] = new KeyCombo("help", "<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>");
+			_globalkeys[2] = new KeyCombo("help", stringToNodeList("<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>"));
 		}
 		else
 		{
 			_globalkeys[2] = new KeyCombo((Element)helpNode);
 		}
 
-		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", "<utopiascript>go +0/+1;</utopiascript>");
-		_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", "<utopiascript>go +1/+0;</utopiascript>");
-		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", "<utopiascript>go -0/-1;</utopiascript>");
-		_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", "<utopiascript>go -1/-0;</utopiascript>");
+		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", stringToNodeList("<utopiascript>go +0/+1;</utopiascript>"));
+		_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", stringToNodeList("<utopiascript>go +1/+0;</utopiascript>"));
+		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", stringToNodeList("<utopiascript>go -0/-1;</utopiascript>"));
+		_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", stringToNodeList("<utopiascript>go -1/-0;</utopiascript>"));
 		
 		int global_key_index = 7;
 		for(int i = 0; i < directionNodes.getLength(); i++)
@@ -341,23 +342,23 @@ public class UtopianEngine
 			String direction = directionCommand.getAttribute("direction");
 			if(direction.equals("n"))
 			{
-				_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", directionCommand.getTextContent().trim());
+				_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", directionCommand.getChildNodes());
 			}
 			else if(direction.equals("e"))
 			{
-				_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", directionCommand.getTextContent().trim());
+				_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", directionCommand.getChildNodes());
 			}
 			else if(direction.equals("s"))
 			{
-				_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", directionCommand.getTextContent().trim());
+				_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", directionCommand.getChildNodes());
 			}
 			else if(direction.equals("w"))
 			{
-				_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", directionCommand.getTextContent().trim());
+				_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", directionCommand.getChildNodes());
 			}
 			else if(!direction.equals(""))
 			{
-				_globalkeys[global_key_index] = new KeyCombo(direction, directionCommand.getTextContent().trim());
+				_globalkeys[global_key_index] = new KeyCombo(direction, directionCommand.getChildNodes());
 				global_key_index++;
 			}
 			else
@@ -562,48 +563,28 @@ public class UtopianEngine
 	 * Runs the event gotten from a key.
 	 * @String event, the combination JavaScript and UtopiaScript corresponding to the matched event.
 	 */
-	private static void runEvent(String key, NodeList event)
+	private static void runEvent(String key, NodeList events)
 	{
-		// TODO: Completely revamp this function to use the NodeList
-		String[] events = new String[1]; //event.split("((?<=<utopiaScript>)|(?=<utopiaScript>)|(?<=</utopiaScript>)|(?=</utopiaScript>))");
-		int command_count = 0;
-	
-		for(int i = 0;i < events.length;i++)
-		{
-			if(!stringIn(events[i], new String[]{"<utopiascript>", "</utopiascript>"}, false))
-			{
-				command_count++;
-			}
-		}
-		String[] commands = new String[command_count];
-		boolean[] uscript = new boolean[command_count];
-		int x = 0;
-		boolean uscript_flag = false;
-		for(int i = 0;i < events.length;i++)
-		{
-			if(!stringIn(events[i], new String[]{"<utopiascript>", "</utopiascript>"}, false))
-			{
-				commands[x] = events[i];
-				uscript[x] = uscript_flag;
-				x++;
-			}
-			else if(events[i].equalsIgnoreCase("<utopiascript>"))
-			{
-				uscript_flag = true;
-			}
-			else
-			{
-				uscript_flag = false;
-			}
-		}
-		
-		// Runs all of the commands in a loop. Placed in a function to allow premature ending if one of the commands fails.
+		// Runs all of the commands in a loop. Returns prematurely if a function call fails.
 		try
 		{
-			System.out.println(commands[0]);
-			pushScore();
 	    	js_engine.eval("key = '" + key + "';");
-			runCommands(commands, uscript);
+			for(int i = 0;i < events.getLength();i++)
+			{
+				pushScore();
+				Element event = (Element)events.item(i);
+				if(event.getNodeName().equals("utopiascript"))
+				{
+					if(!utopiaCommand(event.getTextContent()))
+					{
+						return;
+					}
+				}
+				else
+				{
+			    	js_engine.eval(event.getTextContent());
+				}
+			}
 			pullScore();
 		}
 		catch(ScriptException e)
@@ -624,42 +605,6 @@ public class UtopianEngine
 	private static void pushScore() throws ScriptException
 	{
 		js_engine.eval("var UtopiaScore = " + _score + ";");
-	}
-	
-	private static void runCommands(String[] commands, boolean[] uscript) throws ScriptException
-	{
-		for(int i = 0;i < commands.length;i++)
-		{
-			if(uscript[i])
-			{
-				List<String> uscript_array = new ArrayList<String>();
-				try
-				{
-					Pattern regex = Pattern.compile("(?:\\\\.|[^;\\\\]++)*");
-					Matcher regexMatcher = regex.matcher(commands[i]);
-					while (regexMatcher.find())
-					{
-						uscript_array.add(regexMatcher.group());
-					}
-				}
-				catch(Exception e)
-				{
-					// TODO: Add exception handling. No clue what kind of exceptions are even thrown.
-				}
-				for(int j = 0;j < uscript_array.size();j++)
-				{
-					if(!utopiaCommand(uscript_array.get(j).trim()))
-					{
-						return;
-					}
-				}
-			}
-			else
-			{
-		    	js_engine.eval(commands[i]);
-		    	pullScore();
-			}
-		}
 	}
 	
 	private static void pullScore() throws ScriptException
@@ -1075,5 +1020,21 @@ public class UtopianEngine
 			System.out.println(e.getMessage());			// Not really robust, because I haven't had the opportunity to test on various platforms
 			System.out.println(e.getStackTrace());
 		}
+	}
+	
+	private static NodeList stringToNodeList(String string)
+	{
+		if(string.length() > 0)
+		{
+			try
+			{
+				return (NodeList)DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(string.getBytes())).getDocumentElement();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 }

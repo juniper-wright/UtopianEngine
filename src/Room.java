@@ -64,15 +64,13 @@ public class Room
 	{
 		System.out.println("In room::checkKeys();");
 		NodeList script = null;
-		for(int i = 0; i < _roomkeys.length; i++)
+		for(int i = 0; i < _roomkeys.length && script == null; i++)
 		{
 			script = _roomkeys[i].checkKey(key);
-			// TODO: Break out once you find it.
 		}
-		for(int i = 0; i < _roomstates.length; i++)
+		for(int i = 0; i < _roomstates.length && script == null; i++)
 		{
 			script = _roomstates[i].checkKeys(key);
-			// TODO: Break out if you already have one from _roomkeys, or if you find it in _roomstates[i]
 		}
 		return script;
 	}
