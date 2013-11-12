@@ -33,8 +33,14 @@
 		</direction>
 		<globalkeys>
 			<key match="regex">
-				<javascript>print("js_code");</javascript>
-				<utopiascript>print us_code;</utopiascript>
+				<javascript>
+					<!-- The CDATA tag is apparently necessary if you have a < character -->
+					//<![CDATA[
+					for(var i = 0;i < 10;i++){print("js_code\n");}
+					//]]>
+				</javascript>
+				<utopiascript>println us_code</utopiascript>
+				<utopiascript>println more us_code!</utopiascript>
 			</key>
 		</globalkeys>
 	</commands>

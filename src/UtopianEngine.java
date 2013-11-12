@@ -241,39 +241,6 @@ public class UtopianEngine
 		}
 	}
 
-	private static Node cleanNode(Node node)
-	{
-		NodeList childNodes = node.getChildNodes();
-
-		for(int n = childNodes.getLength() - 1; n >= 0; n--)
-		{
-			Node child = childNodes.item(n);
-			short nodeType = child.getNodeType();
-
-			if(nodeType == Node.ELEMENT_NODE)
-			{
-				cleanNode(child);
-			}
-			else if(nodeType == Node.TEXT_NODE)
-			{
-				String trimmedNodeVal = child.getNodeValue().trim();
-				if(trimmedNodeVal.length() == 0)
-				{
-					node.removeChild(child);
-				}
-				else
-				{
-					child.setNodeValue(trimmedNodeVal);
-				}
-			}
-			else if (nodeType == Node.COMMENT_NODE)
-			{
-				node.removeChild(child);
-			}
-		}
-		return node;
-	}
-	
 	/**
 	 * Builds the game's _globalkeys array from the <commands> node parsed from the XML
 	 * @param commandsNode the <commands> node from the game XML
@@ -591,13 +558,13 @@ public class UtopianEngine
 		{
 			// TODO: Real exception-handling
 	    	System.out.println(e.getMessage());
-	    	System.out.println(e.getStackTrace());
+	    	e.printStackTrace();
 		}
 		catch(UtopiaException e)
 		{
 			// TODO: Real exception-handling
 	    	System.out.println(e.getMessage());
-	    	System.out.println(e.getStackTrace());
+	    	e.printStackTrace();
 		}
 		
 	}
@@ -1020,6 +987,39 @@ public class UtopianEngine
 			System.out.println(e.getMessage());			// Not really robust, because I haven't had the opportunity to test on various platforms
 			System.out.println(e.getStackTrace());
 		}
+	}
+
+	private static Node cleanNode(Node node)
+	{
+		NodeList childNodes = node.getChildNodes();
+
+		for(int n = childNodes.getLength() - 1; n >= 0; n--)
+		{
+			Node child = childNodes.item(n);
+			short nodeType = child.getNodeType();
+
+			if(nodeType == Node.ELEMENT_NODE)
+			{
+				cleanNode(child);
+			}
+			else if(nodeType == Node.TEXT_NODE)
+			{
+				String trimmedNodeVal = child.getNodeValue().trim();
+				if(trimmedNodeVal.length() == 0)
+				{
+					node.removeChild(child);
+				}
+				else
+				{
+					child.setNodeValue(trimmedNodeVal);
+				}
+			}
+			else if (nodeType == Node.COMMENT_NODE)
+			{
+				node.removeChild(child);
+			}
+		}
+		return node;
 	}
 	
 	private static NodeList stringToNodeList(String string)

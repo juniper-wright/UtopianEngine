@@ -62,7 +62,6 @@ public class Room
 
 	public NodeList checkKeys(String key)
 	{
-		System.out.println("In room::checkKeys();");
 		NodeList script = null;
 		for(int i = 0; i < _roomkeys.length && script == null; i++)
 		{
