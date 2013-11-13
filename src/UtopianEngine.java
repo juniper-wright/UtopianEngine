@@ -283,23 +283,23 @@ public class UtopianEngine
 		
 		_globalkeys[0] = new KeyCombo("(describe)|(look)|(see)", stringToNodeList(""));
 		
-		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory;</utopiascript>"));
+		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
 		
 		System.out.println(helpNode.getNamespaceURI());
 
 		if(helpNode.getNamespaceURI() == null)
 		{
-			_globalkeys[2] = new KeyCombo("help", stringToNodeList("<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.;</utopiascript>"));
+			_globalkeys[2] = new KeyCombo("help", stringToNodeList("<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.</utopiascript>"));
 		}
 		else
 		{
 			_globalkeys[2] = new KeyCombo((Element)helpNode);
 		}
 
-		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", stringToNodeList("<utopiascript>go +0/+1;</utopiascript>"));
-		_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", stringToNodeList("<utopiascript>go +1/+0;</utopiascript>"));
-		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", stringToNodeList("<utopiascript>go -0/-1;</utopiascript>"));
-		_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", stringToNodeList("<utopiascript>go -1/-0;</utopiascript>"));
+		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", stringToNodeList("<utopiascript>go +0/+1</utopiascript>"));
+		_globalkeys[4] = new KeyCombo("((move )|(go ))?e(ast)?", stringToNodeList("<utopiascript>go +1/+0</utopiascript>"));
+		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", stringToNodeList("<utopiascript>go -0/-1</utopiascript>"));
+		_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", stringToNodeList("<utopiascript>go -1/-0</utopiascript>"));
 		
 		int global_key_index = 7;
 		for(int i = 0; i < directionNodes.getLength(); i++)
@@ -313,7 +313,7 @@ public class UtopianEngine
 			}
 			else if(direction.equals("e"))
 			{
-				_globalkeys[4] = new KeyCombo("((move )|(go ))?a(ast)?", directionCommand.getChildNodes());
+				_globalkeys[4] = new KeyCombo("((move )|(go ))?e(ast)?", directionCommand.getChildNodes());
 			}
 			else if(direction.equals("s"))
 			{
@@ -532,6 +532,11 @@ public class UtopianEngine
 	 */
 	private static void runEvent(String key, NodeList events)
 	{
+		if(events == null)
+		{
+			usPrintln("I don't understand that command.");
+			return;
+		}
 		// Runs all of the commands in a loop. Returns prematurely if a function call fails.
 		try
 		{
@@ -559,14 +564,7 @@ public class UtopianEngine
 			// TODO: Real exception-handling
 	    	System.out.println(e.getMessage());
 	    	e.printStackTrace();
-		}
-		catch(UtopiaException e)
-		{
-			// TODO: Real exception-handling
-	    	System.out.println(e.getMessage());
-	    	e.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	private static void pushScore() throws ScriptException
@@ -816,14 +814,30 @@ public class UtopianEngine
 
 	private static boolean usGo(String args)
 	{
+		int x;
+		int y;
 		String[] args_arr = args.split("/| ", 2);
 		try
 		{
-			_x += Integer.parseInt(args_arr[0]);
-			_y += Integer.parseInt(args_arr[1]);
+			x = Integer.parseInt(args_arr[0]);
+			y = Integer.parseInt(args_arr[1]);
+			
+			x += _x;
+			y += _y;
+			if(canTravel(x, y))
+			{
+				_x = x;
+				_y = y;
+			}
+			else
+			{
+				return usPrint("You can't go that way.");
+			}
 		}
 		catch(NumberFormatException e)
 		{
+			System.out.println(args_arr[0]);
+			System.out.println(args_arr[1]);
 			throw new UtopiaException("Go command is formatted improperly. Arguments passed: " + args);
 		}
 		
@@ -832,12 +846,24 @@ public class UtopianEngine
 
 	private static boolean usGoto(String args)
 	{
+		int x;
+		int y;
 		String[] args_arr = args.split("/| ", 2);
 
 		try
 		{
-			_x = Integer.parseInt(args_arr[0]);
-			_y = Integer.parseInt(args_arr[1]);
+			x = Integer.parseInt(args_arr[0]);
+			y = Integer.parseInt(args_arr[1]);
+			
+			if(canTravel(x, y))
+			{
+				_x = x;
+				_y = y;
+			}
+			else
+			{
+				return usPrint("You can't go that way.");
+			}
 		}
 		catch(NumberFormatException e)
 		{
@@ -858,7 +884,11 @@ public class UtopianEngine
 		return true;
 	}
 
-	// All system output will be done through the usPrint function. Thus, it will be easy to change if need be. 	
+	/**
+	 * All system output will be done through the usPrint function. Thus, it will be easy to change if need be. 	
+	 * @param args the String to be printed
+	 * @return boolean true
+	 */
 	private static boolean usPrint(String args)
 	{
 		System.out.print(args.replace("\\;", ";").replace("\\\\", "\\"));
@@ -1036,5 +1066,22 @@ public class UtopianEngine
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Determines whether or not the room located at (x,y) is travelable.
+	 * Lots of necessary conditions for this to succeed:
+	 		The new x coordinate must be >= 0
+	 		The new y coordinate must be >= 0
+	 		The new x coordinate must be < width of the _rooms array (_rooms.length)
+	 		The new y coordinate must be < height of the _rooms array _rooms[x].length)
+	 		The new room (_rooms[x][y]) must be travelable -- Room::canTravel()
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return the overall success of the above conditions
+	 */
+	private static boolean canTravel(int x, int y)
+	{
+		return (x >= 0 && y >= 0 && x < _rooms.length && y < _rooms[x].length && _rooms[x][y].canTravel());
 	}
 }

@@ -14,16 +14,16 @@
 			Actual North direction key: "(move )?n(orth)?"	
 		-->
 		<direction direction="n">
-			<utopiascript>go +0/+1;</utopiascript>
+			<utopiascript>go +0/+1</utopiascript>
 		</direction>
 		<direction direction="e">
-			<utopiascript>go +1/+0;</utopiascript>
+			<utopiascript>go +1/+0</utopiascript>
 		</direction>
 		<direction direction="s">
-			<utopiascript>go +0/-1;</utopiascript>
+			<utopiascript>go +0/-1</utopiascript>
 		</direction>
 		<direction direction="w">
-			<utopiascript>go -1/+0;</utopiascript>
+			<utopiascript>go -1/+0</utopiascript>
 		</direction>
 		<!--
 			Recommended direction format: direction="(move )?DIRECTION"
