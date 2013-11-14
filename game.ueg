@@ -41,6 +41,7 @@
 				</javascript>
 				<utopiascript>println us_code</utopiascript>
 				<utopiascript>println more us_code!</utopiascript>
+				<utopiascript>goto 0 0</utopiascript>
 			</key>
 		</globalkeys>
 	</commands>
@@ -54,13 +55,14 @@
 	</items>
 	<rooms width="1" height="1">
 		<room x="0" y="0">
-			<roomkey match="regex">
+			<roomkey match="regex3">
 				<javascript></javascript>
-				<utopiascript>print WHOOHOO!;</utopiascript>
+				<utopiascript>print WHOOHOO!</utopiascript>
 			</roomkey>
 			<roomkey match="regex2">
 				<javascript></javascript>
-				<utopiascript>print ALSO WHOOHOO!;</utopiascript>
+				<utopiascript>print ALSO WHOOHOO!</utopiascript>
+				<utopiascript>goto 0 0</utopiascript>
 			</roomkey>
 			<roomstate>
 				<shortdescription>THIS IS A SHORT DESCRIPTION.</shortdescription>

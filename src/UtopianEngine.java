@@ -71,6 +71,7 @@ public class UtopianEngine
 			{
 				usLoadState(args[1]);
 			}
+			usDescription("long");
 			run();
 			return;
 		}
@@ -101,6 +102,7 @@ public class UtopianEngine
 		while(!f.exists());
 
 		buildGameFromFile(instring);
+		usDescription("long");
 		run();		// Runs game
 	}
 
@@ -141,7 +143,7 @@ public class UtopianEngine
 	
 	private static String getKey()
 	{
-		usPrint("\n> ");
+		usPrint("\n\n> ");
 		String key = scanner.nextLine().toLowerCase();
 		usPrintln();
 		return key;
@@ -281,11 +283,9 @@ public class UtopianEngine
 			_globalkeys[i] = new KeyCombo();
 		}
 		
-		_globalkeys[0] = new KeyCombo("(describe)|(look)|(see)", stringToNodeList(""));
+		_globalkeys[0] = new KeyCombo("(describe)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
 		
 		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
-		
-		System.out.println(helpNode.getNamespaceURI());
 
 		if(helpNode.getNamespaceURI() == null)
 		{
@@ -491,6 +491,10 @@ public class UtopianEngine
 				{
 					throw new LoadGameException("Two rooms specified for the same position: (" + x + "," + y + ")");
 				}
+				else
+				{
+					_rooms[x][y] = new Room(nRoom);
+				}
 			}
 			else
 			{
@@ -630,6 +634,177 @@ public class UtopianEngine
 		}
 	}
 
+	private static boolean usAddItem(String args)
+	{
+		String itemNumString;
+		int itemNum;
+		String quantityString;
+		int quantity;
+
+		Pattern itemNumPattern = Pattern.compile("[^(]*");
+		Matcher itemNumMatcher = itemNumPattern.matcher(args);
+		itemNumString = itemNumMatcher.group();
+		try
+		{
+			itemNum = Integer.parseInt(itemNumString);
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Invalid format for command addItem: \"" + itemNumString + "\" is unparseable as an integer");
+		}
+		
+		if(itemNum > _itemnames.length)
+		{
+			throw new UtopiaException("Invalid argument for command addItem: \"" + itemNum + "\" is out of bounds for items list.");
+		}
+		
+		if(args.contains("(") && args.contains(")"))
+		{	
+			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
+			Matcher quantityMatcher = quantityPattern.matcher(args);
+			quantityString = quantityMatcher.group(1);
+			try
+			{
+				quantity = Integer.parseInt(itemNumString); 
+			}
+			catch(NumberFormatException e)
+			{
+				throw new UtopiaException("Invalid format for command addItem: \"" + quantityString + "\" is unparseable as an integer.");
+			}
+		}
+		else
+		{
+			quantity = 1;
+		}
+		
+		_itemquantities[itemNum] += quantity;
+		
+		return true;
+	}
+
+	private static boolean usDescription(String args)
+	{
+		boolean longDesc = true;
+		if(args.equalsIgnoreCase("short"))
+		{
+			longDesc = false;
+		}
+		return usPrint(_rooms[_x][_y].description(longDesc));
+	}
+
+	private static boolean usGo(String args)
+	{
+		int x;
+		int y;
+		String[] args_arr = args.split("/| ", 2);
+		try
+		{
+			x = Integer.parseInt(args_arr[0]);
+			y = Integer.parseInt(args_arr[1]);
+			
+			x += _x;
+			y += _y;
+			if(canTravel(x, y))
+			{
+				_x = x;
+				_y = y;
+			}
+			else
+			{
+				return usPrint("You can't go that way.");
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Go command is formatted improperly. Arguments passed: " + args);
+		}
+		
+		return usDescription("");
+	}
+
+	private static boolean usGoto(String args)
+	{
+		int x;
+		int y;
+		String[] args_arr = args.split("/| ", 2);
+
+		try
+		{
+			x = Integer.parseInt(args_arr[0]);
+			y = Integer.parseInt(args_arr[1]);
+
+			if(canTravel(x, y))
+			{
+				_x = x;
+				_y = y;
+			}
+			else
+			{
+				return usPrint("You can't go that way.");
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("GoTo command is formatted improperly. Arguments passed: " + args);
+		}
+		return usDescription("");
+	}
+	
+	private static boolean usInventory(String args)
+	{
+		for(int i = 0;i < _itemnames.length; i++)
+		{
+			if(_itemquantities[i] > 0)
+			{
+				usPrintln(String.format("%-50sx%s", _itemnames[i], _itemquantities[i]));
+			}
+		}
+		return usPrintln();
+	}
+
+	private static boolean usLoadGame(String args)
+	{
+		buildGameFromFile(args);
+		return true;
+	}
+	
+	private static boolean usLoadState(String args)
+	{
+		return true;
+	}
+
+	private static boolean usPause(String args)
+	{
+		pause(args);
+		return true;
+	}
+
+	/**
+	 * All system output will be done through the usPrint function. Thus, it will be easy to change if need be. 	
+	 * @param args the String to be printed
+	 * @return boolean true
+	 */
+	private static boolean usPrint(String args)
+	{
+		System.out.print(args);
+		return true;
+	}
+
+	private static boolean usPrintln()
+	{
+		return usPrint("\n");
+	}
+	
+	private static boolean usPrintln(String args)
+	{
+		return usPrint(args + "\n");
+	}
+
+	private static boolean usQuitGame(String args)
+	{
+		throw new GameEndException(args);
+	}
+
 	private static boolean usRequireItem(String args)
 	{
 		String[] args_arr = args.split(" ", 2);
@@ -688,50 +863,57 @@ public class UtopianEngine
 		}
 	}
 
-	private static boolean usAddItem(String args)
+	private static boolean usRoomstate(String args)
 	{
-		String itemNumString;
-		int itemNum;
-		String quantityString;
-		int quantity;
-
-		Pattern itemNumPattern = Pattern.compile("[^(]*");
-		Matcher itemNumMatcher = itemNumPattern.matcher(args);
-		itemNumString = itemNumMatcher.group();
 		try
 		{
-			itemNum = Integer.parseInt(itemNumString);
+			if(args.matches("^=[0-9]{1,9}$"))
+			{
+				_rooms[_x][_y]._roomstate = Integer.parseInt(args.substring(1));
+			}
+			else
+			{
+				_rooms[_x][_y]._roomstate += Integer.parseInt(args);
+			}
 		}
 		catch(NumberFormatException e)
 		{
-			throw new UtopiaException("Invalid format for command addItem: \"" + itemNumString + "\" is unparseable as an integer");
+			throw new UtopiaException("Invalid format for Roomstate command. \"" + args + "\" is unparseable as an integer.");
 		}
-		
-		if(itemNum > _itemnames.length)
+		return true;
+	}
+	
+	private static boolean usSaveState(String args)
+	{
+		return true;
+	}
+	
+	private static boolean usScore(String args)
+	{
+		try
 		{
-			throw new UtopiaException("Invalid argument for command addItem: \"" + itemNum + "\" is out of bounds for items list.");
-		}
-		
-		if(args.contains("(") && args.contains(")"))
-		{	
-			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
-			Matcher quantityMatcher = quantityPattern.matcher(args);
-			quantityString = quantityMatcher.group(1);
-			try
+			if(args.matches("^=[0-9]{1,9}$"))
 			{
-				quantity = Integer.parseInt(itemNumString); 
+				_score = Integer.parseInt(args.substring(1));
 			}
-			catch(NumberFormatException e)
+			else
 			{
-				throw new UtopiaException("Invalid format for command addItem: \"" + quantityString + "\" is unparseable as an integer.");
+				_score += Integer.parseInt(args);
 			}
 		}
-		else
+		catch(NumberFormatException e)
 		{
-			quantity = 1;
+			throw new UtopiaException("Invalid format for Score command. \"" + args + "\" is unparseable as an integer.");
 		}
 		
-		_itemquantities[itemNum] += quantity;
+		try
+		{
+			pushScore();
+		}
+		catch(ScriptException e)
+		{
+			throw new UtopiaException(e.getMessage());
+		}
 		
 		return true;
 	}
@@ -791,186 +973,6 @@ public class UtopianEngine
 			return true;
 		}
 	}
-
-	private static boolean usRoomstate(String args)
-	{
-		try
-		{
-			if(args.matches("^=[0-9]{1,9}$"))
-			{
-				_rooms[_x][_y]._roomstate = Integer.parseInt(args.substring(1));
-			}
-			else
-			{
-				_rooms[_x][_y]._roomstate += Integer.parseInt(args);
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid format for Roomstate command. \"" + args + "\" is unparseable as an integer.");
-		}
-		return true;
-	}
-
-	private static boolean usGo(String args)
-	{
-		int x;
-		int y;
-		String[] args_arr = args.split("/| ", 2);
-		try
-		{
-			x = Integer.parseInt(args_arr[0]);
-			y = Integer.parseInt(args_arr[1]);
-			
-			x += _x;
-			y += _y;
-			if(canTravel(x, y))
-			{
-				_x = x;
-				_y = y;
-			}
-			else
-			{
-				return usPrint("You can't go that way.");
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			System.out.println(args_arr[0]);
-			System.out.println(args_arr[1]);
-			throw new UtopiaException("Go command is formatted improperly. Arguments passed: " + args);
-		}
-		
-		return usDescription("");
-	}
-
-	private static boolean usGoto(String args)
-	{
-		int x;
-		int y;
-		String[] args_arr = args.split("/| ", 2);
-
-		try
-		{
-			x = Integer.parseInt(args_arr[0]);
-			y = Integer.parseInt(args_arr[1]);
-			
-			if(canTravel(x, y))
-			{
-				_x = x;
-				_y = y;
-			}
-			else
-			{
-				return usPrint("You can't go that way.");
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("GoTo command is formatted improperly. Arguments passed: " + args);
-		}
-		return usDescription("");
-	}
-
-	private static boolean usLoadGame(String args)
-	{
-		buildGameFromFile(args);
-		return true;
-	}
-	
-	private static boolean usPause(String args)
-	{
-		pause(args);
-		return true;
-	}
-
-	/**
-	 * All system output will be done through the usPrint function. Thus, it will be easy to change if need be. 	
-	 * @param args the String to be printed
-	 * @return boolean true
-	 */
-	private static boolean usPrint(String args)
-	{
-		System.out.print(args.replace("\\;", ";").replace("\\\\", "\\"));
-		return true;
-	}
-
-	private static boolean usPrintln()
-	{
-		return usPrint("\n");
-	}
-	
-	private static boolean usPrintln(String args)
-	{
-		return usPrint(args + "\n");
-	}
-
-	private static boolean usDescription(String args)
-	{
-		boolean longDesc = true;
-		if(args.equalsIgnoreCase("short"))
-		{
-			longDesc = false;
-		}
-		return usPrintln(_rooms[_x][_y].description(longDesc));
-	}
-	
-	private static boolean usScore(String args)
-	{
-		try
-		{
-			if(args.matches("^=[0-9]{1,9}$"))
-			{
-				_score = Integer.parseInt(args.substring(1));
-			}
-			else
-			{
-				_score += Integer.parseInt(args);
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid format for Score command. \"" + args + "\" is unparseable as an integer.");
-		}
-		
-		try
-		{
-			pushScore();
-		}
-		catch(ScriptException e)
-		{
-			throw new UtopiaException(e.getMessage());
-		}
-		
-		return true;
-	}
-
-	private static boolean usQuitGame(String args)
-	{
-		throw new GameEndException(args);
-	}
-	
-	private static boolean usInventory(String args)
-	{
-		for(int i = 0;i < _itemnames.length; i++)
-		{
-			if(_itemquantities[i] > 0)
-			{
-				usPrintln(String.format("%-50sx%s", _itemnames[i], _itemquantities[i]));
-			}
-		}
-		return usPrintln();
-	}
-	
-	private static boolean usLoadState(String args)
-	{
-		return true;
-	}
-	
-	private static boolean usSaveState(String args)
-	{
-		return true;
-	}
 	
 	private static boolean stringIn(String needle, String haystack[], boolean caseSensitive)
 	{
@@ -1013,7 +1015,6 @@ public class UtopianEngine
 		}
 		catch (Exception e)								// Generic exception handling
 		{
-			System.out.println("HERE #2");
 			System.out.println(e.getMessage());			// Not really robust, because I haven't had the opportunity to test on various platforms
 			System.out.println(e.getStackTrace());
 		}

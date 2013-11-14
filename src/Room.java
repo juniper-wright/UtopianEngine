@@ -42,7 +42,6 @@ public class Room
 			this._roomkeys[i] = new KeyCombo((Element)roomkeys.item(i));
 		}
 		
-		
 		NodeList roomstates = ((Element)roomNode).getElementsByTagName("roomstate");
 		
 		this._roomstates = new Roomstate[roomstates.getLength()];
@@ -51,8 +50,9 @@ public class Room
 		{
 			this._roomstates[i] = new Roomstate(roomstates.item(i));
 		}
+		
+		this._can_travel = true;
 	}
-	
 	
 	// Gets the current roomstate of the current room
 	public int getRoomstate()
