@@ -285,7 +285,7 @@ public class UtopianEngine
 		
 		_globalkeys[0] = new KeyCombo("(describe)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
 		
-		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
+		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>print FUCK YOU</utopiascript>"));
 
 		if(helpNode.getNamespaceURI() == null)
 		{
@@ -544,6 +544,7 @@ public class UtopianEngine
 		// Runs all of the commands in a loop. Returns prematurely if a function call fails.
 		try
 		{
+			pushScore();
 	    	js_engine.eval("key = '" + key + "';");
 			for(int i = 0;i < events.getLength();i++)
 			{
@@ -636,14 +637,12 @@ public class UtopianEngine
 
 	private static boolean usAddItem(String args)
 	{
-		String itemNumString;
-		int itemNum;
+		String[] arg_split = args.split(" ");
+		String itemNumString = arg_split[0];
 		String quantityString;
+		int itemNum;
 		int quantity;
-
-		Pattern itemNumPattern = Pattern.compile("[^(]*");
-		Matcher itemNumMatcher = itemNumPattern.matcher(args);
-		itemNumString = itemNumMatcher.group();
+		
 		try
 		{
 			itemNum = Integer.parseInt(itemNumString);
@@ -652,20 +651,19 @@ public class UtopianEngine
 		{
 			throw new UtopiaException("Invalid format for command addItem: \"" + itemNumString + "\" is unparseable as an integer");
 		}
-		
+
 		if(itemNum > _itemnames.length)
 		{
 			throw new UtopiaException("Invalid argument for command addItem: \"" + itemNum + "\" is out of bounds for items list.");
 		}
 		
-		if(args.contains("(") && args.contains(")"))
-		{	
-			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
-			Matcher quantityMatcher = quantityPattern.matcher(args);
-			quantityString = quantityMatcher.group(1);
+		if(arg_split.length > 1)
+		{
+			quantityString = arg_split[1];
+			
 			try
 			{
-				quantity = Integer.parseInt(itemNumString); 
+				quantity = Integer.parseInt(quantityString); 
 			}
 			catch(NumberFormatException e)
 			{
@@ -865,15 +863,17 @@ public class UtopianEngine
 
 	private static boolean usRoomstate(String args)
 	{
+		String arg = args.replace(" ", "");
 		try
 		{
-			if(args.matches("^=[0-9]{1,9}$"))
+			// TODO: Check to make sure that the roomstate exists.
+			if(arg.matches("^=[0-9]{1,9}$"))
 			{
-				_rooms[_x][_y]._roomstate = Integer.parseInt(args.substring(1));
+				_rooms[_x][_y]._roomstate = Integer.parseInt(arg.substring(1));
 			}
 			else
 			{
-				_rooms[_x][_y]._roomstate += Integer.parseInt(args);
+				_rooms[_x][_y]._roomstate += Integer.parseInt(arg);
 			}
 		}
 		catch(NumberFormatException e)
@@ -890,15 +890,16 @@ public class UtopianEngine
 	
 	private static boolean usScore(String args)
 	{
+		String arg = args.replace(" ", "");
 		try
 		{
-			if(args.matches("^=[0-9]{1,9}$"))
+			if(arg.matches("^=[0-9]{1,9}$"))
 			{
-				_score = Integer.parseInt(args.substring(1));
+				_score = Integer.parseInt(arg.substring(1));
 			}
-			else
+			else if(arg.matches("^[0-9]{1,9}$"))
 			{
-				_score += Integer.parseInt(args);
+				_score += Integer.parseInt(arg);
 			}
 		}
 		catch(NumberFormatException e)
@@ -920,15 +921,18 @@ public class UtopianEngine
 
 	private static boolean usTakeItem(String args)
 	{
-		String[] args_arr = args.split(" ", 2);
-		String itemNumString;
-		int itemNum;
-		String quantityString;
-		int quantity;
+		String[] arg_split = args.split(" ", 3);
 
-		Pattern itemNumPattern = Pattern.compile("[^(]*");
-		Matcher itemNumMatcher = itemNumPattern.matcher(args_arr[0]);
-		itemNumString = itemNumMatcher.group();
+		if(arg_split.length < 2)
+		{
+			throw new UtopiaException("Invalid format for command takeItem: \"" + args + "\" does not have enough arguments.");
+		}
+		
+		String itemNumString = arg_split[0];
+		String quantityString = arg_split[1];
+		int itemNum;
+		int quantity;
+		
 		try
 		{
 			itemNum = Integer.parseInt(itemNumString);
@@ -937,39 +941,29 @@ public class UtopianEngine
 		{
 			throw new UtopiaException("Invalid format for command takeItem: \"" + itemNumString + "\" is unparseable as an integer");
 		}
-		
+
 		if(itemNum > _itemnames.length)
 		{
 			throw new UtopiaException("Invalid argument for command takeItem: \"" + itemNum + "\" is out of bounds for items list.");
 		}
 		
-		if(args_arr[0].contains("(") && args_arr[0].contains(")"))
-		{	
-			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
-			Matcher quantityMatcher = quantityPattern.matcher(args_arr[0]);
-			quantityString = quantityMatcher.group(1);
-			try
-			{
-				quantity = Integer.parseInt(itemNumString); 
-			}
-			catch(NumberFormatException e)
-			{
-				throw new UtopiaException("Invalid format for command takeItem: \"" + quantityString + "\" is unparseable as an integer.");
-			}
-		}
-		else
+		try
 		{
-			quantity = 1;
+			quantity = Integer.parseInt(quantityString); 
+		}
+		catch(NumberFormatException e)
+		{
+			throw new UtopiaException("Invalid format for command takeItem: \"" + quantityString + "\" is unparseable as an integer.");
 		}
 		
-		if(_itemquantities[itemNum] < quantity && args_arr.length > 1)
+		if(_itemquantities[itemNum] < quantity && arg_split.length > 2)
 		{
-			usPrintln(args_arr[1]);
+			usPrintln(arg_split[2]);
 			return false;
 		}
 		else
 		{
-			_itemquantities[itemNum] -= Math.min(_itemquantities[itemNum], quantity);
+			_itemquantities[itemNum] -= quantity;
 			return true;
 		}
 	}

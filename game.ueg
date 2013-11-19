@@ -53,7 +53,7 @@
 		<item quantity="4">Item Four</item>
 		<item quantity="5">Item Five</item>
 	</items>
-	<rooms width="1" height="1">
+	<rooms width="2" height="2">
 		<room x="0" y="0">
 			<roomkey match="regex3">
 				<javascript></javascript>
@@ -67,17 +67,63 @@
 			<roomstate>
 				<shortdescription>THIS IS A SHORT DESCRIPTION.</shortdescription>
 				<longdescription>THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILS ABOUT THE ROOM.</longdescription>
-				<key match="text_to_match">
-					<javascript></javascript>
-					<utopiascript>print text_to_match;</utopiascript>
+				<key match="print">
+					<utopiascript>print I'm printing.</utopiascript>
 				</key>
-				<key match="text_to_match">
-					<javascript></javascript>
-					<utopiascript></utopiascript>
+				<key match="println">
+					<utopiascript>println I'm printlning.</utopiascript>
 				</key>
-				<key match="text_to_match">
-					<javascript></javascript>
-					<utopiascript></utopiascript>
+				<key match="pause">
+					<utopiascript>pause I'm pausing the game.</utopiascript>
+				</key>
+				<key match="description">
+					<utopiascript>description</utopiascript>
+				</key>
+				<key match="additem">
+					<utopiascript>additem 1 5</utopiascript>
+				</key>
+				<key match="require">
+					<utopiascript>requireitem 1</utopiascript>
+				</key>
+				<key match="takeitem">
+					<utopiascript>takeitem 1 3 YOU DON'T HAVE ENOUGH</utopiascript>
+				</key>
+				<key match="roomstate">
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+				<key match="goto">
+					<utopiascript>goto 1 1</utopiascript>
+				</key>
+				<key match="go">
+					<utopiascript>go +1/+1</utopiascript>
+				</key>
+				<key match="scoreup">
+					<utopiascript>score +5</utopiascript>
+				</key>
+				<key match="scoredown">
+					<utopiascript>score +5</utopiascript>
+				</key>
+				<key match="scoreset">
+					<utopiascript>score = 5</utopiascript>
+				</key>
+				<key match="printinv">
+					<utopiascript>inventory</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>THIS IS SHORT DESCRIPTION NUMBER 2.</shortdescription>
+				<longdescription>THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILS ABOUT THE ROOM. WE ARE IN ROOMSTATE NUMBER 2.</longdescription>
+				<key match="go back">
+					<utopiascript>roomstate -1</utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="1" y="1">
+			<roomstate>
+				<shortdescription>Room 2's short description</shortdescription>
+				<longdescription>Room 2's longer description, of sorts.</longdescription>
+				<key match="back to room 1">
+					<utopiascript>go -1/-1</utopiascript>
 				</key>
 			</roomstate>
 		</room>
