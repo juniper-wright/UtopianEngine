@@ -101,7 +101,7 @@
 					<utopiascript>score +5</utopiascript>
 				</key>
 				<key match="scoredown">
-					<utopiascript>score +5</utopiascript>
+					<utopiascript>score -5</utopiascript>
 				</key>
 				<key match="scoreset">
 					<utopiascript>score = 5</utopiascript>
