@@ -160,10 +160,7 @@ public class UtopianEngine
 		
 		try
 		{
-			File fXmlFile = new File(filename);
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(fXmlFile);
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename));
 			
 			doc.getDocumentElement().normalize();
 
@@ -283,9 +280,9 @@ public class UtopianEngine
 			_globalkeys[i] = new KeyCombo();
 		}
 		
-		_globalkeys[0] = new KeyCombo("(describe)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
+		_globalkeys[0] = new KeyCombo("(desc(ribe)?)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
 		
-		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>print FUCK YOU</utopiascript>"));
+		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
 
 		if(helpNode.getNamespaceURI() == null)
 		{
@@ -541,6 +538,11 @@ public class UtopianEngine
 			usPrintln("I don't understand that command.");
 			return;
 		}
+		else if(events.getLength() == 0)
+		{
+			usPrintln("Nothing happens.");
+			return;
+		}
 		// Runs all of the commands in a loop. Returns prematurely if a function call fails.
 		try
 		{
@@ -549,8 +551,8 @@ public class UtopianEngine
 			for(int i = 0;i < events.getLength();i++)
 			{
 				pushScore();
-				Element event = (Element)events.item(i);
-				if(event.getNodeName().equals("utopiascript"))
+				Node event = events.item(i);
+				if(event.getNodeName().equals("utopiascript") || event.getNodeName().equals("#text"))
 				{
 					if(!utopiaCommand(event.getTextContent()))
 					{
@@ -1053,7 +1055,7 @@ public class UtopianEngine
 		{
 			try
 			{
-				return (NodeList)DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(string.getBytes())).getDocumentElement();
+				return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(string.getBytes())).getDocumentElement().getChildNodes();
 			}
 			catch(Exception e)
 			{
