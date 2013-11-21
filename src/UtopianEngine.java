@@ -871,11 +871,11 @@ public class UtopianEngine
 			// TODO: Check to make sure that the roomstate exists.
 			if(arg.matches("^=[0-9]{1,9}$"))
 			{
-				_rooms[_x][_y]._roomstate = Integer.parseInt(arg.substring(1));
+				_rooms[_x][_y].setRoomstate(Integer.parseInt(arg.substring(1)));
 			}
 			else
 			{
-				_rooms[_x][_y]._roomstate += Integer.parseInt(arg);
+				_rooms[_x][_y].setRoomstate(Integer.parseInt(arg) + _rooms[_x][_y].getRoomstate());
 			}
 		}
 		catch(NumberFormatException e)

@@ -5,10 +5,10 @@ import org.w3c.dom.NodeList;
 
 public class Roomstate
 {
-	boolean _seen = false;
-	String _longDescription;	// This is the long description for this roomstate
-	String _shortDescription;	// This is the short description for this roomstate
-	KeyCombo[] _keyCombos;		// This is a list of keyCombos
+	private boolean _seen = false;
+	private String _longDescription;	// This is the long description for this roomstate
+	private String _shortDescription;	// This is the short description for this roomstate
+	private KeyCombo[] _keyCombos;		// This is a list of keyCombos
 
 
 	// Default constructor. Never used.

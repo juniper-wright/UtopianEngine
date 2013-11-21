@@ -11,12 +11,12 @@ import org.w3c.dom.NodeList;
 
 public class Room
 {
-	boolean _can_travel = true;
-	Roomstate[] _roomstates;
-	KeyCombo[] _roomkeys;		// Room-global keys! In case you want to do something regardless of the roomstate
-	int _roomstate = 0;			// roomstate is the state of the room. Rooms may have anywhere from 1 to 2147483647 roomstates.
-								// Each roomstate basically functions as its own room, but only one can exist at a time
-								// and they will all always occupy the same space in the two-dimensional grid of rooms
+	private boolean _can_travel = true;
+	private Roomstate[] _roomstates;
+	private KeyCombo[] _roomkeys;		// Room-global keys! In case you want to do something regardless of the roomstate
+	private int _roomstate = 0;			// roomstate is the state of the room. Rooms may have anywhere from 1 to 2147483647 roomstates.
+										// Each roomstate basically functions as its own room, but only one can exist at a time
+										// and they will all always occupy the same space in the two-dimensional grid of rooms
 
 	// Default constructor. _can_travel keeps the player from entering the Room.
 	public Room()		
@@ -59,6 +59,12 @@ public class Room
 	{
 		return this._roomstate;
 	}
+	
+	// Sets roomstate to the new roomstate. As of yet, this function is unused
+	public void setRoomstate(int newRoomstate)
+	{
+		this._roomstate = newRoomstate;
+	}
 
 	public NodeList checkKeys(String key)
 	{
@@ -84,12 +90,6 @@ public class Room
 	public void changeRoomstate(int roomstatefactor)
 	{
 		this._roomstate += roomstatefactor;
-	}
-	
-	// Sets roomstate to the new roomstate. As of yet, this function is unused
-	public void setRoomstate(int newRoomstate)
-	{
-		this._roomstate = newRoomstate;
 	}
 	
 	public boolean canTravel()

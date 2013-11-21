@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
 
 class KeyCombo
 {
-	public String _keyname = "a^"; // unmatchable regular expression
+	private String _keyname = "a^"; // unmatchable regular expression
 	private NodeList _uscript = null;
 	
 	// Default constructor.
@@ -34,11 +34,11 @@ class KeyCombo
 	public KeyCombo(Element keycomboNode)
 	{
 		String uscript = "";
-		NodeList nodes = keycomboNode.getChildNodes();
-		for(int i = 0; i < nodes.getLength(); i++)
-		{
-			uscript = uscript + nodeToString(nodes.item(i)).trim() + "\n";
-		}
+//		NodeList nodes = keycomboNode.getChildNodes();
+//		for(int i = 0; i < nodes.getLength(); i++)
+//		{
+//			uscript = uscript + nodeToString(nodes.item(i)).trim() + "\n";
+//		}
 		
 		this._keyname = "^" + keycomboNode.getAttribute("match").trim() + "$";
 		// TODO: Make sure that _uscript actually has a list of nodes in it, and make sure that all of them are either <javascript> or <utopiascript> nodes. Throw a GameLoadException otherwise. 
@@ -70,6 +70,11 @@ class KeyCombo
 		}
 	}
 	
+	/**
+	 * This function turns a node into a string. This will be useful for the purposes of turning the game into a savable XML file.
+	 * @param node
+	 * @return
+	 */
 	private String nodeToString(Node node)
 	{
 		StringWriter sw = new StringWriter();
