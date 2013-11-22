@@ -77,7 +77,7 @@ public class UtopianEngine
 		}
 		String instring = "";
 		
-		usPrint("Welcome to the Utopian Engine. Below you will find a list of games you have\nplaced in the appropriate folder. In order to play a game, simply type the name\nof the file.\n\n");
+		usPrintln("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
 		
 		printGameList();				// Outputs a list of available games.
 
@@ -786,7 +786,25 @@ public class UtopianEngine
 	 */
 	private static boolean usPrint(String args)
 	{
-		System.out.print(args);
+		int line_length = 80;
+		int curr_line = 0;
+		String[] words = args.split("[ -]");
+		String big_ol_string = "";
+		for(int i = 0; i < words.length; i++)
+		{
+			if(words[i].length() + curr_line > line_length)
+			{
+				System.out.println();
+				curr_line = 0;
+			}
+			System.out.print(words[i]);
+			curr_line += words[i].length() + 1;
+			if(curr_line < 80)
+			{
+				System.out.print(" ");
+			}
+		}
+		System.out.println(big_ol_string);
 		return true;
 	}
 
