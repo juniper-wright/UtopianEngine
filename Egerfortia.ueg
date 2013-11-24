@@ -48,11 +48,21 @@
 		</room>
 		<room x="1" y="0"> <!-- Old Man Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>As you enter the room, you see an elaborate arcane circle, and a robed figure, who asks you to APPROACH him.</shortdescription>
+				<longdescription>As you enter the room, you note that on the floor to the south is a large arcane-looking circle, extremely complex. The source of the whispers becomes immediately apparent to you, as there is a heavily robed figure standing in the middle of the circle, his face shadowed. "Ah, Chaxvor. Oh, no, your name isn't the only thing I know about you. But that's not the important thing. APPROACH me, and I will tell you all you need to know about this wretched place.</longdescription>
+				<key match="approach( him)?">
+					<utopiascript>print As you approach, he thanks you for your trust. "It is not often that one wanders in here, willing to trust me. In exchange for your assistance, I offer you mine. I have divined the secrets of the Constitution of Bacrum, but I am far too old to act upon them. I have been trapped in here for fifty years by the library's magic, but you are my ticket out." He hands you a tattered old bag. "You will need this. It is a special bag of holding, which you will use to carry very special objects. You see, the Constitution is not here. It is not anywhere. Instead, it is everywhere. Well, not quite. But the Constitution's writers put ten ideas into it when they devised it:\n\n</utopiascript>
+					<utopiascript>print "Unity, Deception, Passion, Restraint, Foresight, Blindness, Discovery, Stagnancy, Elegance, and Bureaucracy.\n\n</utopiascript>
+					<utopiascript>print "The Constitution's magic has caused it to split into ten personified books, each in its own room in this library. Finding them will not be easy, but I did manage to find one before my strength waned to nothingness. In that bag, you will find the Book of Foresight.\n\n</utopiascript>
+					<utopiascript>print "Type "inv" or "inventory" to look in your bag. A few more pointers: type "move" and then a cardinal direction to move between rooms - or you can drop the "move" entirely. If you want to see more of a room, type "desc" or "describe". When you find all ten books, simply speak, "Cthulhu fhtagn", and I will appear.\n\n</utopiascript>
+					<utopiascript>print "...oh, and no more ALL CAPS to tell you what to do."</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+					<utopiascript>additem 4</utopiascript>
 				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>As you enter the room, you see an elaborate arcane circle, and remember that the old man asked you to say "Cthulhu fhtagn" when you need him to appear.</shortdescription>
+				<longdescription>As you enter the room, you see an elaborate arcane circle, and remember that the old man asked you to say "Cthulhu fhtagn" when you need him to appear.</longdescription>
 			</roomstate>
 		</room>
 		<room x="2" y="0"> <!-- Entrance Room -->

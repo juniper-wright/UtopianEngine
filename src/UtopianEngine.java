@@ -145,7 +145,7 @@ public class UtopianEngine
 	
 	private static String getKey()
 	{
-		usPrint("\n\n> ");
+		System.out.print("\n\n> ");
 		String key = scanner.nextLine().toLowerCase();
 		usPrintln();
 		return key;
@@ -773,16 +773,18 @@ public class UtopianEngine
 	
 	private static boolean usInventory(String args)
 	{
-		boolean print = false;
+		String inv_output = "";
 		for(int i = 0;i < _itemnames.length; i++)
 		{
 			if(_itemquantities[i] > 0 && !_itemnames[i].trim().equals(""))
 			{
-				usPrintln(String.format("%-50sx%s", i+":"+_itemnames[i], _itemquantities[i]));
-				print = true;
+				inv_output = inv_output + String.format("%-50sx%s", _itemnames[i], _itemquantities[i]) + "\n";
 			}
 		}
-		if(!print)
+		inv_output = inv_output.substring(0, inv_output.length() - 1);
+		usPrint(inv_output);
+		
+		if(inv_output.equals(""))
 		{
 			usPrintln("You do not have any items.");
 		}
@@ -814,9 +816,10 @@ public class UtopianEngine
 	private static boolean usPrint(String args)
 	{
 		int curr_line = 0;
-		String[] words = args.split("[ -]");
+		String[] words = args.split(" ");
 		for(int i = 0; i < words.length; i++)
 		{
+//			System.out.println("-->" + words[i] + "<--");
 			if(words[i].length() + curr_line > _linelength)
 			{
 				System.out.println();
@@ -824,7 +827,7 @@ public class UtopianEngine
 			}
 			System.out.print(words[i].replace("\\n", "\n"));
 			curr_line += words[i].length() + 1;
-			if(curr_line < _linelength)
+			if(curr_line < _linelength && i+1 != words.length)
 			{
 				System.out.print(" ");
 			}
