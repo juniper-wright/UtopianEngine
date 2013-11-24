@@ -19,8 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.script.Bindings;
 import javax.script.ScriptContext;
@@ -259,7 +257,6 @@ public class UtopianEngine
 		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
-			System.out.println("file not found is IO exception");
 			e.printStackTrace();
 		}
 	}
@@ -308,7 +305,7 @@ public class UtopianEngine
 		
 		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
 
-		if(helpNode.getNamespaceURI() == null)
+		if(helpNode == null || helpNode.getNamespaceURI() == null)
 		{
 			_globalkeys[2] = new KeyCombo("help", stringToNodeList("<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.</utopiascript>"));
 		}
@@ -678,7 +675,7 @@ public class UtopianEngine
 			throw new UtopiaException("Invalid format for command addItem: \"" + itemNumString + "\" is unparseable as an integer");
 		}
 
-		if(itemNum > _itemnames.length)
+		if(itemNum >= _itemnames.length)
 		{
 			throw new UtopiaException("Invalid argument for command addItem: \"" + itemNum + "\" is out of bounds for items list.");
 		}
@@ -776,14 +773,20 @@ public class UtopianEngine
 	
 	private static boolean usInventory(String args)
 	{
+		boolean print = false;
 		for(int i = 0;i < _itemnames.length; i++)
 		{
-			if(_itemquantities[i] > 0)
+			if(_itemquantities[i] > 0 && !_itemnames[i].trim().equals(""))
 			{
-				usPrintln(String.format("%-50sx%s", _itemnames[i], _itemquantities[i]));
+				usPrintln(String.format("%-50sx%s", i+":"+_itemnames[i], _itemquantities[i]));
+				print = true;
 			}
 		}
-		return usPrintln();
+		if(!print)
+		{
+			usPrintln("You do not have any items.");
+		}
+		return true;
 	}
 
 	private static boolean usLoadGame(String args)
@@ -819,7 +822,7 @@ public class UtopianEngine
 				System.out.println();
 				curr_line = 0;
 			}
-			System.out.print(words[i]);
+			System.out.print(words[i].replace("\\n", "\n"));
 			curr_line += words[i].length() + 1;
 			if(curr_line < _linelength)
 			{
@@ -857,60 +860,53 @@ public class UtopianEngine
 
 	private static boolean usRequireItem(String args)
 	{
-		String[] args_arr = args.split(" ", 2);
-		String itemNumString;
-		int itemNum;
+		String[] arg_split = args.split(" ", 3);
+		String itemNumString = arg_split[0];
 		String quantityString;
+		int itemNum;
 		int quantity;
-
-		Pattern itemNumPattern = Pattern.compile("[^(]*");
-		Matcher itemNumMatcher = itemNumPattern.matcher(args_arr[0]);
-		itemNumString = itemNumMatcher.group();
+		
 		try
 		{
 			itemNum = Integer.parseInt(itemNumString);
 		}
 		catch(NumberFormatException e)
 		{
-			throw new UtopiaException("Invalid format for command requireItem: \"" + itemNumString + "\" is unparseable as an integer");
+			throw new UtopiaException("Invalid argument for command requireItem: \"" + itemNumString + "\" is unparseable as an integer");
 		}
-		
-		if(itemNum > _itemnames.length)
+
+		if(itemNum >= _itemnames.length)
 		{
 			throw new UtopiaException("Invalid argument for command requireItem: \"" + itemNum + "\" is out of bounds for items list.");
 		}
 		
-		if(args_arr[0].contains("(") && args_arr[0].contains(")"))
-		{	
-			Pattern quantityPattern = Pattern.compile("(?<=\\[)(.*?)(?=\\])");
-			Matcher quantityMatcher = quantityPattern.matcher(args_arr[0]);
-			quantityString = quantityMatcher.group(1);
+		if(arg_split.length > 1)
+		{
+			quantityString = arg_split[1];
+			
 			try
 			{
-				quantity = Integer.parseInt(itemNumString); 
+				quantity = Integer.parseInt(quantityString); 
 			}
 			catch(NumberFormatException e)
 			{
-				throw new UtopiaException("Invalid format for command requireItem: \"" + quantityString + "\" is unparseable as an integer.");
+				throw new UtopiaException("Invalid argument for command requireItem: \"" + quantityString + "\" is unparseable as an integer.");
 			}
 		}
 		else
 		{
 			quantity = 1;
 		}
-		
-		if(_itemquantities[itemNum] < quantity)
+
+		if(arg_split.length > 2)
 		{
-			if(args_arr.length > 1)
+			if(_itemquantities[itemNum] < quantity)
 			{
-				usPrintln(args_arr[1]);
+				return false;
 			}
-			return false;
 		}
-		else
-		{
-			return true;
-		}
+		
+		return true;
 	}
 
 	private static boolean usRoomstate(String args)
