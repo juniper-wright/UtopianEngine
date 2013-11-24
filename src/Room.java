@@ -4,7 +4,6 @@
 
 // This class represents a room, and contains all pertinent data. See variable declaration for explanation of variable usage.
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

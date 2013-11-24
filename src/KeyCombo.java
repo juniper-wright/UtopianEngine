@@ -9,7 +9,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -33,7 +32,7 @@ class KeyCombo
 	
 	public KeyCombo(Element keycomboNode)
 	{
-		String uscript = "";
+//		String uscript = "";
 //		NodeList nodes = keycomboNode.getChildNodes();
 //		for(int i = 0; i < nodes.getLength(); i++)
 //		{
@@ -75,6 +74,7 @@ class KeyCombo
 	 * @param node
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private String nodeToString(Node node)
 	{
 		StringWriter sw = new StringWriter();
