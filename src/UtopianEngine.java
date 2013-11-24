@@ -49,6 +49,7 @@ public class UtopianEngine
 	static KeyCombo[] _globalkeys;		// 
 	static String[] _itemnames;			//
 	static int[] _itemquantities;		//
+	static int _linelength = 80;
 	static ScriptEngineManager mgr = new ScriptEngineManager();
 	static ScriptEngine js_engine = mgr.getEngineByName("js");
     static Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
@@ -779,25 +780,22 @@ public class UtopianEngine
 	 */
 	private static boolean usPrint(String args)
 	{
-		int line_length = 80;
 		int curr_line = 0;
 		String[] words = args.split("[ -]");
-		String big_ol_string = "";
 		for(int i = 0; i < words.length; i++)
 		{
-			if(words[i].length() + curr_line > line_length)
+			if(words[i].length() + curr_line > _linelength)
 			{
-				System.out.println();
+				usPrintln();
 				curr_line = 0;
 			}
-			System.out.print(words[i]);
+			usPrint(words[i]);
 			curr_line += words[i].length() + 1;
-			if(curr_line < 80)
+			if(curr_line < _linelength)
 			{
-				System.out.print(" ");
+				usPrint(" ");
 			}
 		}
-		System.out.println(big_ol_string);
 		return true;
 	}
 
