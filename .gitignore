@@ -15,6 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+Christmas.ueg
 
 # External tool builders
 .externalToolBuilders/
