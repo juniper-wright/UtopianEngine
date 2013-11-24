@@ -49,7 +49,9 @@ public class UtopianEngine
 	static KeyCombo[] _globalkeys;		// 
 	static String[] _itemnames;			//
 	static int[] _itemquantities;		//
-	static int _linelength = 80;
+	static int _linelength = 80;		// Controls the width of the lines printed by usPrint
+	static boolean _scoredisplay = false;	// Controls whether or not the player's score is displayed
+	static int _maxscore = 0;				// If set to anything other than 0, will not show " of <MAX>" when displaying the score.
 	static ScriptEngineManager mgr = new ScriptEngineManager();
 	static ScriptEngine js_engine = mgr.getEngineByName("js");
     static Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
@@ -105,11 +107,16 @@ public class UtopianEngine
 	 */
 	private static void run()
 	{
+		_score = 0;
 		try
 		{
 			while(true)
 			{
 				NodeList event = null;
+				if(_scoredisplay)
+				{
+					usPrintScore();
+				}
 				_key = getKey();
 
 				for(int i = 0; i < _globalkeys.length && event == null; i++)
@@ -150,6 +157,8 @@ public class UtopianEngine
 		String progress = "";
 		String s_x;
 		String s_y;
+		String s_maxscore;
+		String score_display;
 		/**		END TEMPORARY VARIABLES		**/
 		
 		try
@@ -170,6 +179,13 @@ public class UtopianEngine
 			name = gameNode.getAttribute("name");
 			s_x = gameNode.getAttribute("x");
 			s_y = gameNode.getAttribute("y");
+			s_maxscore = gameNode.getAttribute("maxscore");
+			
+			score_display = gameNode.getAttribute("score");
+			if(score_display.equalsIgnoreCase("on") || score_display.equalsIgnoreCase("true"))
+			{
+				_scoredisplay = true;
+			}
 			
 			if(name.equals(""))
 			{
@@ -179,7 +195,7 @@ public class UtopianEngine
 			try
 			{
 				progress = "x";
-				if(s_x.equals(""))
+				if(!s_x.equals(""))
 				{
 					_x = 0;
 				}
@@ -197,10 +213,16 @@ public class UtopianEngine
 				{
 					_y = Integer.parseInt(s_y);
 				}
+				
+				progress = "maxscore";
+				if(!s_maxscore.equals(""))
+				{
+					_maxscore = Integer.parseInt(s_maxscore);
+				}
 			}
 			catch(NumberFormatException e)
 			{			
-				throw new LoadGameException("Parameter \"" + progress + "\" on Game node is unparsable as Integer.");
+				throw new LoadGameException("Parameter \"" + progress + "\" on Game node is unparsable as an Integer.");
 			}
 			
 			
@@ -786,14 +808,14 @@ public class UtopianEngine
 		{
 			if(words[i].length() + curr_line > _linelength)
 			{
-				usPrintln();
+				System.out.println();
 				curr_line = 0;
 			}
-			usPrint(words[i]);
+			System.out.print(words[i]);
 			curr_line += words[i].length() + 1;
 			if(curr_line < _linelength)
 			{
-				usPrint(" ");
+				System.out.print(" ");
 			}
 		}
 		return true;
@@ -807,6 +829,18 @@ public class UtopianEngine
 	private static boolean usPrintln(String args)
 	{
 		return usPrint(args + "\n");
+	}
+	
+	private static boolean usPrintScore()
+	{
+		String score = "Score: " + new Integer((int)_score).toString();
+		if(_maxscore > 0)
+		{
+			score = score + " of " + _maxscore;
+		}
+		usPrintln();
+		System.out.println(String.format("%" + _linelength + "s", score));
+		return true;
 	}
 
 	private static boolean usQuitGame(String args)

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<game name="Egerfortia" x="0" y="0">
+<game name="Egerfortia" x="0" y="0" score="on" maxscore="100">
 	<commands>
 		<help>
 			<!--
