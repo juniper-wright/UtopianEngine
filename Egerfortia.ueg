@@ -1,40 +1,120 @@
-Egerfortia
-<>GAMEPARTSPLIT<>
-2
-<>GAMEPARTSPLIT<>
-2
-<>GAMEPARTSPLIT<>
-Welcome to Egerfortia!<>GETINTROSPLIT<>
-The Bureaucracy Guild of Kalum periodically sends bands of brave and fervent volunteers into the depths of the Government Affairs Office of Bacrum to locate the possibly mythical Constitution of Bacrum. Few return alive, and those that do are horribly scarred, both mentally and physically.<>GETINTROSPLIT<>
-The sad truth of the matter is that the government proceedings of the Empire of Bacrum are a terrifying tangle of redundancy and confusion. The problem stems from the first Constitution of Bacrum (or possibly Constitutions of Bacrum, or Gentleman’s Agreement of Bacrum, depending on which historian you believe), which was composed by delegates from the different city-states that spread across the southern part of the continent of Archelum.<>GETINTROSPLIT<>
-Some have theorized that the maddening language of the original constitution arose from a fervent paranoia on the part of each of the signers. The thinking was, apparently, that if none of them could completely understand the agreement, none would be able to use the power of the agreement to gain control over any of the others. This was necessary because of the magical nature of the pact, and its power to enforce the Law upon the nations involved.<>GETINTROSPLIT<>
-Whatever the reasoning, the end result was a document so convoluted that the necessary alterations that inevitably sprung up only a decade later were impossible. The new delegates could not even understand how to amend the document. Eventually, a temporary system was sorted out, and the original constitution was shelved in a back room of the new Government Affairs Office.<>GETINTROSPLIT<>
-The temporary system and changes were then tested against the powerful magic of the Constitution, resulting, in some cases, in rather tragic accidents. However, eventually an extremely complex and somewhat arbitrary system emerged. Since then, the general process has become tradition: any time a change needs to be made, the old system is shoved into a room added onto the increasingly labyrinthine Government Affairs Office, and a new system is tenuously worked out.<>GETINTROSPLIT<>
-You are Chaxvor Drael, a student of Bacrum Law at the almost equally labyrinthine Egerfort University. You have decided, on your own free will, to brave the depths of the Bacrum Legal Library to attempt to find the mythic Constitution of Bacrum, if it exists. Your determination is second to none, and your skill in avoiding death is hopefully equally exceptional; the library has never liked intruders.<>GETINTROSPLIT<>
-<>GAMEPARTSPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false<>INVHAVESPLIT<>
-false
-<>GAMEPARTSPLIT<>
-Book of Unity<>INVNAMESPLIT<>
-Book of Deception<>INVNAMESPLIT<>
-Book of Passion<>INVNAMESPLIT<>
-Book of Restraint<>INVNAMESPLIT<>
-Book of Foresight<>INVNAMESPLIT<>
-Book of Blindness<>INVNAMESPLIT<>
-Book of Discovery<>INVNAMESPLIT<>
-Book of Stagnance<>INVNAMESPLIT<>
-Book of Elegance<>INVNAMESPLIT<>
-Book of Bureaucracy
-<>GAMEPARTSPLIT<>
-
-<>GAMEPARTSPLIT<>
-4
-<>GAMEPARTSPLIT<>
+<?xml version="1.0"?>
+<game name="Egerfortia" x="2" y="0" score="on" maxscore="100">
+	<commands>
+		<globalkeys>
+			<key match="cthulhu fhtagn">
+				<utopiascript>requireItem 0 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 1 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 2 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 3 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 4 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 5 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 6 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 7 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 8 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>requireItem 9 1 You need to find all of the books first!</utopiascript>
+			</key>
+			<key match="">
+				<utopiascript>print You should probably get moving, ya lazy bum!</utopiascript>
+				<utopiascript>addItem 10 1</utopiascript>
+				<utopiascript>requireItem 10 10 x</utopiascript>
+				<utopiascript>quitgame \nYOU HAVE BEEN EATEN BY A GRUE!</utopiascript>
+			</key>
+		</globalkeys>
+	</commands>
+	<items>
+		<item quantity="0">Item Zero</item>
+		<item quantity="0">Item One</item>
+		<item quantity="0">Item Two</item>
+		<item quantity="0">Item Three</item>
+		<item quantity="0">Item Four</item>
+		<item quantity="0">Item Five</item>
+		<item quantity="0">Item Six</item>
+		<item quantity="0">Item Seven</item>
+		<item quantity="0">Item Eight</item>
+		<item quantity="0">Item Nine</item>
+		<item quantity="0"> </item>
+	</items>
+	<rooms width="2" height="2">
+		<room x="0" y="0">
+			<roomkey match="regex3">
+				<javascript></javascript>
+				<utopiascript>print WHOOHOO!</utopiascript>
+			</roomkey>
+			<roomkey match="regex2">
+				<javascript></javascript>
+				<utopiascript>print ALSO WHOOHOO!</utopiascript>
+				<utopiascript>goto 0 0</utopiascript>
+			</roomkey>
+			<roomstate>
+				<shortdescription>THIS IS A SHORT DESCRIPTION.</shortdescription>
+				<longdescription>THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. </longdescription>
+				<key match="&quot;">
+					<utopiascript>print You entered: "</utopiascript>
+				</key>
+				<key match="print">
+					<utopiascript>print I'm printing.</utopiascript>
+				</key>
+				<key match="println">
+					<utopiascript>println I'm printlning.</utopiascript>
+				</key>
+				<key match="pause">
+					<utopiascript>pause I'm pausing the game.</utopiascript>
+				</key>
+				<key match="description">
+					<utopiascript>description</utopiascript>
+				</key>
+				<key match="additem">
+					<utopiascript>additem 1 5</utopiascript>
+				</key>
+				<key match="require">
+					<utopiascript>requireitem 1</utopiascript>
+				</key>
+				<key match="takeitem">
+					<utopiascript>takeitem 1 3 YOU DON'T HAVE ENOUGH</utopiascript>
+				</key>
+				<key match="roomstate">
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+				<key match="goto">
+					<utopiascript>goto 1 1</utopiascript>
+				</key>
+				<key match="go">
+					<utopiascript>go +1/+1</utopiascript>
+				</key>
+				<key match="scoreup">
+					<utopiascript>score +5</utopiascript>
+				</key>
+				<key match="scoredown">
+					<utopiascript>score -5</utopiascript>
+				</key>
+				<key match="scoreset">
+					<utopiascript>score = 5</utopiascript>
+				</key>
+				<key match="printinv">
+					<utopiascript>inventory</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>THIS IS SHORT DESCRIPTION NUMBER 2.</shortdescription>
+				<longdescription>THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILS ABOUT THE ROOM. WE ARE IN ROOMSTATE NUMBER 2.</longdescription>
+				<key match="go back">
+					<utopiascript>roomstate -1</utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="1" y="1">
+			<roomstate>
+				<shortdescription>Room 2's short description</shortdescription>
+				<longdescription>Room 2's longer description, of sorts.</longdescription>
+				<key match="back to room 1">
+					<utopiascript>go -1/-1</utopiascript>
+				</key>
+			</roomstate>
+		</room>
+	</rooms>
+	<setup>
+		<javascript></javascript>
+		<utopiascript></utopiascript>
+	</setup>
+</game>
