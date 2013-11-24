@@ -24,9 +24,24 @@ public class Roomstate
 	// Main constructor.
 	public Roomstate(Node roomstateNode)
 	{
-		this._longDescription = ((Element)roomstateNode).getElementsByTagName("longdescription").item(0).getTextContent().trim();
-				
-		this._shortDescription = ((Element)roomstateNode).getElementsByTagName("shortdescription").item(0).getTextContent().trim();
+		try
+		{
+			this._longDescription = ((Element)roomstateNode).getElementsByTagName("longdescription").item(0).getTextContent().trim();
+		}
+		catch(Exception e)
+		{
+			this._longDescription = "";
+		}
+		
+
+		try
+		{
+			this._shortDescription = ((Element)roomstateNode).getElementsByTagName("shortdescription").item(0).getTextContent().trim();
+		}
+		catch(Exception e)
+		{
+			this._shortDescription = "";
+		}
 		
 		NodeList keyCombos = ((Element)roomstateNode).getElementsByTagName("key");
 		

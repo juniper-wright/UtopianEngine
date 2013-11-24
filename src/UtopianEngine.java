@@ -196,7 +196,7 @@ public class UtopianEngine
 			try
 			{
 				progress = "x";
-				if(!s_x.equals(""))
+				if(s_x.equals(""))
 				{
 					_x = 0;
 				}
@@ -556,7 +556,7 @@ public class UtopianEngine
 	{
 		if(events == null)
 		{
-			usPrintln("I don't understand that command.");
+			usPrint("I don't understand that command.");
 			return;
 		}
 		else if(events.getLength() == 0)
@@ -618,7 +618,7 @@ public class UtopianEngine
 	{
 		String arr[] = command.trim().split("[ ]+", 2);
 		String function = arr[0].toLowerCase().trim();
-		String args = (arr.length > 1 ? arr[1] : "");
+		String args = (arr.length > 1 ? arr[1].trim() : "");
 		switch(function)
 		{
 			case "requireitem":
@@ -844,6 +844,7 @@ public class UtopianEngine
 	
 	private static boolean usPrintScore()
 	{
+		System.out.println();
 		String score = "Score: " + new Integer((int)_score).toString();
 		if(_maxscore > 0)
 		{

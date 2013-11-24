@@ -68,14 +68,16 @@ public class Room
 	public NodeList checkKeys(String key)
 	{
 		NodeList script = null;
-		for(int i = 0; i < _roomkeys.length && script == null; i++)
+		for(int i = 0; i < this._roomkeys.length && script == null; i++)
 		{
-			script = _roomkeys[i].checkKey(key);
+			script = this._roomkeys[i].checkKey(key);
+			System.out.println("Checking a room key!");
 		}
-		for(int i = 0; i < _roomstates.length && script == null; i++)
+		if(script == null)
 		{
-			script = _roomstates[i].checkKeys(key);
+			script = this._roomstates[this._roomstate].checkKeys(key);
 		}
+		
 		return script;
 	}
 	

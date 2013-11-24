@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<game name="Egerfortia" x="2" y="0" score="on" maxscore="100">
+<game name="Egerfortia" x="2" y="0">
 	<commands>
 		<globalkeys>
 			<key match="cthulhu fhtagn">
@@ -23,92 +23,178 @@
 		</globalkeys>
 	</commands>
 	<items>
-		<item quantity="0">Item Zero</item>
-		<item quantity="0">Item One</item>
-		<item quantity="0">Item Two</item>
-		<item quantity="0">Item Three</item>
-		<item quantity="0">Item Four</item>
-		<item quantity="0">Item Five</item>
-		<item quantity="0">Item Six</item>
-		<item quantity="0">Item Seven</item>
-		<item quantity="0">Item Eight</item>
-		<item quantity="0">Item Nine</item>
-		<item quantity="0"> </item>
+		<item quantity="0">Book of Unity</item>
+		<item quantity="0">Book of Deception</item>
+		<item quantity="0">Book of Passion</item>
+		<item quantity="0">Book of Restraint</item>
+		<item quantity="0">Book of Foresight</item>
+		<item quantity="0">Book of Blindness</item>
+		<item quantity="0">Book of Discovery</item>
+		<item quantity="0">Book of Stagnance</item>
+		<item quantity="0">Book of Elegance</item>
+		<item quantity="0">Book of Bureaucracy</item>
+		<item quantity="0"> </item> <!-- Number of times the player has entered nothing -->
+		<item quantity="0"> </item> <!-- Number of times the player has signed in the bureaucracy room -->
 	</items>
-	<rooms width="2" height="2">
-		<room x="0" y="0">
-			<roomkey match="regex3">
-				<javascript></javascript>
-				<utopiascript>print WHOOHOO!</utopiascript>
-			</roomkey>
-			<roomkey match="regex2">
-				<javascript></javascript>
-				<utopiascript>print ALSO WHOOHOO!</utopiascript>
-				<utopiascript>goto 0 0</utopiascript>
-			</roomkey>
+	<rooms width="4" height="4">
+		<room x="0" y="0"> <!-- Discovery Room -->
 			<roomstate>
-				<shortdescription>THIS IS A SHORT DESCRIPTION.</shortdescription>
-				<longdescription>THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILED DETAILS ABOUT THE ROOM. </longdescription>
-				<key match="&quot;">
-					<utopiascript>print You entered: "</utopiascript>
-				</key>
-				<key match="print">
-					<utopiascript>print I'm printing.</utopiascript>
-				</key>
-				<key match="println">
-					<utopiascript>println I'm printlning.</utopiascript>
-				</key>
-				<key match="pause">
-					<utopiascript>pause I'm pausing the game.</utopiascript>
-				</key>
-				<key match="description">
-					<utopiascript>description</utopiascript>
-				</key>
-				<key match="additem">
-					<utopiascript>additem 1 5</utopiascript>
-				</key>
-				<key match="require">
-					<utopiascript>requireitem 1</utopiascript>
-				</key>
-				<key match="takeitem">
-					<utopiascript>takeitem 1 3 YOU DON'T HAVE ENOUGH</utopiascript>
-				</key>
-				<key match="roomstate">
-					<utopiascript>roomstate +1</utopiascript>
-				</key>
-				<key match="goto">
-					<utopiascript>goto 1 1</utopiascript>
-				</key>
-				<key match="go">
-					<utopiascript>go +1/+1</utopiascript>
-				</key>
-				<key match="scoreup">
-					<utopiascript>score +5</utopiascript>
-				</key>
-				<key match="scoredown">
-					<utopiascript>score -5</utopiascript>
-				</key>
-				<key match="scoreset">
-					<utopiascript>score = 5</utopiascript>
-				</key>
-				<key match="printinv">
-					<utopiascript>inventory</utopiascript>
-				</key>
-			</roomstate>
-			<roomstate>
-				<shortdescription>THIS IS SHORT DESCRIPTION NUMBER 2.</shortdescription>
-				<longdescription>THIS IS A MUCH LONGER DESCRIPTION THAT INCLUDES MORE DETAILS ABOUT THE ROOM. WE ARE IN ROOMSTATE NUMBER 2.</longdescription>
-				<key match="go back">
-					<utopiascript>roomstate -1</utopiascript>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
 				</key>
 			</roomstate>
 		</room>
-		<room x="1" y="1">
+		<room x="1" y="0"> <!-- Old Man Room -->
 			<roomstate>
-				<shortdescription>Room 2's short description</shortdescription>
-				<longdescription>Room 2's longer description, of sorts.</longdescription>
-				<key match="back to room 1">
-					<utopiascript>go -1/-1</utopiascript>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="2" y="0"> <!-- Entrance Room -->
+			<roomstate>
+				<shortdescription>This is the room in which you woke up. There's not a whole lot here, except for doors.</shortdescription>
+				<longdescription>As you wake up, you find yourself in a room that is a perfect cube, about 30 feet to a side. You have a strange feeling that every room in this place is similarly shaped and sized, and you see three doors; to the North, East, and West. You shake your head, and try to REMEMBER what's going on.</longdescription>
+				<key match="remember">
+					<utopiascript>print The Bureaucracy Guild of Kalum periodically sends bands of brave and fervent volunteers into the depths of the Government Affairs Office of Bacrum to locate the possibly mythical Constitution of Bacrum. Few return alive, and those that do are horribly scarred, both mentally and physically.</utopiascript>
+					<utopiascript>pause</utopiascript>
+					<utopiascript>print The sad truth of the matter is that the government proceedings of the Empire of Bacrum are a terrifying tangle of redundancy and confusion. The problem stems from the first Constitution of Bacrum (or possibly Constitutions of Bacrum, or Gentleman's Agreement of Bacrum, depending on which historian you believe), which was composed by delegates from the different city-states that spread across the southern part of the continent of Archelum.</utopiascript>
+					<utopiascript>pause</utopiascript>
+					<utopiascript>print Some have theorized that the maddening language of the original constitution arose from a fervent paranoia on the part of each of the signers. The thinking was, apparently, that if none of them could completely understand the agreement, none would be able to use the power of the agreement to gain control over any of the others. This was necessary because of the magical nature of the pact, and its power to enforce the Law upon the nations involved.</utopiascript>
+					<utopiascript>pause</utopiascript>
+					<utopiascript>print Whatever the reasoning, the end result was a document so convoluted that the necessary alterations that inevitably sprung up only a decade later were impossible. The new delegates could not even understand how to amend the document. Eventually, a temporary system was sorted out, and the original constitution was shelved in a back room of the new Government Affairs Office.</utopiascript>
+					<utopiascript>pause</utopiascript>
+					<utopiascript>print The temporary system and changes were then tested against the powerful magic of the Constitution, resulting, in some cases, in rather tragic accidents. However, eventually an extremely complex and somewhat arbitrary system emerged. Since then, the general process has become tradition: any time a change needs to be made, the old system is shoved into a room added onto the increasingly labyrinthine Government Affairs Office, and a new system is tenuously worked out.</utopiascript>
+					<utopiascript>pause</utopiascript>
+					<utopiascript>print You are Chaxvor Drael, a student of Bacrum Law at the almost equally labyrinthine Egerfort University. You have decided, on your own free will, to brave the depths of the Bacrum Legal Library to attempt to find the mythic Constitution of Bacrum, if it exists. Your determination is second to none, and your skill in avoiding death is hopefully equally exceptional; the library has never liked intruders.</utopiascript>
+					<utopiascript>pause</utopiascript>
+					<utopiascript>print You hear a whisper coming from the room to the west of you: "Psst, c'mere, kid, MOVE WEST, or you'll never solve this library."</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>This is the room in which you woke up. There's not a whole lot here, except for doors.</shortdescription>
+				<shortdescription>This is the room in which you woke up. There's not a whole lot here, except for doors. There are doors to the North, East, and West.</shortdescription>
+			</roomstate>
+		</room>
+		<room x="3" y="0"> <!-- Restraint Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="0" y="1"> <!-- Chair Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="1" y="1"> <!-- Foresight Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="2" y="1"> <!-- Passion Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="3" y="1"> <!-- Empty Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="0" y="2"> <!-- Get Ye Flask Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="1" y="2"> <!-- Unity Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="2" y="2"> <!-- Deception Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="3" y="2"> <!-- Stagnancy Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="0" y="3"> <!-- Bureaucracy Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="1" y="3"> <!-- Blindness Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="2" y="3"> <!-- Rocks Fall Everyone Dies Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
+				</key>
+			</roomstate>
+		</room>
+		<room x="3" y="3"> <!-- Elegance Room -->
+			<roomstate>
+				<shortdescription></shortdescription>
+				<longdescription></longdescription>
+				<key match="">
+					<utopiascript></utopiascript>
 				</key>
 			</roomstate>
 		</room>
