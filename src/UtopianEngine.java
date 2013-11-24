@@ -60,25 +60,23 @@ public class UtopianEngine
 	
 	public static void main(String[] args)
 	{
+		String instring = "";
+
 		if(args.length > 0)
 		{
-			buildGameFromFile(args[0]);
-			if(args.length > 1)
-			{
-				usLoadState(args[1]);
-			}
-			usDescription("long");
-			run();
-			return;
+			instring = args[0];
 		}
-		String instring = "";
-		
-		usPrintln("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
-		
-		printGameList();				// Outputs a list of available games.
 
-		File f;
-		do
+		File f = new File(instring);
+		
+		if(!f.exists())
+		{
+			usPrintln("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
+		
+			printGameList();				// Outputs a list of available games.
+		}
+
+		while(!f.exists())
 		{
 			instring = getKey();	// Gets input.
 			if (instring.indexOf(".ueg") == -1)
@@ -95,9 +93,14 @@ public class UtopianEngine
 				}
 			}
 		}
-		while(!f.exists());
 
 		buildGameFromFile(instring);
+
+		if(args.length > 1)
+		{
+			usLoadState(args[1]);
+		}
+		
 		usDescription("long");
 		run();		// Runs game
 	}
@@ -215,7 +218,11 @@ public class UtopianEngine
 				}
 				
 				progress = "maxscore";
-				if(!s_maxscore.equals(""))
+				if(s_maxscore.equals(""))
+				{
+					_maxscore = 0;
+				}
+				else
 				{
 					_maxscore = Integer.parseInt(s_maxscore);
 				}
@@ -252,6 +259,7 @@ public class UtopianEngine
 		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
+			System.out.println("file not found is IO exception");
 			e.printStackTrace();
 		}
 	}
@@ -838,8 +846,7 @@ public class UtopianEngine
 		{
 			score = score + " of " + _maxscore;
 		}
-		usPrintln();
-		System.out.println(String.format("%" + _linelength + "s", score));
+		System.out.print(String.format("%" + _linelength + "s", score));
 		return true;
 	}
 
