@@ -21,8 +21,8 @@ Version 2.0 of the Utopian Engine will feature:
 	* SaveState - Save a user's position, score, inventory, roomstates
 	* LoadState - Load a state saved with the above
 	* ✔ LoadGame - LOAD A NEW GAME. Basically, I put this in for episodic gaming. More on this later.
-	* ✔ QuitGame - Ends the game. Used to denote winning or losing, or just quitting. The Utopian Engine does not discriminate.
-	* ✔ Inventory - Prints the user's inventory. If the user inputs "inv" or "inventory" at any time, this happens, but game developers can add it to another event if they'd like.
+	* ✔ QuitGame - Ends the game. Used to denote winning or losing, or just quitting. The Engine does not discriminate.
+	* ✔ Inventory - Prints the user's inventory.
 * JAVASCRIPT! Yes, the Utopian Engine supports JavaScript, and makes the user's input available to JavaScript for dynamic event-handling. With a bit of finagling, it is possible to make an RPG.
 * Two-dimensional array of Rooms, each of which can be completely independent of one another, or modify one another
 * Each Room has a list of Roomstates - when certain actions happen, developers can script the rooms to change, subtly or otherwise. Basically everything changes about the room when its state changes.
