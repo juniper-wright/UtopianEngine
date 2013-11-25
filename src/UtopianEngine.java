@@ -18,6 +18,7 @@
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.script.Bindings;
@@ -74,25 +75,39 @@ public class UtopianEngine
 			printGameList();				// Outputs a list of available games.
 		}
 
+		String filename = "none";
+		
 		while(!f.exists())
 		{
 			instring = getKey();	// Gets input.
-			if (instring.indexOf(".ueg") == -1)
-			{
-				instring = instring + ".ueg";
-			}
-			f = new File(instring);
+			
+			if (gameFiles.containsValue(instring)){
+				//search
+				filename = instring;
+			}else if (gameFiles.containsValue(instring + ".ueg")){
+				filename = instring + ".ueg";
+ 			}else{
+ 				//try parse as integer and check list
+ 				try{
+ 					int gameId = Integer.parseInt(instring);
+ 					if (gameFiles.containsKey(gameId)){
+ 						filename = gameFiles.get(gameId);
+ 					}
+ 				}catch(NumberFormatException nfx){
+ 				}
+ 			}
+			
+			f = new File(filename);
 			if(!f.exists())		// Makes sure the game exists
 			{
 				usPrintln("Sorry, game not found. Please try again.");
-				if (instring.indexOf(".ueg") == -1)
-				{
-					instring = instring + ".ueg";
-				}
 			}
 		}
 
-		buildGameFromFile(instring);
+		gameFiles.clear();
+		gameFiles = null;
+		
+		buildGameFromFile(filename);
 
 		if(args.length > 1)
 		{
@@ -1044,17 +1059,25 @@ public class UtopianEngine
 	    return false;
 	}
 
+	private static HashMap<Integer, String> gameFiles;
+	
 	private static void printGameList()
 	{
 		try
 		{
+			  if (gameFiles == null){
+				  gameFiles = new HashMap<Integer,String>();
+			  }
+			  gameFiles.clear();
+			  int gameId = 1;
+			  
 			  // Directory path here
 			  String path = "."; 
 			 
 			  String filename;
 			  File folder = new File(path);
 			  File[] listOfFiles = folder.listFiles(); 
-			 
+
 			  for (int i = 0; i < listOfFiles.length; i++) 
 			  {
 				  if (listOfFiles[i].isFile()) 
@@ -1062,7 +1085,9 @@ public class UtopianEngine
 					  filename = listOfFiles[i].getName();
 					  if (filename.toLowerCase().endsWith(".ueg"))
 					  {
-						  usPrintln(filename);
+						  gameFiles.put(gameId, filename);
+						  usPrintln("\t" + gameId + ". " + filename);
+						  gameId++;
 					  }
 				  }
 			  }
