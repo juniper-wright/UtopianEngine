@@ -36,6 +36,7 @@
 		</globalkeys>
 	</commands>
 	<items>
+		<!-- The "id" attribute is actually not read by the Engine. It's there for reference, for using addItem, takeItem, and requireItem -->
 		<item id="0">Book of Unity</item>
 		<item id="1">Book of Deception</item>
 		<item id="2">Book of Passion</item>
@@ -46,10 +47,10 @@
 		<item id="7">Book of Stagnancy</item>
 		<item id="8">Book of Elegance</item>
 		<item id="9">Book of Bureaucracy</item>
-		<item id="0"> </item> <!-- Number of times the player has entered nothing -->
-		<item id="0"> </item> <!-- Number of times the player has signed in the bureaucracy room -->
+		<item id="10"> </item> <!-- Number of times the player has entered nothing -->
+		<item id="11"> </item> <!-- Number of times the player has signed in the bureaucracy room -->
 	</items>
-	<rooms width="4" height="4">
+	<rooms width="4" height="4"> <!-- Sets the height and width of the dungeon. (0,0) is at the bottom-left, and it uses Cartesian, positive, coordinates -->
 		<room x="0" y="0"> <!-- Discovery Room -->
 			<roomstate>
 				<shortdescription>THIS ROOM IS DELIBERATELY EMPTY. IT HAS NOT BEEN IMPLEMENTED YET.</shortdescription>
