@@ -33,7 +33,7 @@
 		<item id="4">Book of Foresight</item>
 		<item id="5">Book of Blindness</item>
 		<item id="6">Book of Discovery</item>
-		<item id="7">Book of Stagnance</item>
+		<item id="7">Book of Stagnancy</item>
 		<item id="8">Book of Elegance</item>
 		<item id="9">Book of Bureaucracy</item>
 		<item id="0"> </item> <!-- Number of times the player has entered nothing -->
@@ -393,12 +393,62 @@
 			</roomstate>
 		</room>
 		<room x="3" y="2"> <!-- Stagnancy Room -->
+			<roomkey match="cross( bridge)?">
+				<utopiascript>print You cross the bridge without molestation. Nope, no trolls here!</utopiascript>
+			</roomkey>
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>There is a river in the room, and at the bottom of it is a raggedy-looking moss-covered book. At either end of the room is a bridge and a lever.</shortdescription>
+				<longdescription>Initially, all you notice is the roaring of rushing water. As you look around, you notice that the water is rushing along a trough, recessed into the floor, that spans the entire room, from the northwest to the southeast. There are two bridges crossing the water, on opposite ends of the trough. The walls, floor, and bridge are slick with condensation. As you get nearer the edge of the trough, you notice that it is about 4 feet deep, and that on the very bottom of the trough, in the middle of the room, is a book. The book looks as if it has been sitting in a swamp for quite some time; its pages are warped, it is wrapped in plant life, and the binding seems to be blanketed in moss. Next to each bridge is a lever. At the base of each lever is a number. The lever at the northwest end of the room is numbered 1, and the other is numbered 2.</longdescription>
+				<key match="(pull )?(lever )?1">
+					<utopiascript>print As you pull the lever, a dam swings into place at the northwest end of the room. As it closes, the water slows to a trickle, but the sound of the water against it is deafening. The book at the bottom of the trough is visibly angry, and wraps itself tightly in vines. There's no way to pick it up or pry the vines off.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
 				</key>
+				<key match="(pull )?(lever )?2">
+					<utopiascript>print As you pull the lever, a steel door swings into place at the bottom of the river, into the raging torrent. There's nothing there to keep it from swinging back, except the loudly complaining mechanism that is fighting against the current. The door will probably swing back out soon.</utopiascript>
+					<utopiascript>roomstate +2</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>In this room, trough runs northwest to southeast, and is devoid of water. At the bottom of the trough is a moss-covered book, that gives you the appearance of obstinately demanding to be submerged again.</shortdescription>
+				<longdescription>Initially, all you notice the roaring of water pounding at a steel door at the northwest end of the trough running through the room. The trough runs northwest to southeast, and is devoid of water. At the bottom of the trough is a moss-covered book, that gives you the appearance of obstinately demanding to be submerged again. There are two levers in the room: Lever 1 at the northwest end, and Lever 2 at the southeast end.</longdescription>
+				<key match="((take)|(grab)|(pick up)|(lift))(( the)? book)?">
+					<utopiascript>print You try and you try, but you can't pry the vines off of the book. It's stuck there.</utopiascript>
+				</key>
+				<key match="(pull )?(lever )?1">
+					<utopiascript>print The dam at the top of the river swings back open, and the water continues to flood through the room as before.</utopiascript>
+					<utopiascript>roomstate -1</utopiascript>
+				</key>
+				<key match="(pull )?(lever )?2">
+					<utopiascript>print A steel door at the southeast end of the room swings into place, then continues swinging up into the wall, and then goes back to where it was.</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>The steel door at the bottom of the river is taking a lot of pounding. It probably won't last much longer.</shortdescription>
+				<longdescription>There is a dammed river in the room, and at the bottom of it is a raggedy-looking moss-covered book. At either end of the room is a bridge and a lever. The steel door at the southeast end of the river is taking a lot of pounding. It probably won't last much longer. There are two levers in the room: Lever 1 at the northwest end, and Lever 2 at the southeast end.</longdescription>
+				<key match="(pull )?(lever )?1">
+					<utopiascript>print As you pull the lever, a steel door swings into place at the top of the river, leaving the trough full but unmoving. The water quickly darkens and fills with pond scum - much faster than it should have - and you hear an audible sigh come from beneath the water. The book floats to the top, and happily drifts towards you.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+				<key match=".*">
+					<utopiascript>print Took too long! The door SLAMS open, and the water continues flooding through the room.</utopiascript>
+					<utopiascript>roomstate -2</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>The trough in the room is darkened to almost black, and filled with pond scum. You can, however, see the book clearly floating happily on the water. You can even reach it from the shore!</shortdescription>
+				<longdescription>There is a trough recessed into the floor in the middle of the room, filled with water darkened to almost black, and filled with pond scum. You can, however, see the book clearly floating happily on the water. You feel a sense of completion, and of complacency welling forth from the book, which is within arm's reach of the edge of the trough. There are bridges and levers at the northwest and southeast corners of the room.</longdescription>
+				<key match="(pull )?(lever )?[1-2]">
+					<utopiascript>print As you pull the lever, a steel door swings into place and then just keeps swinging. It bounces off of the wall, then swings back to where it started.</utopiascript>
+				</key>
+				<key match="((take)|(grab)|(pick up)|(lift))(( the)? book)?">
+					<utopiascript>print You received the Book of Stagnancy!</utopiascript>
+					<utopiascript>addItem 7</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>There is a trough recessed into the floor in the middle of the room, filled with water darkened to almost black, and filled with pond scum. The Book of Stagnancy used to sit at the bottom of the trough. There are bridges and levers at the northwest and southeast corners of the room.</shortdescription>
+				<longdescription>There is a trough recessed into the floor in the middle of the room, filled with water darkened to almost black, and filled with pond scum. The Book of Stagnancy used to sit at the bottom of the trough. There are bridges and levers at the northwest and southeast corners of the room.</longdescription>
 			</roomstate>
 		</room>
 		<room x="0" y="3"> <!-- Bureaucracy Room -->
