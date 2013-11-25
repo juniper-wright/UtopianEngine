@@ -5,6 +5,7 @@
 		<utopiascript>score +5</utopiascript> -- increase by 5
 		<utopiascript>score -5</utopiascript> -- decrease by 5
 		<utopiascript>score =5</utopiascript> -- set to 5
+	-->
 	<commands>
 		<globalkeys>
 			<key match="cthulhu fhtagn">
