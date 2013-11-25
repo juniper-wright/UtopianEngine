@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<game name="Egerfortia" x="2" y="0">
+<game name="Egerfortia" x="2" y="0"> <!-- The Engine supports score tracking. In this tag, add score="on", and if you want to display a maxscore, add maxscore="###" as well -->
+	<!--
+		In order to modify the player's score, use:
+		<utopiascript>score +5</utopiascript> -- increase by 5
+		<utopiascript>score -5</utopiascript> -- decrease by 5
+		<utopiascript>score =5</utopiascript> -- set to 5
 	<commands>
 		<globalkeys>
 			<key match="cthulhu fhtagn">
@@ -55,7 +60,9 @@
 			<roomstate>
 				<shortdescription>THIS ROOM IS DELIBERATELY EMPTY. IT HAS NOT BEEN IMPLEMENTED YET.</shortdescription>
 				<longdescription>THIS ROOM IS DELIBERATELY EMPTY. IT HAS NOT BEEN IMPLEMENTED YET.</longdescription>
+				<!-- Keys use regular expressions to see if user input matches. -->
 				<key match="implement( room)?">
+				<!-- User input is forced to lower case, so don't put capitals in your keys, or they'll never match. -->
 					<utopiascript>print As you throw up your hands in a grand divine gesture, the room blooms into life. Gigantic mushrooms, beautiful butterflies, and a brilliant sun pop out of nowhere, and the room turns into a magical wonderland. As the room settles into its new shape, a marble pedestal ascends from the floor, holding a book.</utopiascript>
 					<utopiascript>roomstate +1</utopiascript>
 				</key>
@@ -597,7 +604,13 @@
 			</roomstate>
 		</room>
 	</rooms>
+	<!-- Setup does not exist yet, but is planned for v2.2 of the Engine -->
 	<setup>
+		<!--
+			Though this game does not use it, fully-featured JavaScript, with consistent state, IS AVAILABLE for use with the Engine.
+			The problem with using JavaScript is that the only way it can interact with the Engine is via the print("") function, and to modify the score.
+			There are plans to allow for JavaScript to modify roomstates and inventories.
+		-->
 		<javascript></javascript>
 		<utopiascript></utopiascript>
 	</setup>
