@@ -196,11 +196,8 @@
 		</room>
 		<room x="3" y="1"> <!-- Empty Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
-				</key>
+				<shortdescription>As you enter the room, you notice that there are three exits: North, South, and West. The walls are lined with bookshelves, recessed into the wall, and empty.</shortdescription>
+				<longdescription>As you enter the room, you notice that there are three exits: North, South, and West. The walls are lined with bookshelves, recessed into the wall, and empty.</longdescription>
 			</roomstate>
 		</room>
 		<room x="0" y="2"> <!-- Get Ye Flask Room -->
