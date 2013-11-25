@@ -37,7 +37,7 @@
 				<utopiascript>quitGame \n\nTOO LATE. YOU HAVE BEEN EATEN BY A GRUE!</utopiascript>
 			</key>
 			<key match="(exit)|(quit)">
-				<utopiascript>quitGame</utopiascript>
+				<utopiascript>quitGame Goodbye. Thank you for playing Egerfortia!</utopiascript>
 			</key>
 		</globalkeys>
 	</commands>
