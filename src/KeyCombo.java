@@ -26,7 +26,7 @@ class KeyCombo
 	// 
 	public KeyCombo(String keyname, NodeList uscript)
 	{
-		this._keyname = "^" + keyname + "$";
+		this._keyname = "^(" + keyname + ")$";
 		this._uscript = uscript;
 	}
 	

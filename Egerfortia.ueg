@@ -146,10 +146,10 @@
 		</room>
 		<room x="1" y="1"> <!-- Foresight Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>You notice that the room is completely empty, except for an extremely large crystal ball in the center of the room - in fact, it is larger than any crystal ball you've ever seen; it takes up a sizable portion of the room.</shortdescription>
+				<longdescription>You notice that the room is completely empty, except for an extremely large crystal ball in the center of the room - in fact, it is larger than any crystal ball you've ever seen; it takes up a sizable portion of the room.</longdescription>
+				<key match="((peer)|(watch)|(look)|(gaze))((( in)|( into))( the)?( crystal)? ball)?">
+					<utopiascript>print As you peer into the crystal ball, the cloudy mists within solidify into a concrete scene. You see a man, lying on the floor. The image is dimly lit, and some liquid is flowing freely from his mouth. As the image shimmers slightly, you get a better look at his face; it's you.</utopiascript>
 				</key>
 			</roomstate>
 		</room>

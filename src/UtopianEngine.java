@@ -301,7 +301,7 @@ public class UtopianEngine
 			_globalkeys[i] = new KeyCombo();
 		}
 		
-		_globalkeys[0] = new KeyCombo("((desc(ribe)?)|(look)|(see))", stringToNodeList("<utopiascript>description</utopiascript>"));
+		_globalkeys[0] = new KeyCombo("(desc(ribe)?)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
 		
 		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
 
