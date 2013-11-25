@@ -20,29 +20,49 @@
 				<utopiascript>requireItem 10 10 x</utopiascript>
 				<utopiascript>quitgame \nYOU HAVE BEEN EATEN BY A GRUE!</utopiascript>
 			</key>
+			<key match="(exit)|(quit)">
+				<utopiascript>quitgame</utopiascript>
+			</key>
 		</globalkeys>
 	</commands>
 	<items>
-		<item quantity="0">Book of Unity</item>
-		<item quantity="0">Book of Deception</item>
-		<item quantity="0">Book of Passion</item>
-		<item quantity="0">Book of Restraint</item>
-		<item quantity="0">Book of Foresight</item>
-		<item quantity="0">Book of Blindness</item>
-		<item quantity="0">Book of Discovery</item>
-		<item quantity="0">Book of Stagnance</item>
-		<item quantity="0">Book of Elegance</item>
-		<item quantity="0">Book of Bureaucracy</item>
-		<item quantity="0"> </item> <!-- Number of times the player has entered nothing -->
-		<item quantity="0"> </item> <!-- Number of times the player has signed in the bureaucracy room -->
+		<item id="0">Book of Unity</item>
+		<item id="1">Book of Deception</item>
+		<item id="2">Book of Passion</item>
+		<item id="3">Book of Restraint</item>
+		<item id="4">Book of Foresight</item>
+		<item id="5">Book of Blindness</item>
+		<item id="6">Book of Discovery</item>
+		<item id="7">Book of Stagnance</item>
+		<item id="8">Book of Elegance</item>
+		<item id="9">Book of Bureaucracy</item>
+		<item id="0"> </item> <!-- Number of times the player has entered nothing -->
+		<item id="0"> </item> <!-- Number of times the player has signed in the bureaucracy room -->
 	</items>
 	<rooms width="4" height="4">
 		<room x="0" y="0"> <!-- Discovery Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>THIS ROOM IS DELIBERATELY EMPTY. IT HAS NOT BEEN IMPLEMENTED YET.</shortdescription>
+				<longdescription>THIS ROOM IS DELIBERATELY EMPTY. IT HAS NOT BEEN IMPLEMENTED YET.</longdescription>
+				<key match="implement( room)?">
+					<utopiascript>print As you throw up your hands in a grand divine gesture, the room blooms into life. Gigantic mushrooms, beautiful butterflies, and a brilliant sun pop out of nowhere, and the room turns into a magical wonderland. As the room settles into its new shape, a marble pedestal ascends from the floor, holding a book.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>This room has been transformed into a magical wonderland.</shortdescription>
+				<longdescription>Gigantic mushrooms, beautiful butterflies, and a brilliant sun illuminate the room, revealing a magical wonderland. A book sits on a marble pedestal.</longdescription>
+				<key match="((take)|(grab)|(pick up))(( the)? book)?">
+					<utopiascript>addItem 6</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+					<utopiascript>print As you lift the book, the room returns to its previous state: nothingness. You now have the Book of Discovery!</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>THIS ROOM IS DELIBERATELY EMPTY. IT HAS NOT BEEN IMPLEMENTED YET.</shortdescription>
+				<longdescription>THIS ROOM IS DELIBERATELY EMPTY. IT HAS NOT BEEN IMPLEMENTED YET.</longdescription>
+				<key match="implement(( the)? room)?">
+					<utopiascript>print As you throw up your hands in a grand divine gesture, nothing happens. The magic of the room was contained in the book, which is safely tucked in your Bag of Holding.</utopiascript>
 				</key>
 			</roomstate>
 		</room>
