@@ -3,6 +3,7 @@
 // Purpose: Text Adventure Game Engine
 
 // This class represents a room, and contains all pertinent data. See variable declaration for explanation of variable usage.
+//This class is part of the Utopian Engine, which is released by Ian McDevitt to the public under the BSD 3-clause license. See /LICENSE for more information
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

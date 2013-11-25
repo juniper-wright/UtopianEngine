@@ -1,3 +1,5 @@
+//This class is part of the Utopian Engine, which is released by Ian McDevitt to the public under the BSD 3-clause license. See /LICENSE for more information
+
 import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
