@@ -69,13 +69,12 @@ public class Room
 	public NodeList checkKeys(String key)
 	{
 		NodeList script = null;
+
+		script = this._roomstates[this._roomstate].checkKeys(key);
+		
 		for(int i = 0; i < this._roomkeys.length && script == null; i++)
 		{
 			script = this._roomkeys[i].checkKey(key);
-		}
-		if(script == null)
-		{
-			script = this._roomstates[this._roomstate].checkKeys(key);
 		}
 		
 		return script;

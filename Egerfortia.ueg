@@ -2,9 +2,9 @@
 <game name="Egerfortia" x="2" y="0"> <!-- The Engine supports score tracking. In this tag, add score="on", and if you want to display a maxscore, add maxscore="###" as well -->
 	<!--
 		In order to modify the player's score, use:
-		<utopiascript>score +5</utopiascript> -- increase by 5
-		<utopiascript>score -5</utopiascript> -- decrease by 5
-		<utopiascript>score =5</utopiascript> -- set to 5
+		<utopiascript>score +5</utopiascript> - increase by 5
+		<utopiascript>score -5</utopiascript> - decrease by 5
+		<utopiascript>score =5</utopiascript> - set to 5
 	-->
 	<commands>
 		<globalkeys>

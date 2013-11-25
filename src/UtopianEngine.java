@@ -120,13 +120,11 @@ public class UtopianEngine
 				}
 				_key = getKey();
 
+				event = _rooms[_x][_y].checkKeys(_key);
+				
 				for(int i = 0; i < _globalkeys.length && event == null; i++)
 				{
 					event = _globalkeys[i].checkKey(_key);
-				}
-				if(event == null)
-				{
-					event = _rooms[_x][_y].checkKeys(_key);
 				}
 
 				runEvent(_key, event);
