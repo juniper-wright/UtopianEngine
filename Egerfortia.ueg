@@ -3,16 +3,26 @@
 	<commands>
 		<globalkeys>
 			<key match="cthulhu fhtagn">
+				<utopiascript>requireItem 4 1 I don't understand that command.</utopiascript>
+				<!-- Before the player is supposed to have any knowledge of the command, it appears to work like any other malformed command. -->
 				<utopiascript>requireItem 0 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 1 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 2 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 3 1 You need to find all of the books first!</utopiascript>
-				<utopiascript>requireItem 4 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 5 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 6 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 7 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 8 1 You need to find all of the books first!</utopiascript>
 				<utopiascript>requireItem 9 1 You need to find all of the books first!</utopiascript>
+				<utopiascript>print The old man materializes in front of you, and says, "Chaxvor, do you have any idea how rich you've made us - I mean me - err, you... oh, fiddlesticks. Thing is, Chaxvor... I'm you. Only not really. I'm from the future. See, the thing is... the Book of Foresight has a bit more magic in it than I thought." At that, he takes the bag of holding from you, you suddenly find yourself in the room you met him in, and he places the ten books around the edge of the circle.</utopiascript>
+				<utopiascript>pause</utopiascript>
+				<utopiascript>print "Come here," he says, "stand in the center of the circle." As you step into the circle, he clasps his hands together, and shouts "Ortano... fordiglama!"</utopiascript>
+				<utopiascript>pause</utopiascript>
+				<utopiascript>print In a rush, the room around you disappears and you see the decline of the library: books falling off shelves with nobody to replace them, scrolls withering to dust as they wait uncared for, manuscripts becoming archaic as language evolves around them. You see the span of fifty years' time in the course of a minute, and are forced to your knees by the mental onslaught, and pass out.</utopiascript>
+				<utopiascript>pause</utopiascript>
+				<utopiascript>print Hours later, you awaken in a puddle of your own drool, with a crumbled manuscript clutched against your chest. You sit up immediately, and unfurl the manuscript, which trails for many feet - you approximate that it must be at least 30 feet long. At the very top of the scroll, it reads, "Gentlemen's Agreement of Bacrum." Recalling a bet you took before leaving, you realize that Tilrit Eteph owes you twenty gold sovereigns.</utopiascript>
+				<utopiascript>pause</utopiascript>
+				<utopiascript>quitGame You giddily collect yourself and make your way out of the library, to be received as the man who solved the mystery of the Constitution - or rather, Gentlemens' Agreement - of Bacrum.</utopiascript>
 			</key>
 			<key match="">
 				<utopiascript>print You should probably get moving, ya lazy bum!</utopiascript>
