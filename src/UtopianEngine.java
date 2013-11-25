@@ -136,16 +136,16 @@ public class UtopianEngine
 		{
 			if(_score != 0)
 			{
-				usPrint(String.format("%80s", "Score: " + _score));
+				usPrint(String.format("%80s", "Score: " + _score), false);
 			}
-			usPrintln(e.getMessage());
+			usPrintln(e.getMessage() + "\n");
 		}
 		return;
 	}
 	
 	private static String getKey()
 	{
-		System.out.print("\n\n> ");
+		usPrint("\n\n> ", false);
 		String key = scanner.nextLine().toLowerCase();
 		usPrintln();
 		return key;
@@ -542,7 +542,7 @@ public class UtopianEngine
 		}
 		else
 		{
-			usPrint("\n\n" + prompt);
+			usPrint("\n\n" + prompt, true);
 			scanner.nextLine();
 			usPrintln();
 		}
@@ -556,7 +556,7 @@ public class UtopianEngine
 	{
 		if(events == null)
 		{
-			usPrint("I don't understand that command.");
+			usPrint("I don't understand that command.", true);
 			return;
 		}
 		else if(events.getLength() == 0)
@@ -638,7 +638,7 @@ public class UtopianEngine
 			case "pause":
 				return usPause(args);
 			case "print":
-				return usPrint(args);
+				return usPrint(args, true);
 			case "println":
 				return usPrintln(args);
 			case "description":
@@ -710,7 +710,7 @@ public class UtopianEngine
 		{
 			longDesc = false;
 		}
-		return usPrint(_rooms[_x][_y].description(longDesc));
+		return usPrint(_rooms[_x][_y].description(longDesc), true);
 	}
 
 	private static boolean usGo(String args)
@@ -732,7 +732,7 @@ public class UtopianEngine
 			}
 			else
 			{
-				return usPrint("You can't go that way.");
+				return usPrint("You can't go that way.", true);
 			}
 		}
 		catch(NumberFormatException e)
@@ -761,7 +761,7 @@ public class UtopianEngine
 			}
 			else
 			{
-				return usPrint("You can't go that way.");
+				return usPrint("You can't go that way.", true);
 			}
 		}
 		catch(NumberFormatException e)
@@ -782,7 +782,7 @@ public class UtopianEngine
 			}
 		}
 		inv_output = inv_output.substring(0, inv_output.length() - 1);
-		usPrint(inv_output);
+		usPrint(inv_output, false);
 		
 		if(inv_output.equals(""))
 		{
@@ -813,47 +813,53 @@ public class UtopianEngine
 	 * @param args the String to be printed
 	 * @return boolean true
 	 */
-	private static boolean usPrint(String args)
+	private static boolean usPrint(String args, boolean linebreaks)
 	{
-		int curr_line = 0;
-		String[] words = args.split(" ");
-		for(int i = 0; i < words.length; i++)
+		if(linebreaks)
 		{
-//			System.out.println("-->" + words[i] + "<--");
-			if(words[i].length() + curr_line > _linelength)
+			int curr_line = 0;
+			String[] words = args.split(" ");
+			for(int i = 0; i < words.length; i++)
 			{
-				System.out.println();
-				curr_line = 0;
+				if(words[i].length() + curr_line > _linelength)
+				{
+					System.out.println();
+					curr_line = 0;
+				}
+				System.out.print(words[i].replace("\\n", "\n"));
+				curr_line += words[i].length() + 1;
+				if(curr_line < _linelength && i+1 != words.length)
+				{
+					System.out.print(" ");
+				}
 			}
-			System.out.print(words[i].replace("\\n", "\n"));
-			curr_line += words[i].length() + 1;
-			if(curr_line < _linelength && i+1 != words.length)
-			{
-				System.out.print(" ");
-			}
+		}
+		else
+		{
+			System.out.print(args);
 		}
 		return true;
 	}
 
 	private static boolean usPrintln()
 	{
-		return usPrint("\n");
+		return usPrint("\n", true);
 	}
 	
 	private static boolean usPrintln(String args)
 	{
-		return usPrint(args + "\n");
+		return usPrint(args + "\n", true);
 	}
 	
 	private static boolean usPrintScore()
 	{
-		System.out.println();
+		usPrintln();
 		String score = "Score: " + new Integer((int)_score).toString();
 		if(_maxscore > 0)
 		{
 			score = score + " of " + _maxscore;
 		}
-		System.out.print(String.format("%" + _linelength + "s", score));
+		usPrint(String.format("%" + _linelength + "s", score), false);
 		return true;
 	}
 

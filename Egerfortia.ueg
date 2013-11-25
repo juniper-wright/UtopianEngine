@@ -18,10 +18,10 @@
 				<utopiascript>print You should probably get moving, ya lazy bum!</utopiascript>
 				<utopiascript>addItem 10 1</utopiascript>
 				<utopiascript>requireItem 10 10 x</utopiascript>
-				<utopiascript>quitgame \nYOU HAVE BEEN EATEN BY A GRUE!</utopiascript>
+				<utopiascript>quitGame \nYOU HAVE BEEN EATEN BY A GRUE!</utopiascript>
 			</key>
 			<key match="(exit)|(quit)">
-				<utopiascript>quitgame</utopiascript>
+				<utopiascript>quitGame</utopiascript>
 			</key>
 		</globalkeys>
 	</commands>
@@ -113,11 +113,23 @@
 		</room>
 		<room x="3" y="0"> <!-- Restraint Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>On the floor under a desk is a book covered in chains, and on top of that desk is a scroll on which is written, "Ye Olde Constitution of Bacrum".</shortdescription>
+				<longdescription>As you enter the room, your first impression is that you have just entered the most well-stocked legal library ever; in fact, it looks more like a legal library than the rest of the library has! There are piles of papers and books and other such items on the shelves, piled on tables, sitting in stacks on the floor. On the floor under a desk on the far side of the room is a book with chains running across the front of it, but more curious to you is the scroll on top of the desk, which carries the seal of the Royal Magister of Bacrum, and at the very top, in extremely ornate letters, are the words, "Ye Olde Constitution of Bacrum".</longdescription>
+				<key match="((take)|(grab))( the)? book">
+					<utopiascript>addItem 3</utopiascript>
+					<utopiascript>print You received the Book of Restraint!</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
 				</key>
+				<key match="((take)|(grab))( the)? scroll">
+					<utopiascript>quitGame As you lift the scroll, it bursts into flames. In fact, every single paper item in the entire room bursts into flames simultaneously. You manage to drop the scroll before it burns you, but you actually suffocate to death because the fire consumes all of the oxygen in a matter of seconds.</utopiascript>
+				</key>
+				<key match="(take)|(grab)">
+					<utopiascript>print You'll need to be specific. Which item do you want?</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Where once there were piles upon piles of papers, documents, books, scrolls, and manifestos, there is now only an empty room. You successfully picked the Book of Restraint out from the myriad false documents.</shortdescription>
+				<longdescription>Where once there were piles upon piles of papers, documents, books, scrolls, and manifestos, there is now only an empty room. You successfully picked the Book of Restraint out from the myriad false documents.</longdescription>
 			</roomstate>
 		</room>
 		<room x="0" y="1"> <!-- Chair Room -->
