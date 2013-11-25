@@ -452,12 +452,38 @@
 			</roomstate>
 		</room>
 		<room x="0" y="3"> <!-- Bureaucracy Room -->
+			<roomkey match="grab( pen)?">
+				<utopiascript>print The pen resists your attempt to grab it forcefully. Perhaps try to take it more gently?</utopiascript>
+			</roomkey>
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>Your progress is arrested by animated papers after a single step into the room. A pen flutters by your ear, and demands that you sign them.", "Your progress is arrested by animated papers after two steps into the room. A pen flutters by your ear, and demands that you sign them.</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is filled with stacks upon stacks of papers, books, rolls of parchment, various writing implements, and what appears to be hundreds of years' worth of newspapers. The only entrances to the room are to the south and east, and in the northwest corner of the room is a podium, containing an open book, on a raised dias. The book is covered in small notes, filled with extra papers held in by paperclips, and wrapped in red tape. As you take a step into the room, dozens of animated parchments with indecipherable text (despite being in your native language) materialize in front of you, blocking your path. A pen flutters by your ear continuously, and you have the sudden realization that the pen wants you to use it to sign the papers.</longdescription>
+				<key match="(walk)|(move( forward)?)|(jump)|(push)">
+					<utopiascript>print Your every attempt to move, evade, or otherwise circumvent the fluttering parchment is buffeted violently.</utopiascript>
 				</key>
+				<key match="sign( papers?)?">
+					<utopiascript>print As you sign the paper directly in front of you, they all dematerialize. You take a another step forward, and everything seems to be fine.</utopiascript>
+					<utopiascript>addItem 11</utopiascript>
+					<utopiascript>requireItem 11 13 \n\nSuddenly your progress is arrested by another torrent of papers, and a pen that similarly flutters by your ear.</utopiascript>
+					<utopiascript>print \n\nNo papers swarm you. Your access to the book is unfettered!</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>You reach the opposite side of the room without issue, and there is no sign of movement in the whole room. You approach the podium without issue, and the book lay open before you.</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is filled with stacks upon stacks of papers, books, rolls of parchment, various writing implements, and what appears to be hundreds of years' worth of newspapers. The only entrances to the room are to the south and east, and in the northwest corner of the room is a podium, containing an open book, on a raised dias. The book is covered in small notes, filled with extra papers held in by paperclips, and wrapped in red tape. You walk the entire way to the book without any parchments impeding your path.</longdescription>
+				<key match="((take)|(grab)|(pick up)|(lift))(( the)? book)?">
+					<utopiascript>print You received the Book of Bureaucracy!</utopiascript>
+					<utopiascript>addItem 9</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+				<key match="sign( papers?)?">
+					<utopiascript>print There are no more papers to sign! The book is there in front of you!</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>You reach the opposite side of the room without issue, and there is no sign of movement in the whole room. In front of you stands the podium that used to hold the Book of Bureaucracy.</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is filled with stacks upon stacks of papers, books, rolls of parchment, various writing implements, and what appears to be hundreds of years' worth of newspapers. The only entrances to the room are to the south and east, and in the northwest corner of the room is an empty podium on a raised dias, which used to contain the Book of Bureaucracy.</longdescription>
 			</roomstate>
 		</room>
 		<room x="1" y="3"> <!-- Blindness Room -->

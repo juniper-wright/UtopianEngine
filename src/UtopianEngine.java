@@ -910,12 +910,14 @@ public class UtopianEngine
 			quantity = 1;
 		}
 
-		if(arg_split.length > 2)
+
+		if(_itemquantities[itemNum] < quantity)
 		{
-			if(_itemquantities[itemNum] < quantity)
+			if(arg_split.length > 2)
 			{
-				return false;
+				usPrint(arg_split[2], true);
 			}
+			return false;
 		}
 		
 		return true;
