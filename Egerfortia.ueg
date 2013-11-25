@@ -134,10 +134,13 @@
 		</room>
 		<room x="0" y="1"> <!-- Chair Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>Okay, so here's the deal. The room is empty. No really, it's completely empty. Well, not completely. There's a chair here. Well, not so much a chair as a throne. It's pretty magnificent. Looks like it would be a good place to take a load off. Probably won't kill you.</shortdescription>
+				<longdescription>Okay, so here's the deal. The room is empty. No really, it's completely empty. Well, not completely. There's a chair here. Well, not so much a chair as a throne. It's pretty magnificent. Looks like it would be a good place to take a load off. Probably won't kill you.</longdescription>
+				<key match="look up">
+					<utopiascript>print You see bones flattened into the ceiling.</utopiascript>
+				</key>
+				<key match="((sit)( down)?((( in)|( on))?(( chair)|( throne)))?)|(take a load off)">
+					<utopiascript>quitGame As you place your left buttock on the seat, you hear an audible click come from beneath the chair. Thinking that you might be safe if you don't move, you keep as still as humanly possible. Unfortunately, the mechanism doesn't care. It releases with the force of a thousand angry bulls, and your already-quite-dead body is flung quite spectacularly against the ceiling. If you had bothered to look up, you would have noticed the bones of the last person who sat in the chair still plastered to the ceiling.</utopiascript>
 				</key>
 			</roomstate>
 		</room>
