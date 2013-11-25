@@ -311,11 +311,85 @@
 		</room>
 		<room x="2" y="2"> <!-- Deception Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>Sinister-looking books sit on the floor near the middle of the room, but it's so gloomy that it's hard to see. Maybe if you looked closer...</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. In the middle of the room on the floor are three books. Each book is identical, and they are extremely sinister-looking. Each book is solid black, save for the blades of the crossed daggers on the front. The spine of each book seems to be made of black vertebrae and the fronts of the books are patterned in various bones. As the books notice you, ghostly green mist issues forth from the books, and coalesces into numbers, hovering midair above each book... 1, 2, 3. You hear a whisper in your ear, "...grab me if you can..."</longdescription>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?3">
+					<utopiascript>print As you lift the book, every other book in the room crumbles to dust, and all of the green mist disappears, though the gloom hanging over the room remains. You received the Book of Deception!</utopiascript>
+					<utopiascript>addItem 1</utopiascript>
+					<utopiascript>roomstate = 6</utopiascript>
 				</key>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?[0-3]">
+					<utopiascript>print As you lift the book, all of the books crumble to dust, and the misty numbers float away, and FOUR new identical books appear on the floor around you, numbered by the mist as before.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Sinister-looking books sit on the floor near the middle of the room, but it's so gloomy that it's hard to see. Maybe if you looked closer...</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. In the middle of the room on the floor are four books. Each book is identical, and they are extremely sinister-looking. Each book is solid black, save for the blades of the crossed daggers on the front. The spine of each book seems to be made of black vertebrae and the fronts of the books are patterned in various bones. As the books notice you, ghostly green mist issues forth from the books, and coalesces into numbers, hovering midair above each book... 1, 2, 3, 4. You hear a whisper in your ear, "...grab me if you can..."</longdescription>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?1">
+					<utopiascript>print As you lift the book, every other book in the room crumbles to dust, and all of the green mist disappears, though the gloom hanging over the room remains. You received the Book of Deception!</utopiascript>
+					<utopiascript>addItem 1</utopiascript>
+					<utopiascript>roomstate = 6</utopiascript>
+				</key>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?[0-4]">
+					<utopiascript>print As you lift the book, all of the books crumble to dust, and the misty numbers float away, and FIVE new identical books appear on the floor around you, numbered by the mist as before.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Sinister-looking books sit on the floor near the middle of the room, but it's so gloomy that it's hard to see. Maybe if you looked closer...</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. In the middle of the room on the floor are five books. Each book is identical, and they are extremely sinister-looking. Each book is solid black, save for the blades of the crossed daggers on the front. The spine of each book seems to be made of black vertebrae and the fronts of the books are patterned in various bones. As the books notice you, ghostly green mist issues forth from the books, and coalesces into numbers, hovering midair above each book... 1, 2, 3, 4, 5. You hear a whisper in your ear, "...grab me if you can..."</longdescription>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?4">
+					<utopiascript>print As you lift the book, every other book in the room crumbles to dust, and all of the green mist disappears, though the gloom hanging over the room remains. You received the Book of Deception!</utopiascript>
+					<utopiascript>addItem 1</utopiascript>
+					<utopiascript>roomstate = 6</utopiascript>
+				</key>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?[0-5]">
+					<utopiascript>print As you lift the book, all of the books crumble to dust, and the misty numbers float away, and FOUR new identical books appear on the floor around you, numbered by the mist as before.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Sinister-looking books sit on the floor near the middle of the room, but it's so gloomy that it's hard to see. Maybe if you looked closer...</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. In the middle of the room on the floor are four books. Each book is identical, and they are extremely sinister-looking. Each book is solid black, save for the blades of the crossed daggers on the front. The spine of each book seems to be made of black vertebrae and the fronts of the books are patterned in various bones. As the books notice you, ghostly green mist issues forth from the books, and coalesces into numbers, hovering midair above each book... 1, 2, 3, 4. You hear a whisper in your ear, "...grab me if you can..."</longdescription>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?2">
+					<utopiascript>print As you lift the book, every other book in the room crumbles to dust, and all of the green mist disappears, though the gloom hanging over the room remains. You received the Book of Deception!</utopiascript>
+					<utopiascript>addItem 1</utopiascript>
+					<utopiascript>roomstate = 6</utopiascript>
+				</key>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?[0-4]">
+					<utopiascript>print As you lift the book, all of the books crumble to dust, and the misty numbers float away, and THREE new identical books appear on the floor around you, numbered by the mist as before.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Sinister-looking books sit on the floor near the middle of the room, but it's so gloomy that it's hard to see. Maybe if you looked closer...</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. In the middle of the room on the floor are three books. Each book is identical, and they are extremely sinister-looking. Each book is solid black, save for the blades of the crossed daggers on the front. The spine of each book seems to be made of black vertebrae and the fronts of the books are patterned in various bones. As the books notice you, ghostly green mist issues forth from the books, and coalesces into numbers, hovering midair above each book... 1, 2, 3. You hear a whisper in your ear, "...grab me if you can..."</longdescription>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?3">
+					<utopiascript>print As you lift the book, every other book in the room crumbles to dust, and all of the green mist disappears, though the gloom hanging over the room remains. You received the Book of Deception!</utopiascript>
+					<utopiascript>addItem 1</utopiascript>
+					<utopiascript>roomstate = 6</utopiascript>
+				</key>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?[0-3]">
+					<utopiascript>print As you lift the book, all of the books crumble to dust, and the misty numbers float away, and TWO new identical books appear on the floor around you, numbered by the mist as before.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Sinister-looking books sit on the floor near the middle of the room, but it's so gloomy that it's hard to see. Maybe if you looked closer...</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. In the middle of the room on the floor are two books. Each book is identical, and they are extremely sinister-looking. Each book is solid black, save for the blades of the crossed daggers on the front. The spine of each book seems to be made of black vertebrae and the fronts of the books are patterned in various bones. As the books notice you, ghostly green mist issues forth from the books, and coalesces into numbers, hovering midair above each book... 1, 2. You hear a whisper in your ear, "...grab me if you can..."</longdescription>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?1">
+					<utopiascript>print As you lift the book, every other book in the room crumbles to dust, and all of the green mist disappears, though the gloom hanging over the room remains. You received the Book of Deception!</utopiascript>
+					<utopiascript>addItem 1</utopiascript>
+					<utopiascript>roomstate = 6</utopiascript>
+				</key>
+				<key match="((grab )|(take )|(pick up ))?(book )?#?[0-2]">
+					<utopiascript>quitGame As you lift the book, all of the books crumble to dust, and the misty numbers float away. The mist coalesces into a cackling face, laughing at your stupidity, then hurls itself down your throat. You choke and die, because you're really bad at picking things at random. Seriously, only a 10% chance of picking wrong EVERY time.</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. The Book of Deception used to sit here, black, covered in bones, and ornamented with daggers.</shortdescription>
+				<longdescription>As you enter the room, you notice that the room is dim, and you feel a curtain of gloom hang over the area. The Book of Deception used to sit here, black, covered in bones, and ornamented with daggers.</longdescription>
 			</roomstate>
 		</room>
 		<room x="3" y="2"> <!-- Stagnancy Room -->

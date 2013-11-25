@@ -781,12 +781,14 @@ public class UtopianEngine
 				inv_output = inv_output + String.format("%-50sx%s", _itemnames[i], _itemquantities[i]) + "\n";
 			}
 		}
-		inv_output = inv_output.substring(0, inv_output.length() - 1);
-		usPrint(inv_output, false);
-		
-		if(inv_output.equals(""))
+		if(inv_output.length() > 0)
 		{
-			usPrintln("You do not have any items.");
+			inv_output = inv_output.substring(0, inv_output.length() - 1);
+			usPrint(inv_output, false);
+		}
+		else
+		{
+			usPrint("You do not have any items.", false);
 		}
 		return true;
 	}
