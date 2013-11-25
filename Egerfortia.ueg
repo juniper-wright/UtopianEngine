@@ -560,10 +560,13 @@
 		</room>
 		<room x="2" y="3"> <!-- Rocks Fall Everyone Dies Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>The room is lit by torches. There are three women, bound, gagged, and barely conscious, in cells on the north side of the room. To the left of each cell is a numbered lever.</shortdescription>
+				<longdescription>As you enter the room, you immediately notice that the room is lit by flickering torches on the walls. On the north side of the room are three cells, recessed into a wall. In each cell is a human female, bound, gagged, barely conscious, and clearly underfed. On the wall to the left of each cell is a large lever. They are numbered 1, 2, and 3.</longdescription>
+				<key match="pull( lever)?">
+					<utopiascript>print Pull which lever?</utopiascript>
+				</key>
+				<key match="pull (lever )?[1-3]">
+					<utopiascript>quitGame The ceiling makes loud noises, then falls open on a hinge. Now that the ceiling is open, there is nothing stopping the giant rocks. Rocks fall, everyone dies.</utopiascript>
 				</key>
 			</roomstate>
 		</room>
