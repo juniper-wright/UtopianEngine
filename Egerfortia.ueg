@@ -115,15 +115,15 @@
 			<roomstate>
 				<shortdescription>On the floor under a desk is a book covered in chains, and on top of that desk is a scroll on which is written, "Ye Olde Constitution of Bacrum".</shortdescription>
 				<longdescription>As you enter the room, your first impression is that you have just entered the most well-stocked legal library ever; in fact, it looks more like a legal library than the rest of the library has! There are piles of papers and books and other such items on the shelves, piled on tables, sitting in stacks on the floor. On the floor under a desk on the far side of the room is a book with chains running across the front of it, but more curious to you is the scroll on top of the desk, which carries the seal of the Royal Magister of Bacrum, and at the very top, in extremely ornate letters, are the words, "Ye Olde Constitution of Bacrum".</longdescription>
-				<key match="((take)|(grab))( the)? book">
+				<key match="((take)|(grab)|(pick up))( the)? book">
 					<utopiascript>addItem 3</utopiascript>
 					<utopiascript>print You received the Book of Restraint!</utopiascript>
 					<utopiascript>roomstate +1</utopiascript>
 				</key>
-				<key match="((take)|(grab))( the)? scroll">
+				<key match="((take)|(grab)|(pick up))( the)? scroll">
 					<utopiascript>quitGame As you lift the scroll, it bursts into flames. In fact, every single paper item in the entire room bursts into flames simultaneously. You manage to drop the scroll before it burns you, but you actually suffocate to death because the fire consumes all of the oxygen in a matter of seconds.</utopiascript>
 				</key>
-				<key match="(take)|(grab)">
+				<key match="(take)|(grab)|(pick up)">
 					<utopiascript>print You'll need to be specific. Which item do you want?</utopiascript>
 				</key>
 			</roomstate>
@@ -154,11 +154,43 @@
 			</roomstate>
 		</room>
 		<room x="2" y="1"> <!-- Passion Room -->
+			<roomkey match="jump">
+				<utopiascript>quitGame You attempt to leap across the moat, but do not make it far enough. The piranha devour you quite happily. Take solace; they got indigestion.</utopiascript>
+			</roomkey>
+			<roomkey match="(jump in)|(swim)">
+				<utopiascript>quitGame You jump into the moat. The piranha devour you quite happily. Take solace; they got indigestion.</utopiascript>
+			</roomkey>
+			<roomkey match="sit">
+				<utopiascript>quitGame You sit on the edge of the moat, and the egde crumbles beneath you, tossing you into the waters. The piranha devour you quite happily. Take solace; they got indigestion.</utopiascript>
+			</roomkey>
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>There is a book, aflame, with a moat. You cannot see any way across the moat.</shortdescription>
+				<longdescription>In the middle of the room is a platform, ringed with a moat. On the platform is a book which looks red, though its color is difficult to divine, considering that the book is engulfed in violent flames. Despite the size of the blaze, you feel no heat as you approach it. The moat is ten feet wide, and filled with what appear to be piranha. There is no visible way to cross the moat. Around the entire room are bookshelves, filled with ancient texts and covered in dust.</longdescription>
+				<key match="(disturb)|(throw book)|(disrupt)|(agitate)|(splash)">
+					<utopiascript>print The piranha jump and gnash and tear and rip, and the splashing causes an invisible walkway to be visibly covered in water.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>There is a book, aflame, with a moat. The moat is crossable by way of an invisible bridge whose existence is made obvious by being covered in water.</shortdescription>
+				<longdescription>In the middle of the room is a platform, ringed with a moat. On the platform is a book which looks red, though its color is difficult to divine, considering that the book is engulfed in violent flames. Despite the size of the blaze, you feel no heat as you approach it. The moat is ten feet wide, and filled with what appear to be piranha. There is now an invisible bridge across the moat, covered in clearly-visible water. Around the entire room are bookshelves, filled with ancient texts and covered in dust.</longdescription>
+				<key match="cross( bridge)?">
+					<utopiascript>print You walk across the bridge carefully and almost fall in, but make it to the other side unscathed.</utopiascript>
+				</key>
+				<key match="((take)|(grab)|(pick up))(( the)? book)?">
+					<utopiascript>print You received the Book of Passion!</utopiascript>
+					<utopiascript>addItem 2</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>In the middle of the room is a platform, with a moat around it. The platform is empty, and there is an invisible bridge across the moat.</shortdescription>
+				<longdescription>In the middle of the room is a platform, ringed with a moat. The moat is ten feet wide, and filled with what appear to be piranha. There is an invisible bridge covered in water. Around the entire room are bookshelves, filled with ancient texts and covered in dust.</longdescription>
+				<key match="cross( bridge)?">
+					<utopiascript>print You walk across the bridge carefully and almost fall in, but make it to the other side unscathed.</utopiascript>
+				</key>
+				<key match="((take)|(grab)|(pick up))(( the)? book)?">
+					<utopiascript>print You already have the Book of Passion!</utopiascript>
 				</key>
 			</roomstate>
 		</room>

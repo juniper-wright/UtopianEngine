@@ -71,7 +71,6 @@ public class Room
 		for(int i = 0; i < this._roomkeys.length && script == null; i++)
 		{
 			script = this._roomkeys[i].checkKey(key);
-			System.out.println("Checking a room key!");
 		}
 		if(script == null)
 		{
