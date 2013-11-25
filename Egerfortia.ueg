@@ -487,12 +487,75 @@
 			</roomstate>
 		</room>
 		<room x="1" y="3"> <!-- Blindness Room -->
+			<roomkey match="spin">
+				<utopiascript>print Spin the dial which way?</utopiascript>
+				<utopiascript>requireItem 5</utopiascript>
+				<utopiascript>print \n\nNevermind, THE SAFE IS OPEN. STOP PLAYING WITH IT.</utopiascript>
+			</roomkey>
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>There is a safe recessed into the floor in the middle of the room. There is a dial.</shortdescription>
+				<longdescription>As you start to look around, you see... nothing. Absolutely nothing. The entire room is dark. As you walk forward, you trip over something on the floor. Upon further inspection, you find that it is a dial. It has several notches on it. It spins freely, and seems to be attached to a door of some sort. You divine that it is the door to a safe. You'll need to spin the dial a certain number of times to get it open. You remember that safes always turn right, left, right. To get a read on it, you could try spinning it to see if you hear anything.</longdescription>
+				<key match="(spin )?right">
+					<utopiascript>print click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click Click click click click click click click click click click</utopiascript>
 				</key>
+				<key match="(spin )?left">
+					<utopiascript>print click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click</utopiascript>
+				</key>
+				<key match="right 31">
+					<utopiascript>print As you spin the dial to 31 right, one of the tumblers within the safe falls into place.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+				<key match="((left)|(right)) [0-9]+">
+					<utopiascript>print You spin the a specific number of clicks, and nothing happens. You re-zero it.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>There is a safe recessed into the floor in the middle of the room. There is a dial. You spin it to 31 right.</shortdescription>
+				<longdescription>As you start to look around, you see... nothing. Absolutely nothing. The entire room is dark. You remember that there is a safe recessed into the middle of the floor. You'll need to spin the dial a certain number of times to get it open. You remember that safes always turn right, left, right. You spun it to 31 right, and a tumbler dropped, so you do that again.</longdescription>
+				<key match="(spin )?right">
+					<utopiascript>print click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click</utopiascript>
+				</key>
+				<key match="(spin )?left">
+					<utopiascript>print click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click Click click click click click click click click</utopiascript>
+				</key>
+				<key match="left 33">
+					<utopiascript>print As you spin the dial to 33 left, one of the tumblers within the safe falls into place.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+				<key match="((left)|(right)) [0-9]+">
+					<utopiascript>print You spin the a specific number of clicks, and nothing happens. You re-zero it, then 31 right.</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>There is a safe recessed into the floor in the middle of the room. There is a dial. You spin it to 31 right, then 33 to the left.</shortdescription>
+				<longdescription>As you start to look around, you see... nothing. Absolutely nothing. The entire room is dark. You remember that there is a safe recessed into the middle of the floor. You'll need to spin the dial a certain number of times to get it open. You remember that safes always turn right, left, right. You spun it to 31 right, and then 33 to the left, so you do that again.</longdescription>
+				<key match="(spin )?right">
+					<utopiascript>print click click click click click click Click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click</utopiascript>
+				</key>
+				<key match="(spin )?left">
+					<utopiascript>print click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click click</utopiascript>
+				</key>
+				<key match="right 7">
+					<utopiascript>print As you spin the dial to 7 right, the last tumbler within the safe falls into place. The lock unlatches and the door opens. You can hear a book within arm's reach.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+				<key match="((left)|(right)) [0-9]+">
+					<utopiascript>print You spin the a specific number of clicks, and nothing happens. You re-zero it, then 31 right, then 33 left.</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>There is a safe recessed into the floor in the middle of the room. The safe sits open now, and the book is within arm's reach.</shortdescription>
+				<longdescription>As you start to look around, you see... nothing. Absolutely nothing. The entire room is dark. You remember that there is a safe recessed into the middle of the floor. The safe sits open, and you can hear the book at the bottom of it, within arm's reach.</longdescription>
+				<key match="((take)|(grab)|(pick up)|(lift))(( the)? book)?">
+					<utopiascript>print You received the Book of Blindness!</utopiascript>
+					<utopiascript>addItem 5</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>The room is pitch-black, and empty save for an open safe recessed into the floor, which used to hold the Book of Blindness.</shortdescription>
+				<longdescription>The room is pitch-black, and empty save for an open safe recessed into the floor, which used to hold the Book of Blindness.</longdescription>
 			</roomstate>
 		</room>
 		<room x="2" y="3"> <!-- Rocks Fall Everyone Dies Room -->
