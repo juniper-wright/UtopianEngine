@@ -201,11 +201,51 @@
 			</roomstate>
 		</room>
 		<room x="0" y="2"> <!-- Get Ye Flask Room -->
+			<roomkey match="((move )|(go ))?dennis">
+				<utopiascript>go +1/+0</utopiascript>
+			</roomkey>
+			<roomkey match="((get)|(grab)|(take)) flask">
+				<utopiascript>print Which FLASK?</utopiascript>
+			</roomkey>
+			<roomkey match="((get)|(grab)|(take)) the flask">
+				<utopiascript>print The? THE flask? What are you, old? This is YE FLASK.</utopiascript>
+			</roomkey>
+			<roomkey match="get">
+				<utopiascript>print Get what?</utopiascript>
+			</roomkey>
+			<roomkey match="grab">
+				<utopiascript>print Grab what?</utopiascript>
+			</roomkey>
+			<roomkey match="take">
+				<utopiascript>print Take what?</utopiascript>
+			</roomkey>
+			<roomkey match="grab ye flask">
+				<utopiascript>print Who GRABs things? I prefer to GET them.</utopiascript>
+			</roomkey>
+			<roomkey match="take ye flask">
+				<utopiascript>print Who TAKEs things? I prefer to GET them.</utopiascript>
+			</roomkey>
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>Ye find yourself in yon dungeon. Ye see a FLASK. Obviou exits are NORTH, SOUTH, and DENNIS.\n\nWhat wouldst thou deau?</shortdescription>
+				<longdescription>Ye find yourself in yon dungeon. Ye see a FLASK. Obviou exits are NORTH, SOUTH, and DENNIS.\n\nWhat wouldst thou deau?</longdescription>
+				<key match="get ye flask">
+					<utopiascript>print You cannot get the flask. It is firmly bolted to the wall which is bolted to the rest of the legal library which is probably bolted to the rest of the library. Never you mind.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Ye find yourself in yon dungeon. Ye see a FLASK. Obviou exits are NORTH, SOUTH, and DENNIS.\n\nWhat wouldst thou deau?</shortdescription>
+				<longdescription>Ye find yourself in yon dungeon. Ye see a FLASK. Obviou exits are NORTH, SOUTH, and DENNIS.\n\nWhat wouldst thou deau?</longdescription>
+				<key match="get ye flask">
+					<utopiascript>print You cannot get the flask. It is firmly bolted to the wall which is bolted to the rest of the legal library which is probably bolted to the rest of the library. Never you mind.</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
+				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>Ye find yourself in yon dungeon. Ye see a FLASK. Obviou exits are NORTH, SOUTH, and DENNIS.\n\nWhat wouldst thou deau?</shortdescription>
+				<longdescription>Ye find yourself in yon dungeon. Ye see a FLASK. Obviou exits are NORTH, SOUTH, and DENNIS.\n\nWhat wouldst thou deau?</longdescription>
+				<key match="get ye flask">
+					<utopiascript>quitGame Okay, okay. You unbolt yon flask and hold it aloft. A great shaking begins. The library ceiling collapses down upon you, crushing you in twain. Apparently, this was a load-bearing flask.</utopiascript>
 				</key>
 			</roomstate>
 		</room>
