@@ -572,11 +572,17 @@
 		</room>
 		<room x="3" y="3"> <!-- Elegance Room -->
 			<roomstate>
-				<shortdescription></shortdescription>
-				<longdescription></longdescription>
-				<key match="">
-					<utopiascript></utopiascript>
+				<shortdescription>The tiles beneath your feet flip, and usher you towards a beautiful pedestal on which sits a beautiful book.</shortdescription>
+				<longdescription>At first, you notice that the floor of this room is tiled in brightly-colored and well-polished ceramic tiles, and that the walls are embroidered with gold filigree. As you start looking around, the tiles beneath your feet start flipping gracefully, ushering you towards a beautifully-wrought silver pedestal in the northeast corner of the room, holding a closed book with satin bookmarks and gold decorations.</longdescription>
+				<key match="((take)|(grab)|(pick up)|(lift))(( the)? book)?">
+					<utopiascript>print You received the Book of Elegance!</utopiascript>
+					<utopiascript>addItem 8</utopiascript>
+					<utopiascript>roomstate +1</utopiascript>
 				</key>
+			</roomstate>
+			<roomstate>
+				<shortdescription>On the opposite end of the room sits a beautiful pedestal on which used to sit the Book of Elegance.</shortdescription>
+				<longdescription>At first, you notice that the floor of this room is tiled in brightly-colored and well-polished ceramic tiles, and that the walls are embroidered with gold filigree. As you start looking around, you notice the pedestal in the northeast corner of the room, which used to contain the Book of Elegance.</longdescription>
 			</roomstate>
 		</room>
 	</rooms>
