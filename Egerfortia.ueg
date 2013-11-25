@@ -27,8 +27,8 @@
 			<key match="">
 				<utopiascript>print You should probably get moving, ya lazy bum!</utopiascript>
 				<utopiascript>addItem 10 1</utopiascript>
-				<utopiascript>requireItem 10 10 x</utopiascript>
-				<utopiascript>quitGame \nYOU HAVE BEEN EATEN BY A GRUE!</utopiascript>
+				<utopiascript>requireItem 10 10</utopiascript>
+				<utopiascript>quitGame \n\nTOO LATE. YOU HAVE BEEN EATEN BY A GRUE!</utopiascript>
 			</key>
 			<key match="(exit)|(quit)">
 				<utopiascript>quitGame</utopiascript>
