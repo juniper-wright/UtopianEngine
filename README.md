@@ -2,8 +2,6 @@ Utopian Engine
 =============
 A text adventure game engine, written in Java.
 
-(At the time of this writing, the UtopianEngine is somewhere between version 1 and 2. It is very much full of compilation errors, because it needed to be completely rewritten.)
-
 Version 2.0 of the Utopian Engine will feature:
 
 * A fully-fledged built-in Scripting Language, named UtopiaScript. At this time, the UtopiaScript functions are:
