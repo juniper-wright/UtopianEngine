@@ -91,7 +91,7 @@ public class UtopianEngine
 			
 			if(gameFiles.size() == 0)
 			{
-				usPrintln("Sorry, no games found. Please make sure to put them in the right folder.");
+				usPrint("Sorry, no games found. Please make sure to put them in the right folder.");
 				return;
 			}
 				
@@ -135,7 +135,7 @@ public class UtopianEngine
 				}
 				else
 				{
-					usPrintln("Sorry, game not found. Please try again.");
+					usPrint("Sorry, game not found. Please try again.");
 				}
 			}
 			
@@ -831,7 +831,7 @@ public class UtopianEngine
 		}
 		else
 		{
-			usPrint("You do not have any items.", false);
+			usPrint("You do not have any items.");
 		}
 		return true;
 	}
@@ -884,6 +884,11 @@ public class UtopianEngine
 			System.out.print(args);
 		}
 		return true;
+	}
+	
+	private static boolean usPrint(String args)
+	{
+		return usPrint(args, true);
 	}
 
 	private static boolean usPrintln()
