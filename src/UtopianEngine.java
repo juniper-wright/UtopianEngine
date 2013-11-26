@@ -62,31 +62,35 @@ public class UtopianEngine
 	
 	public static void main(String[] args)
 	{
-		//handle parameters
+		// handle parameters
 		if(args.length > 0)
 		{
 			File f = new File(args[0]);
 			
-			if (f.exists()){
-				
+			if(f.exists())
+			{
 				buildGameFromFile(args[0]);
 
-				if(args.length > 1){
+				if(args.length > 1)
+				{
 					usLoadState(args[1]);
 				}
-				
-			}else{
+			}
+			else
+			{
 				usPrintln("Sorry, it seems the specified game '" + args[0] + "' does not exist.");
 				return;
 			}
-		}else{
-			
-			// no parameter specified
+		}
+		else	// no parameter specified
+		{
 			usPrintln("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
+
+			// outputs a list of available games, and creates the gameFiles hashmap.
+			printGameList();
 			
-			printGameList();				// Outputs a list of available games.
-			
-			if (gameFiles.size() == 0){
+			if(gameFiles.size() == 0)
+			{
 				usPrintln("Sorry, no games found. Please make sure to put them in the right folder.");
 				return;
 			}
@@ -96,49 +100,56 @@ public class UtopianEngine
 				String filename = "";
 				String choice = getKey();	// Gets input.
 				
-				if (gameFiles.containsValue(choice)){
-					
+				if(gameFiles.containsValue(choice))
+				{
 					filename = choice;
-					
-				}else if (gameFiles.containsValue(choice + ".ueg")){
-					
+				}
+				else if(gameFiles.containsValue(choice + ".ueg"))
+				{
 					filename = choice + ".ueg";
-					
-	 			}else{
-	 				
+				}
+				else
+				{
 	 				//try parse as integer and check list
-	 				try{
-	 					
+	 				try
+	 				{
 	 					int gameId = Integer.parseInt(choice);
 	 					
-	 					if (gameFiles.containsKey(gameId)){
+	 					if(gameFiles.containsKey(gameId))
+	 					{
 	 						filename = gameFiles.get(gameId);
 	 					}
 	 					
-	 				}catch(NumberFormatException nfx){
+	 				}
+	 				catch(NumberFormatException nfx)
+	 				{
+	 					
 	 				}
 	 			}
 				
 				File f = new File(filename);
-				if(f.exists()){
+				if(f.exists())
+				{
 					buildGameFromFile(filename);
 					break;
-				}else{
+				}
+				else
+				{
 					usPrintln("Sorry, game not found. Please try again.");
 				}
 			}
 			
-			if (gameFiles != null){
+			if (gameFiles != null)
+			{
 				gameFiles.clear();
 				gameFiles = null;
 			}
 		}
-
 		run();
 	}
 
 	/**
-	 * Main function of the UtopianEngine class. Runs in a loop until the Game ends.
+	 * Main function of the UtopianEngine class. Runs in a loop until the game ends.
 	 */
 	private static void run()
 	{
@@ -151,10 +162,9 @@ public class UtopianEngine
 			while(true)
 			{
 				NodeList event = null;
-				if(_scoredisplay)
-				{
-					usPrintScore();
-				}
+				
+				usPrintScore();
+
 				_key = getKey();
 
 				event = _rooms[_x][_y].checkKeys(_key);
@@ -169,10 +179,8 @@ public class UtopianEngine
 		}
 		catch(GameEndException e)
 		{
-			if(_score != 0)
-			{
-				usPrint(String.format("%80s", "Score: " + _score), false);
-			}
+			usPrintScore();
+			
 			usPrintln(e.getMessage() + "\n");
 		}
 		return;
@@ -890,13 +898,16 @@ public class UtopianEngine
 	
 	private static boolean usPrintScore()
 	{
-		usPrintln();
-		String score = "Score: " + new Integer((int)_score).toString();
-		if(_maxscore > 0)
+		if(_scoredisplay)
 		{
-			score = score + " of " + _maxscore;
+			usPrintln();
+			String score = "Score: " + new Integer((int)_score).toString();
+			if(_maxscore > 0)
+			{
+				score = score + " of " + _maxscore;
+			}
+			usPrint(String.format("%" + _linelength + "s", score), false);
 		}
-		usPrint(String.format("%" + _linelength + "s", score), false);
 		return true;
 	}
 
@@ -1085,7 +1096,8 @@ public class UtopianEngine
 	{
 		try
 		{
-			  if (gameFiles == null){
+			  if (gameFiles == null)
+			  {
 				  gameFiles = new HashMap<Integer,String>();
 			  }
 			  gameFiles.clear();
@@ -1095,21 +1107,27 @@ public class UtopianEngine
 			  String path = "."; 
 			 
 			  String filename;
+			  String output = "";
 			  File folder = new File(path);
 			  File[] listOfFiles = folder.listFiles(); 
 
-			  for (int i = 0; i < listOfFiles.length; i++) 
+			  for(int i = 0; i < listOfFiles.length; i++) 
 			  {
-				  if (listOfFiles[i].isFile()) 
+				  if(listOfFiles[i].isFile()) 
 				  {
 					  filename = listOfFiles[i].getName();
-					  if (filename.toLowerCase().endsWith(".ueg"))
+					  if(filename.toLowerCase().endsWith(".ueg"))
 					  {
 						  gameFiles.put(gameId, filename);
-						  usPrintln("\t" + gameId + ". " + filename);
+						  output = output + "\t" + gameId + ". " + filename + "\n";
 						  gameId++;
 					  }
 				  }
+			  }
+			  if(output.length() > 0)
+			  {
+				  output = output.substring(0, output.length()-1);
+				  usPrint(output, false);
 			  }
 		}
 		catch (Exception e)								// Generic exception handling
