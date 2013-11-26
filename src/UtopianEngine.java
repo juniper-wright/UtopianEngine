@@ -18,6 +18,7 @@
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.script.Bindings;
@@ -56,51 +57,88 @@ public class UtopianEngine
 	static Object score;
 	static double _score;
 	
+	static HashMap<Integer, String> gameFiles;
+	
+	
 	public static void main(String[] args)
 	{
-		String instring = "";
-
+		//handle parameters
 		if(args.length > 0)
 		{
-			instring = args[0];
-		}
+			File f = new File(args[0]);
+			
+			if (f.exists()){
+				
+				buildGameFromFile(args[0]);
 
-		File f = new File(instring);
-		
-		if(!f.exists())
-		{
-			usPrintln("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
-		
-			printGameList();				// Outputs a list of available games.
-		}
-
-		while(!f.exists())
-		{
-			instring = getKey();	// Gets input.
-			if (instring.indexOf(".ueg") == -1)
-			{
-				instring = instring + ".ueg";
+				if(args.length > 1){
+					usLoadState(args[1]);
+				}
+				
+			}else{
+				usPrintln("Sorry, it seems the specified game '" + args[0] + "' does not exist.");
+				return;
 			}
-			f = new File(instring);
-			if(!f.exists())		// Makes sure the game exists
+		}else{
+			
+			// no parameter specified
+			usPrintln("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
+			
+			if (gameFiles == null){
+				gameFiles = new HashMap<Integer, String>();
+			}
+			
+			printGameList();				// Outputs a list of available games.
+			
+			if (gameFiles.size() == 0){
+				usPrintln("Sorry, no games found. Please make sure to put them in the right folder.");
+				return;
+			}
+				
+			while(true)
 			{
-				usPrintln("Sorry, game not found. Please try again.");
-				if (instring.indexOf(".ueg") == -1)
-				{
-					instring = instring + ".ueg";
+				String filename = "";
+				String choice = getKey();	// Gets input.
+				
+				if (gameFiles.containsValue(choice)){
+					
+					filename = choice;
+					
+				}else if (gameFiles.containsValue(choice + ".ueg")){
+					
+					filename = choice + ".ueg";
+					
+	 			}else{
+	 				
+	 				//try parse as integer and check list
+	 				try{
+	 					
+	 					int gameId = Integer.parseInt(choice);
+	 					
+	 					if (gameFiles.containsKey(gameId)){
+	 						filename = gameFiles.get(gameId);
+	 					}
+	 					
+	 				}catch(NumberFormatException nfx){
+	 				}
+	 			}
+				
+				File f = new File(filename);
+				if(f.exists()){
+					buildGameFromFile(filename);
+					break;
+				}else{
+					usPrintln("Sorry, game not found. Please try again.");
 				}
 			}
+			
+			if (gameFiles != null){
+				gameFiles.clear();
+				gameFiles = null;
+			}
 		}
 
-		buildGameFromFile(instring);
-
-		if(args.length > 1)
-		{
-			usLoadState(args[1]);
-		}
-		
-		usDescription("long");
-		run();		// Runs game
+		run();
 	}
 
 	/**
@@ -109,8 +147,11 @@ public class UtopianEngine
 	private static void run()
 	{
 		_score = 0;
+		
 		try
 		{
+			usDescription("long");
+			
 			while(true)
 			{
 				NodeList event = null;
@@ -1048,13 +1089,19 @@ public class UtopianEngine
 	{
 		try
 		{
+			  if (gameFiles == null){
+				  gameFiles = new HashMap<Integer,String>();
+			  }
+			  gameFiles.clear();
+			  int gameId = 1;
+			  
 			  // Directory path here
 			  String path = "."; 
 			 
 			  String filename;
 			  File folder = new File(path);
 			  File[] listOfFiles = folder.listFiles(); 
-			 
+
 			  for (int i = 0; i < listOfFiles.length; i++) 
 			  {
 				  if (listOfFiles[i].isFile()) 
@@ -1062,7 +1109,9 @@ public class UtopianEngine
 					  filename = listOfFiles[i].getName();
 					  if (filename.toLowerCase().endsWith(".ueg"))
 					  {
-						  usPrintln(filename);
+						  gameFiles.put(gameId, filename);
+						  usPrintln("\t" + gameId + ". " + filename);
+						  gameId++;
 					  }
 				  }
 			  }
