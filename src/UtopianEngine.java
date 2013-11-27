@@ -7,7 +7,7 @@
 // When loading the game, the Engine will take in all text inside a .ueg file and parse it into a Game object.
 // Within the game object are several variables. For their descriptions, see Game.java.
 // In essence, the game is made of Rooms, arranged in a two-dimensional grid. The player is given a description of the room they are in,
-// and then prompted for input. Once inputted, the text is sent to the appropriate room, and if that text matches a key in that room,
+// and then prompted for input. Once inputed, the text is sent to the appropriate room, and if that text matches a key in that room,
 // then the appropriate event is output, and various things may happen. They are, in no particular order:
 // * the player could expend an item
 // * the player could gain an item
@@ -15,53 +15,35 @@
 //		to the developer and the player to decide what is a win and what is a loss)
 // * the player could advance or regress the state of the room - thereby changing the room
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
-
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 public class UtopianEngine
 {
 	static Scanner scanner = new Scanner(System.in);
 
-	static String _name;				// The name of the game.
-	static int _x;						// The current x coordinate of the player
-	static int _y;						// The current y coordinate of the player
 	static String _key;					// Used to hold user's input and modify it (everything is toLower()'d)
 	static String _out;					// Used to create and edit the output
-	static Room[][] _rooms;				// HUGE variable; contains all of the rooms
-	static KeyCombo[] _globalkeys;		// 
-	static String[] _itemnames;			//
-	static int[] _itemquantities;		//
-	static int _linelength = 80;		// Controls the width of the lines printed by usPrint
-	static boolean _scoredisplay = false;	// Controls whether or not the player's score is displayed
-	static int _maxscore = 0;				// If set to anything other than 0, will not show " of <MAX>" when displaying the score.
+	
 	static ScriptEngineManager mgr = new ScriptEngineManager();
 	static ScriptEngine js_engine = mgr.getEngineByName("js");
     static Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
-	static Object score;
-	static double _score;
-	
 	static HashMap<Integer, String> gameFiles;
-	
 	
 	public static void main(String[] args)
 	{
+		Settings.LoadSettings();
+		
 		// handle parameters
 		if(args.length > 0)
 		{
@@ -69,29 +51,29 @@ public class UtopianEngine
 			
 			if(f.exists())
 			{
-				buildGameFromFile(args[0]);
+				Game.buildFromFile(args[0]);
 
 				if(args.length > 1)
 				{
-					usLoadState(args[1]);
+					BuiltIn.LoadState(args[1]);
 				}
 			}
 			else
 			{
-				usPrintln("Sorry, it seems the specified game '" + args[0] + "' does not exist.");
+				BuiltIn.Println("Sorry, it seems the specified game '" + args[0] + "' does not exist.");
 				return;
 			}
 		}
 		else	// no parameter specified
 		{
-			usPrintln("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
+			BuiltIn.Println("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
 
 			// outputs a list of available games, and creates the gameFiles hashmap.
 			printGameList();
 			
 			if(gameFiles.size() == 0)
 			{
-				usPrint("Sorry, no games found. Please make sure to put them in the right folder.");
+				BuiltIn.Print("Sorry, no games found. Please make sure to put them in the right folder.");
 				return;
 			}
 				
@@ -130,12 +112,12 @@ public class UtopianEngine
 				File f = new File(filename);
 				if(f.exists())
 				{
-					buildGameFromFile(filename);
+					Game.buildFromFile(filename);
 					break;
 				}
 				else
 				{
-					usPrint("Sorry, game not found. Please try again.");
+					BuiltIn.Print("Sorry, game not found. Please try again.");
 				}
 			}
 			
@@ -145,6 +127,7 @@ public class UtopianEngine
 				gameFiles = null;
 			}
 		}
+		
 		run();
 	}
 
@@ -153,25 +136,23 @@ public class UtopianEngine
 	 */
 	private static void run()
 	{
-		_score = 0;
-		
 		try
 		{
-			usDescription("long");
+			BuiltIn.Description("long");
 			
 			while(true)
 			{
 				NodeList event = null;
 				
-				usPrintScore();
+				BuiltIn.PrintScore();
 
 				_key = getKey();
 
-				event = _rooms[_x][_y].checkKeys(_key);
+				event = Game.rooms[Gamestate.playerX][Gamestate.playerY].checkKeys(_key);
 				
-				for(int i = 0; i < _globalkeys.length && event == null; i++)
+				for(int i = 0; i < Game.keys.length && event == null; i++)
 				{
-					event = _globalkeys[i].checkKey(_key);
+					event = Game.keys[i].checkKey(_key);
 				}
 
 				runEvent(_key, event);
@@ -179,396 +160,24 @@ public class UtopianEngine
 		}
 		catch(GameEndException e)
 		{
-			usPrintScore();
+			BuiltIn.PrintScore();
 			
-			usPrintln(e.getMessage() + "\n");
+			BuiltIn.Println(e.getMessage() + "\n");
 		}
-		return;
 	}
 	
 	private static String getKey()
 	{
-		usPrint("\n\n> ", false);
+		BuiltIn.Print("\n\n> ", false);
 		String key = scanner.nextLine().toLowerCase();
-		usPrintln();
+		BuiltIn.Println();
 		return key;
-	}
-	
-	private static void buildGameFromFile(String filename)
-	{
-		/**		BEGIN TEMPORARY VARIABLES	**/
-		String name;
-		String progress = "";
-		String s_x;
-		String s_y;
-		String s_maxscore;
-		String score_display;
-		/**		END TEMPORARY VARIABLES		**/
-		
-		try
-		{
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename));
-			
-			doc.getDocumentElement().normalize();
-
-			Element gameNode = (Element)doc.getDocumentElement();
-			
-			if(!gameNode.getNodeName().equalsIgnoreCase("game"))
-			{
-				throw new LoadGameException("Game node is not first node in file.");
-			}
-			
-			gameNode = (Element)cleanNode((Node)gameNode);
-			
-			name = gameNode.getAttribute("name");
-			s_x = gameNode.getAttribute("x");
-			s_y = gameNode.getAttribute("y");
-			s_maxscore = gameNode.getAttribute("maxscore");
-			
-			score_display = gameNode.getAttribute("score");
-			if(score_display.equalsIgnoreCase("on") || score_display.equalsIgnoreCase("true"))
-			{
-				_scoredisplay = true;
-			}
-			
-			if(name.equals(""))
-			{
-				throw new LoadGameException("Name of game is not specified, or empty string.");
-			}
-			
-			try
-			{
-				progress = "x";
-				if(s_x.equals(""))
-				{
-					_x = 0;
-				}
-				else
-				{
-					_x = Integer.parseInt(s_x);
-				}
-				
-				progress = "y";
-				if(s_y.equals(""))
-				{
-					_y = 0;
-				}
-				else
-				{
-					_y = Integer.parseInt(s_y);
-				}
-				
-				progress = "maxscore";
-				if(s_maxscore.equals(""))
-				{
-					_maxscore = 0;
-				}
-				else
-				{
-					_maxscore = Integer.parseInt(s_maxscore);
-				}
-			}
-			catch(NumberFormatException e)
-			{			
-				throw new LoadGameException("Parameter \"" + progress + "\" on Game node is unparsable as an Integer.");
-			}
-			
-			
-			/**		<COMMANDS> PARSING		**/
-			buildGameCommands(gameNode.getElementsByTagName("commands").item(0));
-			
-			
-			/**		<ITEMS> PARSING			**/
-			buildGameItems(gameNode.getElementsByTagName("items").item(0));
-			
-			
-			/**		<ROOMS> PARSING			**/
-			buildGameRooms(gameNode.getElementsByTagName("rooms").item(0));
-			
-			
-		}
-		catch (ParserConfigurationException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (SAXException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Builds the game's _globalkeys array from the <commands> node parsed from the XML
-	 * @param commandsNode the <commands> node from the game XML
-	 * @return Void; directly modifies the object's _globalkeys member
-	 */
-	private static void buildGameCommands(Node commandsNode)
-	{
-		int numkeys = 7;
-		
-		Element commands = (Element)commandsNode;
-		
-		Node helpNode = commands.getElementsByTagName("help").item(0);
-		NodeList directionNodes = commands.getElementsByTagName("direction");
-		NodeList globalKeys = ((Element)commands.getElementsByTagName("globalkeys").item(0)).getChildNodes();
-		
-		// N, E, S, and W.
-		
-		for(int i = 0; i < directionNodes.getLength(); i++)
-		{
-			if(!stringIn(((Element)directionNodes.item(i)).getAttribute("direction"), new String[]{"n", "e", "s", "w"}, false))
-			{
-				numkeys++;
-			}
-		}
-		
-		for(int i = 0;i < globalKeys.getLength(); i++)
-		{
-			if(globalKeys.item(i) != null)
-			{
-				numkeys++;
-			}
-		}
-		
-		_globalkeys = new KeyCombo[numkeys];
-		
-		for(int i = 0; i < numkeys; i++)
-		{
-			_globalkeys[i] = new KeyCombo();
-		}
-		
-		_globalkeys[0] = new KeyCombo("(desc(ribe)?)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
-		
-		_globalkeys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
-
-		if(helpNode == null || helpNode.getNamespaceURI() == null)
-		{
-			_globalkeys[2] = new KeyCombo("help", stringToNodeList("<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.</utopiascript>"));
-		}
-		else
-		{
-			_globalkeys[2] = new KeyCombo((Element)helpNode);
-		}
-
-		_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", stringToNodeList("<utopiascript>go +0/+1</utopiascript>"));
-		_globalkeys[4] = new KeyCombo("((move )|(go ))?e(ast)?", stringToNodeList("<utopiascript>go +1/+0</utopiascript>"));
-		_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", stringToNodeList("<utopiascript>go -0/-1</utopiascript>"));
-		_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", stringToNodeList("<utopiascript>go -1/-0</utopiascript>"));
-		
-		int global_key_index = 7;
-		for(int i = 0; i < directionNodes.getLength(); i++)
-		{
-			Element directionCommand = (Element)directionNodes.item(i);
-			
-			String direction = directionCommand.getAttribute("direction");
-			if(direction.equals("n"))
-			{
-				_globalkeys[3] = new KeyCombo("((move )|(go ))?n(orth)?", directionCommand.getChildNodes());
-			}
-			else if(direction.equals("e"))
-			{
-				_globalkeys[4] = new KeyCombo("((move )|(go ))?e(ast)?", directionCommand.getChildNodes());
-			}
-			else if(direction.equals("s"))
-			{
-				_globalkeys[5] = new KeyCombo("((move )|(go ))?s(outh)?", directionCommand.getChildNodes());
-			}
-			else if(direction.equals("w"))
-			{
-				_globalkeys[6] = new KeyCombo("((move )|(go ))?w(est)?", directionCommand.getChildNodes());
-			}
-			else if(!direction.equals(""))
-			{
-				_globalkeys[global_key_index] = new KeyCombo(direction, directionCommand.getChildNodes());
-				global_key_index++;
-			}
-			else
-			{
-				throw new LoadGameException("Direction found without a direction name");
-			}
-		}
-		
-		for(int i = 0; i < globalKeys.getLength(); i++)
-		{
-			_globalkeys[global_key_index] = new KeyCombo((Element)globalKeys.item(i));
-			global_key_index++;
-		}
-	}
-	
-	/**
-	 * Builds the game's _itemnames and _itemquantities arrays from the <items> node
-	 * @param itemsNode the <items> node in the game XML
-	 * @return Void; directly modifies the _itemnames and _itemquantities members
-	 */
-	private static void buildGameItems(Node itemsNode)
-	{
-		String item_quantity;	// temporary variable
-		
-		NodeList itemNodes = itemsNode.getChildNodes();
-		
-		_itemnames = new String[itemNodes.getLength()];
-		_itemquantities = new int[itemNodes.getLength()];
-		
-		for(int i = 0;i < itemNodes.getLength(); i++)
-		{
-			Node itemNode = itemNodes.item(i);
-			
-			item_quantity = ((Element)itemNode).getAttribute("quantity");
-			
-			_itemnames[i] = itemNode.getTextContent().trim();
-			try
-			{
-				if(item_quantity.equals(""))
-				{
-					_itemquantities[i] = 0;
-				}
-				else
-				{
-					_itemquantities[i] = Integer.parseInt(item_quantity);
-				}
-			}
-			catch(NumberFormatException e)
-			{			
-				throw new LoadGameException("Parameter \"quantity\" on item node " + i + " is unparsable as Integer.");
-			}
-		}
-	}
-	
-	/**
-	 * Builds the game's _rooms array from the <rooms> node
-	 * @param roomsNode the <rooms> node parsed from the XML
-	 * @param width the width attribute from the <game> node
-	 * @param height the height attribute from the <game> node
-	 * @return Void; directly modifies the _rooms member
-	 */
-	private static void buildGameRooms(Node roomsNode)
-	{
-		int x;		// temporary variable
-		int y;		// temporary variable
-		int width;	// temporary variable
-		int height;	// temporary variable
-		String s_width;
-		String s_height;
-		String progress = "";
-
-		s_width = ((Element)roomsNode).getAttribute("width");
-		s_height = ((Element)roomsNode).getAttribute("height");
-		try
-		{
-			progress = "width";
-			if(s_width.equals(""))
-			{
-				throw new LoadGameException("Parameter width on Rooms node is not specified.");
-			}
-			width = Integer.parseInt(s_width);
-			
-			progress = "height";
-			if(s_height.equals(""))
-			{
-				throw new LoadGameException("Parameter height on Rooms node is not specified.");
-			}
-			height = Integer.parseInt(s_height);
-			
-			if(_x > width || _y > height)
-			{
-				throw new LoadGameException("Starting coordinates are outside game boundaries.");
-			}
-		}
-		catch(NumberFormatException e)
-		{			
-			throw new LoadGameException("Parameter `" + progress + "` on Rooms node is unparsable as Integer.");
-		}
-		
-		_rooms = new Room[width][height];
-		// Instantiate each room with default constructor, to ensure that they are initialized
-		for(int i = 0;i < width;i++)
-		{
-			for(int j = 0;j < height;j++)
-			{
-				_rooms[i][j] = new Room();
-			}
-		}
-		
-		NodeList roomNodes = roomsNode.getChildNodes();
-		
-		int i = 0;
-		int j = 0;
-		for(int index = 0; index < roomNodes.getLength(); index++)
-		{
-			Node nRoom = roomNodes.item(index);
-			if(!nRoom.getNodeName().equalsIgnoreCase("room"))
-			{
-				throw new LoadGameException("Non-room node found in the rooms node");
-			}
-			
-			Element eRoom = (Element)nRoom;
-			
-			// x and y are unspecified on the room node; place it in the first available space.
-			if(eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
-			{
-				// Find the next open slot in the rooms array.
-				while(_rooms[i][j].canTravel())
-				{
-					i++;
-					if(i > width)
-					{
-						i = 0;
-						j++;
-					}
-				}
-				
-				_rooms[i][j] = new Room(nRoom);
-				
-				// Continue through the _rooms array
-				i++;
-				if(i > width)
-				{
-					i = 0;
-					j++;
-				}
-			}
-			// x and y are BOTH specified on the room node.
-			else if(!eRoom.getAttribute("x").equals("") && !eRoom.getAttribute("y").equals(""))
-			{
-				try
-				{
-					x = Integer.parseInt(eRoom.getAttribute("x"));
-					y = Integer.parseInt(eRoom.getAttribute("y"));
-				}
-				catch(NumberFormatException e)
-				{
-					throw new LoadGameException("Coordinates on room node " + index + " are unparsable as Integer.");
-				}
-
-				// Check to see if the coordinate specified already has a room in it.
-				if(_rooms[x][y].canTravel())
-				{
-					throw new LoadGameException("Two rooms specified for the same position: (" + x + "," + y + ")");
-				}
-				else
-				{
-					_rooms[x][y] = new Room(nRoom);
-				}
-			}
-			else
-			{
-				throw new LoadGameException("Either x or y is unspecified on room node " + index + ". Specify either both or neither.");
-			}
-		}
-
 	}
 	
 	/**
 	 * Pauses, waiting for the player to press enter
 	 */
-	private static void pause()
+	public static void pause()
 	{
 		pause("Press enter...");
 	}
@@ -577,7 +186,7 @@ public class UtopianEngine
 	 * Pauses, waiting for the player to press enter
 	 * @param prompt The prompt that 
 	 */
-	private static void pause(String prompt)
+	public static void pause(String prompt)
 	{
 		if("".equals(prompt))
 		{
@@ -585,9 +194,9 @@ public class UtopianEngine
 		}
 		else
 		{
-			usPrint("\n\n" + prompt, true);
+			BuiltIn.Print("\n\n" + prompt, true);
 			scanner.nextLine();
-			usPrintln();
+			BuiltIn.Println();
 		}
 	}
 	
@@ -599,12 +208,12 @@ public class UtopianEngine
 	{
 		if(events == null)
 		{
-			usPrint("I don't understand that command.", true);
+			BuiltIn.Print("I don't understand that command.", true);
 			return;
 		}
 		else if(events.getLength() == 0)
 		{
-			usPrintln("Nothing happens.");
+			BuiltIn.Println("Nothing happens.");
 			return;
 		}
 		// Runs all of the commands in a loop. Returns prematurely if a function call fails.
@@ -638,18 +247,17 @@ public class UtopianEngine
 		}		
 	}
 	
-	private static void pushScore() throws ScriptException
+	public static void pushScore() throws ScriptException
 	{
-		js_engine.eval("var UtopiaScore = " + _score + ";");
+		js_engine.eval("var UtopiaScore = " + Gamestate.score + ";");
 	}
 	
-	private static void pullScore() throws ScriptException
+	public static void pullScore() throws ScriptException
 	{
 		Double score = (Double) js_engine.eval("UtopiaScore;");//js_binding.get("UtopiaScore");
 		try
 		{
-			_score = Double.parseDouble(score.toString());
-			//System.out.printf("%.0f\n", _score);
+			Gamestate.score = Double.parseDouble(score.toString());
 		}
 		catch(Exception e)
 		{
@@ -665,438 +273,44 @@ public class UtopianEngine
 		switch(function)
 		{
 			case "requireitem":
-				return usRequireItem(args);
+				return BuiltIn.RequireItem(args);
 			case "additem":
-				return usAddItem(args);
+				return BuiltIn.AddItem(args);
 			case "takeitem":
-				return usTakeItem(args);
+				return BuiltIn.TakeItem(args);
 			case "roomstate":
-				return usRoomstate(args);
+				return BuiltIn.Roomstate(args);
 			case "go":
-				return usGo(args);
+				return BuiltIn.Go(args);
 			case "goto":
-				return usGoto(args);
+				return BuiltIn.Goto(args);
 			case "loadgame":
-				return usLoadGame(args);
+				return BuiltIn.LoadGame(args);
 			case "pause":
-				return usPause(args);
+				return BuiltIn.Pause(args);
 			case "print":
-				return usPrint(args, true);
+				return BuiltIn.Print(args);
 			case "println":
-				return usPrintln(args);
+				return BuiltIn.Println(args);
 			case "description":
-				return usDescription(args);
+				return BuiltIn.Description(args);
 			case "score":
-				return usScore(args);
+				return BuiltIn.Score(args);
 			case "quitgame":
-				return usQuitGame(args);
+				return BuiltIn.QuitGame(args);
 			case "inventory":
-				return usInventory(args);
+				return BuiltIn.Inventory(args);
 			case "savestate":
-				return usSaveState(args);
+				return BuiltIn.SaveState(args);
 			case "loadstate":
-				return usLoadState(args);
+				return BuiltIn.LoadState(args);
 			default:
 				throw new UtopiaException(function + ": Command not found.");
 		}
 	}
 
-	private static boolean usAddItem(String args)
-	{
-		String[] arg_split = args.split(" ");
-		String itemNumString = arg_split[0];
-		String quantityString;
-		int itemNum;
-		int quantity;
-		
-		try
-		{
-			itemNum = Integer.parseInt(itemNumString);
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid format for command addItem: \"" + itemNumString + "\" is unparseable as an integer");
-		}
-
-		if(itemNum >= _itemnames.length)
-		{
-			throw new UtopiaException("Invalid argument for command addItem: \"" + itemNum + "\" is out of bounds for items list.");
-		}
-		
-		if(arg_split.length > 1)
-		{
-			quantityString = arg_split[1];
-			
-			try
-			{
-				quantity = Integer.parseInt(quantityString); 
-			}
-			catch(NumberFormatException e)
-			{
-				throw new UtopiaException("Invalid format for command addItem: \"" + quantityString + "\" is unparseable as an integer.");
-			}
-		}
-		else
-		{
-			quantity = 1;
-		}
-		
-		_itemquantities[itemNum] += quantity;
-		
-		return true;
-	}
-
-	private static boolean usDescription(String args)
-	{
-		boolean longDesc = true;
-		if(args.equalsIgnoreCase("short"))
-		{
-			longDesc = false;
-		}
-		return usPrint(_rooms[_x][_y].description(longDesc), true);
-	}
-
-	private static boolean usGo(String args)
-	{
-		int x;
-		int y;
-		String[] args_arr = args.split("/| ", 2);
-		try
-		{
-			x = Integer.parseInt(args_arr[0]);
-			y = Integer.parseInt(args_arr[1]);
-			
-			x += _x;
-			y += _y;
-			if(canTravel(x, y))
-			{
-				_x = x;
-				_y = y;
-			}
-			else
-			{
-				return usPrint("You can't go that way.", true);
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Go command is formatted improperly. Arguments passed: " + args);
-		}
-		
-		return usDescription("");
-	}
-
-	private static boolean usGoto(String args)
-	{
-		int x;
-		int y;
-		String[] args_arr = args.split("/| ", 2);
-
-		try
-		{
-			x = Integer.parseInt(args_arr[0]);
-			y = Integer.parseInt(args_arr[1]);
-
-			if(canTravel(x, y))
-			{
-				_x = x;
-				_y = y;
-			}
-			else
-			{
-				return usPrint("You can't go that way.", true);
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("GoTo command is formatted improperly. Arguments passed: " + args);
-		}
-		return usDescription("");
-	}
 	
-	private static boolean usInventory(String args)
-	{
-		String inv_output = "";
-		for(int i = 0;i < _itemnames.length; i++)
-		{
-			if(_itemquantities[i] > 0 && !_itemnames[i].trim().equals(""))
-			{
-				inv_output = inv_output + String.format("%-50sx%s", _itemnames[i], _itemquantities[i]) + "\n";
-			}
-		}
-		if(inv_output.length() > 0)
-		{
-			inv_output = inv_output.substring(0, inv_output.length() - 1);
-			usPrint(inv_output, false);
-		}
-		else
-		{
-			usPrint("You do not have any items.");
-		}
-		return true;
-	}
-
-	private static boolean usLoadGame(String args)
-	{
-		buildGameFromFile(args);
-		return true;
-	}
 	
-	private static boolean usLoadState(String args)
-	{
-		return true;
-	}
-
-	private static boolean usPause(String args)
-	{
-		pause(args);
-		return true;
-	}
-
-	/**
-	 * All system output will be done through the usPrint function. Thus, it will be easy to change if need be. 	
-	 * @param args the String to be printed
-	 * @return boolean true
-	 */
-	private static boolean usPrint(String args, boolean linebreaks)
-	{
-		if(linebreaks)
-		{
-			int curr_line = 0;
-			String[] words = args.split(" ");
-			for(int i = 0; i < words.length; i++)
-			{
-				if(words[i].length() + curr_line > _linelength)
-				{
-					System.out.println();
-					curr_line = 0;
-				}
-				System.out.print(words[i].replace("\\n", "\n"));
-				curr_line += words[i].length() + 1;
-				if(curr_line < _linelength && i+1 != words.length)
-				{
-					System.out.print(" ");
-				}
-			}
-		}
-		else
-		{
-			System.out.print(args);
-		}
-		return true;
-	}
-	
-	private static boolean usPrint(String args)
-	{
-		return usPrint(args, true);
-	}
-
-	private static boolean usPrintln()
-	{
-		return usPrint("\n", true);
-	}
-	
-	private static boolean usPrintln(String args)
-	{
-		return usPrint(args + "\n", true);
-	}
-	
-	private static boolean usPrintScore()
-	{
-		if(_scoredisplay)
-		{
-			usPrintln();
-			String score = "Score: " + new Integer((int)_score).toString();
-			if(_maxscore > 0)
-			{
-				score = score + " of " + _maxscore;
-			}
-			usPrint(String.format("%" + _linelength + "s", score), false);
-		}
-		return true;
-	}
-
-	private static boolean usQuitGame(String args)
-	{
-		throw new GameEndException(args);
-	}
-
-	private static boolean usRequireItem(String args)
-	{
-		String[] arg_split = args.split(" ", 3);
-		String itemNumString = arg_split[0];
-		String quantityString;
-		int itemNum;
-		int quantity;
-		
-		try
-		{
-			itemNum = Integer.parseInt(itemNumString);
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid argument for command requireItem: \"" + itemNumString + "\" is unparseable as an integer");
-		}
-
-		if(itemNum >= _itemnames.length)
-		{
-			throw new UtopiaException("Invalid argument for command requireItem: \"" + itemNum + "\" is out of bounds for items list.");
-		}
-		
-		if(arg_split.length > 1)
-		{
-			quantityString = arg_split[1];
-			
-			try
-			{
-				quantity = Integer.parseInt(quantityString); 
-			}
-			catch(NumberFormatException e)
-			{
-				throw new UtopiaException("Invalid argument for command requireItem: \"" + quantityString + "\" is unparseable as an integer.");
-			}
-		}
-		else
-		{
-			quantity = 1;
-		}
-
-
-		if(_itemquantities[itemNum] < quantity)
-		{
-			if(arg_split.length > 2)
-			{
-				usPrint(arg_split[2], true);
-			}
-			return false;
-		}
-		
-		return true;
-	}
-
-	private static boolean usRoomstate(String args)
-	{
-		String arg = args.replace(" ", "");
-		try
-		{
-			// TODO: Check to make sure that the roomstate exists.
-			if(arg.matches("^=[0-9]{1,9}$"))
-			{
-				_rooms[_x][_y].setRoomstate(Integer.parseInt(arg.substring(1)));
-			}
-			else
-			{
-				_rooms[_x][_y].setRoomstate(Integer.parseInt(arg) + _rooms[_x][_y].getRoomstate());
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid format for Roomstate command. \"" + args + "\" is unparseable as an integer.");
-		}
-		return true;
-	}
-	
-	private static boolean usSaveState(String args)
-	{
-		return true;
-	}
-	
-	private static boolean usScore(String args)
-	{
-		String arg = args.replace(" ", "");
-		try
-		{
-			if(arg.matches("^=[0-9]{1,9}$"))
-			{
-				_score = Integer.parseInt(arg.substring(1));
-			}
-			else if(arg.matches("^[0-9]{1,9}$"))
-			{
-				_score += Integer.parseInt(arg);
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid format for Score command. \"" + args + "\" is unparseable as an integer.");
-		}
-		
-		try
-		{
-			pushScore();
-		}
-		catch(ScriptException e)
-		{
-			throw new UtopiaException(e.getMessage());
-		}
-		
-		return true;
-	}
-
-	private static boolean usTakeItem(String args)
-	{
-		String[] arg_split = args.split(" ", 3);
-
-		if(arg_split.length < 2)
-		{
-			throw new UtopiaException("Invalid format for command takeItem: \"" + args + "\" does not have enough arguments.");
-		}
-		
-		String itemNumString = arg_split[0];
-		String quantityString = arg_split[1];
-		int itemNum;
-		int quantity;
-		
-		try
-		{
-			itemNum = Integer.parseInt(itemNumString);
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid format for command takeItem: \"" + itemNumString + "\" is unparseable as an integer");
-		}
-
-		if(itemNum > _itemnames.length)
-		{
-			throw new UtopiaException("Invalid argument for command takeItem: \"" + itemNum + "\" is out of bounds for items list.");
-		}
-		
-		try
-		{
-			quantity = Integer.parseInt(quantityString); 
-		}
-		catch(NumberFormatException e)
-		{
-			throw new UtopiaException("Invalid format for command takeItem: \"" + quantityString + "\" is unparseable as an integer.");
-		}
-		
-		if(_itemquantities[itemNum] < quantity && arg_split.length > 2)
-		{
-			usPrintln(arg_split[2]);
-			return false;
-		}
-		else
-		{
-			_itemquantities[itemNum] -= quantity;
-			return true;
-		}
-	}
-	
-	private static boolean stringIn(String needle, String haystack[], boolean caseSensitive)
-	{
-	    for(int i = 0;i < haystack.length;i++)
-	    {
-	        if(caseSensitive)
-	        {
-	            if(needle.equals(haystack[i])) return true;
-	        }
-	        else
-	        {
-	            if(needle.equalsIgnoreCase(haystack[i])) return true;
-	        }
-	    }
-	    return false;
-	}
-
 	private static void printGameList()
 	{
 		try
@@ -1132,7 +346,7 @@ public class UtopianEngine
 			  if(output.length() > 0)
 			  {
 				  output = output.substring(0, output.length()-1);
-				  usPrint(output, false);
+				  BuiltIn.Print(output, false);
 			  }
 		}
 		catch (Exception e)								// Generic exception handling
@@ -1142,69 +356,9 @@ public class UtopianEngine
 		}
 	}
 
-	private static Node cleanNode(Node node)
-	{
-		NodeList childNodes = node.getChildNodes();
-
-		for(int n = childNodes.getLength() - 1; n >= 0; n--)
-		{
-			Node child = childNodes.item(n);
-			short nodeType = child.getNodeType();
-
-			if(nodeType == Node.ELEMENT_NODE)
-			{
-				cleanNode(child);
-			}
-			else if(nodeType == Node.TEXT_NODE)
-			{
-				String trimmedNodeVal = child.getNodeValue().trim();
-				if(trimmedNodeVal.length() == 0)
-				{
-					node.removeChild(child);
-				}
-				else
-				{
-					child.setNodeValue(trimmedNodeVal);
-				}
-			}
-			else if (nodeType == Node.COMMENT_NODE)
-			{
-				node.removeChild(child);
-			}
-		}
-		return node;
-	}
 	
-	private static NodeList stringToNodeList(String string)
-	{
-		if(string.length() > 0)
-		{
-			try
-			{
-				return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(string.getBytes())).getDocumentElement().getChildNodes();
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
 	
-	/**
-	 * Determines whether or not the room located at (x,y) is travelable.
-	 * Lots of necessary conditions for this to succeed:
-	 		The new x coordinate must be >= 0
-	 		The new y coordinate must be >= 0
-	 		The new x coordinate must be < width of the _rooms array (_rooms.length)
-	 		The new y coordinate must be < height of the _rooms array _rooms[x].length)
-	 		The new room (_rooms[x][y]) must be travelable -- Room::canTravel()
-	 * @param x the x coordinate
-	 * @param y the y coordinate
-	 * @return the overall success of the above conditions
-	 */
-	private static boolean canTravel(int x, int y)
-	{
-		return (x >= 0 && y >= 0 && x < _rooms.length && y < _rooms[x].length && _rooms[x][y].canTravel());
-	}
+	
+	
+	
 }
