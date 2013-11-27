@@ -55,25 +55,25 @@ public class UtopianEngine
 
 				if(args.length > 1)
 				{
-					BuiltIn.LoadState(args[1]);
+					UtopiaScript.LoadState(args[1]);
 				}
 			}
 			else
 			{
-				BuiltIn.Println("Sorry, it seems the specified game '" + args[0] + "' does not exist.");
+				UtopiaScript.Println("Sorry, it seems the specified game '" + args[0] + "' does not exist.");
 				return;
 			}
 		}
 		else	// no parameter specified
 		{
-			BuiltIn.Println("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
+			UtopiaScript.Println("Welcome to the Utopian Engine. Below you will find a list of games you have placed in the appropriate folder. In order to play a game, simply type the name of the file.\n");
 
 			// outputs a list of available games, and creates the gameFiles hashmap.
 			printGameList();
 			
 			if(gameFiles.size() == 0)
 			{
-				BuiltIn.Print("Sorry, no games found. Please make sure to put them in the right folder.");
+				UtopiaScript.Print("Sorry, no games found. Please make sure to put them in the right folder.");
 				return;
 			}
 				
@@ -117,7 +117,7 @@ public class UtopianEngine
 				}
 				else
 				{
-					BuiltIn.Print("Sorry, game not found. Please try again.");
+					UtopiaScript.Print("Sorry, game not found. Please try again.");
 				}
 			}
 			
@@ -138,17 +138,17 @@ public class UtopianEngine
 	{
 		try
 		{
-			BuiltIn.Description("long");
+			UtopiaScript.Description("long");
 			
 			while(true)
 			{
 				NodeList event = null;
 				
-				BuiltIn.PrintScore();
+				UtopiaScript.PrintScore();
 
 				_key = getKey();
 
-				event = Game.rooms[Gamestate.playerX][Gamestate.playerY].checkKeys(_key);
+				event = Game.rooms[Game.playerX][Game.playerY].checkKeys(_key);
 				
 				for(int i = 0; i < Game.keys.length && event == null; i++)
 				{
@@ -160,17 +160,17 @@ public class UtopianEngine
 		}
 		catch(GameEndException e)
 		{
-			BuiltIn.PrintScore();
+			UtopiaScript.PrintScore();
 			
-			BuiltIn.Println(e.getMessage() + "\n");
+			UtopiaScript.Println(e.getMessage() + "\n");
 		}
 	}
 	
 	private static String getKey()
 	{
-		BuiltIn.Print("\n\n> ", false);
+		UtopiaScript.Print("\n\n> ", false);
 		String key = scanner.nextLine().toLowerCase();
-		BuiltIn.Println();
+		UtopiaScript.Println();
 		return key;
 	}
 	
@@ -194,9 +194,9 @@ public class UtopianEngine
 		}
 		else
 		{
-			BuiltIn.Print("\n\n" + prompt, true);
+			UtopiaScript.Print("\n\n" + prompt, true);
 			scanner.nextLine();
-			BuiltIn.Println();
+			UtopiaScript.Println();
 		}
 	}
 	
@@ -208,12 +208,12 @@ public class UtopianEngine
 	{
 		if(events == null)
 		{
-			BuiltIn.Print("I don't understand that command.", true);
+			UtopiaScript.Print("I don't understand that command.", true);
 			return;
 		}
 		else if(events.getLength() == 0)
 		{
-			BuiltIn.Println("Nothing happens.");
+			UtopiaScript.Println("Nothing happens.");
 			return;
 		}
 		// Runs all of the commands in a loop. Returns prematurely if a function call fails.
@@ -249,7 +249,7 @@ public class UtopianEngine
 	
 	public static void pushScore() throws ScriptException
 	{
-		js_engine.eval("var UtopiaScore = " + Gamestate.score + ";");
+		js_engine.eval("var UtopiaScore = " + Game.score + ";");
 	}
 	
 	public static void pullScore() throws ScriptException
@@ -257,7 +257,7 @@ public class UtopianEngine
 		Double score = (Double) js_engine.eval("UtopiaScore;");//js_binding.get("UtopiaScore");
 		try
 		{
-			Gamestate.score = Double.parseDouble(score.toString());
+			Game.score = Double.parseDouble(score.toString());
 		}
 		catch(Exception e)
 		{
@@ -273,44 +273,42 @@ public class UtopianEngine
 		switch(function)
 		{
 			case "requireitem":
-				return BuiltIn.RequireItem(args);
+				return UtopiaScript.RequireItem(args);
 			case "additem":
-				return BuiltIn.AddItem(args);
+				return UtopiaScript.AddItem(args);
 			case "takeitem":
-				return BuiltIn.TakeItem(args);
+				return UtopiaScript.TakeItem(args);
 			case "roomstate":
-				return BuiltIn.Roomstate(args);
+				return UtopiaScript.Roomstate(args);
 			case "go":
-				return BuiltIn.Go(args);
+				return UtopiaScript.Go(args);
 			case "goto":
-				return BuiltIn.Goto(args);
+				return UtopiaScript.Goto(args);
 			case "loadgame":
-				return BuiltIn.LoadGame(args);
+				return UtopiaScript.LoadGame(args);
 			case "pause":
-				return BuiltIn.Pause(args);
+				return UtopiaScript.Pause(args);
 			case "print":
-				return BuiltIn.Print(args);
+				return UtopiaScript.Print(args);
 			case "println":
-				return BuiltIn.Println(args);
+				return UtopiaScript.Println(args);
 			case "description":
-				return BuiltIn.Description(args);
+				return UtopiaScript.Description(args);
 			case "score":
-				return BuiltIn.Score(args);
+				return UtopiaScript.Score(args);
 			case "quitgame":
-				return BuiltIn.QuitGame(args);
+				return UtopiaScript.QuitGame(args);
 			case "inventory":
-				return BuiltIn.Inventory(args);
+				return UtopiaScript.Inventory(args);
 			case "savestate":
-				return BuiltIn.SaveState(args);
+				return UtopiaScript.SaveState(args);
 			case "loadstate":
-				return BuiltIn.LoadState(args);
+				return UtopiaScript.LoadState(args);
 			default:
 				throw new UtopiaException(function + ": Command not found.");
 		}
 	}
 
-	
-	
 	private static void printGameList()
 	{
 		try
@@ -346,7 +344,7 @@ public class UtopianEngine
 			  if(output.length() > 0)
 			  {
 				  output = output.substring(0, output.length()-1);
-				  BuiltIn.Print(output, false);
+				  UtopiaScript.Print(output, false);
 			  }
 		}
 		catch (Exception e)								// Generic exception handling
@@ -355,10 +353,4 @@ public class UtopianEngine
 			System.out.println(e.getStackTrace());
 		}
 	}
-
-	
-	
-	
-	
-	
 }

@@ -1,5 +1,10 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,7 +16,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 /*
- * The global Game-class contains all information related to the current game.
+ * The global Game-class contains all information related to the current 
  */
 
 public class Game {
@@ -22,6 +27,153 @@ public class Game {
 	public static Room[][] rooms;				// HUGE variable; contains all of the rooms
 	public static String[] items;
 	public static KeyCombo[] keys;
+	
+	public static int playerX;
+	public static int playerY;
+	public static double score;
+	public static int[] inventory;
+	
+	private static boolean isValid = false;
+	
+	public static void resetState()
+	{
+		score = 0;
+		isValid = true;
+	}
+	
+	public static boolean saveState(String filename)
+	{
+		UtopiaScript.Print("Saving...");
+		if (!isValid) return false;
+		
+		try
+		{
+			FileWriter out = new FileWriter(filename);
+			BufferedWriter bw = new BufferedWriter(out);
+			
+			bw.write(gameName);
+			bw.newLine();
+			
+			bw.write(Integer.toString(playerX));
+			bw.newLine();
+			
+			bw.write(Integer.toString(playerY));
+			bw.newLine();
+			
+			bw.write(Integer.toString((int)score));
+			bw.newLine();
+			
+			bw.write(Integer.toString(inventory.length));
+			bw.newLine();
+			
+			for (int i=0; i<inventory.length; i++)
+			{
+				bw.write(Integer.toString(inventory[i]));
+				bw.newLine();	
+			}
+			
+			for (Room[] row : rooms)
+			{
+				for(Room cell : row)
+				{
+					bw.write(Integer.toString(cell.getRoomstate()));
+					bw.newLine();	
+				}
+			}
+			
+			bw.close();
+			out.close();
+			UtopiaScript.Print("Done.");
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
+	public static boolean loadState(String filename)
+	{
+		return loadState(filename, false);
+	}
+	
+	public static boolean loadState(String filename, boolean isSequel)
+	{
+		String fn = filename;
+		if (!fileExists(fn))
+		{
+			fn = filename + ".ues";
+			if (!fileExists(fn))
+			{
+				if (!isSequel)
+				{
+					UtopiaScript.Print("Save does not exist.");
+				}
+				return false;
+			}
+		}
+	
+		try
+		{
+			FileReader in = new FileReader(fn);
+			BufferedReader br = new BufferedReader(in);
+			
+			String saveGameName = br.readLine();
+			
+			if (!isSequel && !saveGameName.equals(gameName))
+			{
+				//error Games not match!
+				UtopiaScript.Print("Save is for a different ");
+				br.close();
+				in.close();
+				return false;
+			}
+			
+			playerX = Integer.parseInt(br.readLine());
+			playerY = Integer.parseInt(br.readLine());
+			score = Integer.parseInt(br.readLine());
+			int itemcount = Integer.parseInt(br.readLine());
+			
+			for (int i=0; i<itemcount; i++)
+			{
+				inventory[i] = Integer.parseInt(br.readLine());
+			}
+			
+			if (!isSequel)
+			{
+				for (Room[] row : rooms)
+				{
+					for(Room cell : row)
+					{
+						cell.setRoomstate(Integer.parseInt(br.readLine()));
+					}
+				}
+			}
+			
+			br.close();
+			in.close();
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		//load values from file
+		isValid = true;
+		
+		return true;
+	}
+	
+	private static boolean fileExists(String filename){
+		File f = new File(filename);
+		return f.exists();
+	}
 	
 	/*
 	 * Determines whether or not the room located at (x,y) is travelable.
@@ -42,7 +194,7 @@ public class Game {
 	
 	public static void buildFromFile(String filename)
 	{
-		Gamestate.reset();
+		resetState();
 		
 		/**		BEGIN TEMPORARY VARIABLES	**/
 		String name;
@@ -76,9 +228,9 @@ public class Game {
 			score_display = gameNode.getAttribute("score");
 			if(score_display.equalsIgnoreCase("on") || score_display.equalsIgnoreCase("true"))
 			{
-				Game.displayScore = true;
+				displayScore = true;
 			}else{
-				Game.displayScore = false;
+				displayScore = false;
 			}
 			
 			if(name.equals(""))
@@ -93,31 +245,31 @@ public class Game {
 				progress = "x";
 				if(s_x.equals(""))
 				{
-					Gamestate.playerX = 0;
+					playerX = 0;
 				}
 				else
 				{
-					Gamestate.playerX = Integer.parseInt(s_x);
+					playerX = Integer.parseInt(s_x);
 				}
 				
 				progress = "y";
 				if(s_y.equals(""))
 				{
-					Gamestate.playerY = 0;
+					playerY = 0;
 				}
 				else
 				{
-					Gamestate.playerY = Integer.parseInt(s_y);
+					playerY = Integer.parseInt(s_y);
 				}
 				
 				progress = "maxscore";
 				if(s_maxscore.equals(""))
 				{
-					Game.maxScore = 0;
+					maxScore = 0;
 				}
 				else
 				{
-					Game.maxScore = Integer.parseInt(s_maxscore);
+					maxScore = Integer.parseInt(s_maxscore);
 				}
 			}
 			catch(NumberFormatException e)
@@ -193,7 +345,7 @@ public class Game {
 			}
 			height = Integer.parseInt(s_height);
 			
-			if(Gamestate.playerX > width || Gamestate.playerY > height)
+			if(playerX > width || playerY > height)
 			{
 				throw new LoadGameException("Starting coordinates are outside game boundaries.");
 			}
@@ -203,13 +355,13 @@ public class Game {
 			throw new LoadGameException("Parameter `" + progress + "` on Rooms node is unparsable as Integer.");
 		}
 		
-		Game.rooms = new Room[width][height];
+		rooms = new Room[width][height];
 		// Instantiate each room with default constructor, to ensure that they are initialized
 		for(int i = 0;i < width;i++)
 		{
 			for(int j = 0;j < height;j++)
 			{
-				Game.rooms[i][j] = new Room();
+				rooms[i][j] = new Room();
 			}
 		}
 		
@@ -231,7 +383,7 @@ public class Game {
 			if(eRoom.getAttribute("x").equals("") && eRoom.getAttribute("y").equals(""))
 			{
 				// Find the next open slot in the rooms array.
-				while(Game.rooms[i][j].canTravel())
+				while(rooms[i][j].canTravel())
 				{
 					i++;
 					if(i > width)
@@ -241,7 +393,7 @@ public class Game {
 					}
 				}
 				
-				Game.rooms[i][j] = new Room(nRoom);
+				rooms[i][j] = new Room(nRoom);
 				
 				// Continue through the _rooms array
 				i++;
@@ -265,13 +417,13 @@ public class Game {
 				}
 
 				// Check to see if the coordinate specified already has a room in it.
-				if(Game.rooms[x][y].canTravel())
+				if(rooms[x][y].canTravel())
 				{
 					throw new LoadGameException("Two rooms specified for the same position: (" + x + "," + y + ")");
 				}
 				else
 				{
-					Game.rooms[x][y] = new Room(nRoom);
+					rooms[x][y] = new Room(nRoom);
 				}
 			}
 			else
@@ -314,30 +466,30 @@ public class Game {
 			}
 		}
 		
-		Game.keys = new KeyCombo[numkeys];
+		keys = new KeyCombo[numkeys];
 		
 		for(int i = 0; i < numkeys; i++)
 		{
-			Game.keys[i] = new KeyCombo();
+			keys[i] = new KeyCombo();
 		}
 		
-		Game.keys[0] = new KeyCombo("(desc(ribe)?)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
+		keys[0] = new KeyCombo("(desc(ribe)?)|(look)|(see)", stringToNodeList("<utopiascript>description</utopiascript>"));
 		
-		Game.keys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
+		keys[1] = new KeyCombo("inv(entory)?", stringToNodeList("<utopiascript>inventory</utopiascript>"));
 
 		if(helpNode == null || helpNode.getNamespaceURI() == null)
 		{
-			Game.keys[2] = new KeyCombo("help", stringToNodeList("<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.</utopiascript>"));
+			keys[2] = new KeyCombo("help", stringToNodeList("<utopiascript>print To move between rooms, type MOVE or GO and a cardinal direction. To look at your inventory, type INV or INVENTORY. To get a description of the room you're in, type DESC or DESCRIPTION. To quit, type EXIT or QUIT. To save or load, type SAVE or LOAD.</utopiascript>"));
 		}
 		else
 		{
-			Game.keys[2] = new KeyCombo((Element)helpNode);
+			keys[2] = new KeyCombo((Element)helpNode);
 		}
 
-		Game.keys[3] = new KeyCombo("((move )|(go ))?n(orth)?", stringToNodeList("<utopiascript>go +0/+1</utopiascript>"));
-		Game.keys[4] = new KeyCombo("((move )|(go ))?e(ast)?", stringToNodeList("<utopiascript>go +1/+0</utopiascript>"));
-		Game.keys[5] = new KeyCombo("((move )|(go ))?s(outh)?", stringToNodeList("<utopiascript>go -0/-1</utopiascript>"));
-		Game.keys[6] = new KeyCombo("((move )|(go ))?w(est)?", stringToNodeList("<utopiascript>go -1/-0</utopiascript>"));
+		keys[3] = new KeyCombo("((move )|(go ))?n(orth)?", stringToNodeList("<utopiascript>go +0/+1</utopiascript>"));
+		keys[4] = new KeyCombo("((move )|(go ))?e(ast)?", stringToNodeList("<utopiascript>go +1/+0</utopiascript>"));
+		keys[5] = new KeyCombo("((move )|(go ))?s(outh)?", stringToNodeList("<utopiascript>go -0/-1</utopiascript>"));
+		keys[6] = new KeyCombo("((move )|(go ))?w(est)?", stringToNodeList("<utopiascript>go -1/-0</utopiascript>"));
 		
 		int global_key_index = 7;
 		for(int i = 0; i < directionNodes.getLength(); i++)
@@ -347,23 +499,23 @@ public class Game {
 			String direction = directionCommand.getAttribute("direction");
 			if(direction.equals("n"))
 			{
-				Game.keys[3] = new KeyCombo("((move )|(go ))?n(orth)?", directionCommand.getChildNodes());
+				keys[3] = new KeyCombo("((move )|(go ))?n(orth)?", directionCommand.getChildNodes());
 			}
 			else if(direction.equals("e"))
 			{
-				Game.keys[4] = new KeyCombo("((move )|(go ))?e(ast)?", directionCommand.getChildNodes());
+				keys[4] = new KeyCombo("((move )|(go ))?e(ast)?", directionCommand.getChildNodes());
 			}
 			else if(direction.equals("s"))
 			{
-				Game.keys[5] = new KeyCombo("((move )|(go ))?s(outh)?", directionCommand.getChildNodes());
+				keys[5] = new KeyCombo("((move )|(go ))?s(outh)?", directionCommand.getChildNodes());
 			}
 			else if(direction.equals("w"))
 			{
-				Game.keys[6] = new KeyCombo("((move )|(go ))?w(est)?", directionCommand.getChildNodes());
+				keys[6] = new KeyCombo("((move )|(go ))?w(est)?", directionCommand.getChildNodes());
 			}
 			else if(!direction.equals(""))
 			{
-				Game.keys[global_key_index] = new KeyCombo(direction, directionCommand.getChildNodes());
+				keys[global_key_index] = new KeyCombo(direction, directionCommand.getChildNodes());
 				global_key_index++;
 			}
 			else
@@ -374,7 +526,7 @@ public class Game {
 		
 		for(int i = 0; i < globalKeys.getLength(); i++)
 		{
-			Game.keys[global_key_index] = new KeyCombo((Element)globalKeys.item(i));
+			keys[global_key_index] = new KeyCombo((Element)globalKeys.item(i));
 			global_key_index++;
 		}
 	}
@@ -390,8 +542,8 @@ public class Game {
 		
 		NodeList itemNodes = itemsNode.getChildNodes();
 		
-		Game.items = new String[itemNodes.getLength()];
-		Gamestate.inventory = new int[itemNodes.getLength()];
+		items = new String[itemNodes.getLength()];
+		inventory = new int[itemNodes.getLength()];
 		
 		for(int i = 0;i < itemNodes.getLength(); i++)
 		{
@@ -399,16 +551,16 @@ public class Game {
 			
 			item_quantity = ((Element)itemNode).getAttribute("quantity");
 			
-			Game.items[i] = itemNode.getTextContent().trim();
+			items[i] = itemNode.getTextContent().trim();
 			try
 			{
 				if(item_quantity.equals(""))
 				{
-					Gamestate.inventory[i] = 0;
+					inventory[i] = 0;
 				}
 				else
 				{
-					Gamestate.inventory[i] = Integer.parseInt(item_quantity);
+					inventory[i] = Integer.parseInt(item_quantity);
 				}
 			}
 			catch(NumberFormatException e)

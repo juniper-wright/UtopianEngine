@@ -4,7 +4,7 @@
 
 import javax.script.ScriptException;
 
-public class BuiltIn {
+public class UtopiaScript {
 
 	public static boolean AddItem(String args)
 	{
@@ -46,7 +46,7 @@ public class BuiltIn {
 			quantity = 1;
 		}
 		
-		Gamestate.inventory[itemNum] += quantity;
+		Game.inventory[itemNum] += quantity;
 		
 		return true;
 	}
@@ -58,7 +58,7 @@ public class BuiltIn {
 		{
 			longDesc = false;
 		}
-		return Print(Game.rooms[Gamestate.playerX][Gamestate.playerY].description(longDesc), true);
+		return Print(Game.rooms[Game.playerX][Game.playerY].description(longDesc), true);
 	}
 
 	public static boolean Go(String args)
@@ -71,12 +71,12 @@ public class BuiltIn {
 			x = Integer.parseInt(args_arr[0]);
 			y = Integer.parseInt(args_arr[1]);
 			
-			x += Gamestate.playerX;
-			y += Gamestate.playerY;
+			x += Game.playerX;
+			y += Game.playerY;
 			if(Game.canTravel(x, y))
 			{
-				Gamestate.playerX = x;
-				Gamestate.playerY = y;
+				Game.playerX = x;
+				Game.playerY = y;
 			}
 			else
 			{
@@ -104,8 +104,8 @@ public class BuiltIn {
 
 			if(Game.canTravel(x, y))
 			{
-				Gamestate.playerX = x;
-				Gamestate.playerY = y;
+				Game.playerX = x;
+				Game.playerY = y;
 			}
 			else
 			{
@@ -124,9 +124,9 @@ public class BuiltIn {
 		String inv_output = "";
 		for(int i = 0;i < Game.items.length; i++)
 		{
-			if(Gamestate.inventory[i] > 0 && !Game.items[i].trim().equals(""))
+			if(Game.inventory[i] > 0 && !Game.items[i].trim().equals(""))
 			{
-				inv_output = inv_output + String.format("%-50sx%s", Game.items[i], Gamestate.inventory[i]) + "\n";
+				inv_output = inv_output + String.format("%-50sx%s", Game.items[i], Game.inventory[i]) + "\n";
 			}
 		}
 		if(inv_output.length() > 0)
@@ -149,7 +149,7 @@ public class BuiltIn {
 	
 	public static boolean LoadState(String args)
 	{
-		if (Gamestate.load(args))
+		if (Game.loadState(args))
 		{
 			Description("");
 			return true;
@@ -158,10 +158,10 @@ public class BuiltIn {
 		return false;
 	}
 
-	//loads a Gamestate, ignoring the Gamename-check and Roomstates
+	//loads a Game, ignoring the Gamename-check and Roomstates
 	public static boolean LoadStatePrequel(String args)
 	{
-		if (Gamestate.load(args, true))
+		if (Game.loadState(args, true))
 		{
 			return true;
 		}
@@ -228,7 +228,7 @@ public class BuiltIn {
 		if(Game.displayScore)
 		{
 			Println();
-			String score = "Score: " + new Integer((int)Gamestate.score).toString();
+			String score = "Score: " + new Integer((int)Game.score).toString();
 			if(Game.maxScore > 0)
 			{
 				score = score + " of " + Game.maxScore;
@@ -284,7 +284,7 @@ public class BuiltIn {
 		}
 
 
-		if(Gamestate.inventory[itemNum] < quantity)
+		if(Game.inventory[itemNum] < quantity)
 		{
 			if(arg_split.length > 2)
 			{
@@ -304,11 +304,11 @@ public class BuiltIn {
 			// TODO: Check to make sure that the roomstate exists.
 			if(arg.matches("^=[0-9]{1,9}$"))
 			{
-				Game.rooms[Gamestate.playerX][Gamestate.playerY].setRoomstate(Integer.parseInt(arg.substring(1)));
+				Game.rooms[Game.playerX][Game.playerY].setRoomstate(Integer.parseInt(arg.substring(1)));
 			}
 			else
 			{
-				Game.rooms[Gamestate.playerX][Gamestate.playerY].setRoomstate(Integer.parseInt(arg) + Game.rooms[Gamestate.playerX][Gamestate.playerY].getRoomstate());
+				Game.rooms[Game.playerX][Game.playerY].setRoomstate(Integer.parseInt(arg) + Game.rooms[Game.playerX][Game.playerY].getRoomstate());
 			}
 		}
 		catch(NumberFormatException e)
@@ -320,7 +320,7 @@ public class BuiltIn {
 	
 	public static boolean SaveState(String args)
 	{
-		return Gamestate.save(args);
+		return Game.saveState(args);
 	}
 	
 	public static boolean Score(String args)
@@ -330,11 +330,11 @@ public class BuiltIn {
 		{
 			if(arg.matches("^=[0-9]{1,9}$"))
 			{
-				Gamestate.score = Integer.parseInt(arg.substring(1));
+				Game.score = Integer.parseInt(arg.substring(1));
 			}
 			else if(arg.matches("^[0-9]{1,9}$"))
 			{
-				Gamestate.score += Integer.parseInt(arg);
+				Game.score += Integer.parseInt(arg);
 			}
 		}
 		catch(NumberFormatException e)
@@ -391,14 +391,14 @@ public class BuiltIn {
 			throw new UtopiaException("Invalid format for command takeItem: \"" + quantityString + "\" is unparseable as an integer.");
 		}
 		
-		if(Gamestate.inventory[itemNum] < quantity && arg_split.length > 2)
+		if(Game.inventory[itemNum] < quantity && arg_split.length > 2)
 		{
 			Println(arg_split[2]);
 			return false;
 		}
 		else
 		{
-			Gamestate.inventory[itemNum] -= quantity;
+			Game.inventory[itemNum] -= quantity;
 			return true;
 		}
 	}
