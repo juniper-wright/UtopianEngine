@@ -39,6 +39,12 @@
 			<key match="(exit)|(quit)">
 				<utopiascript>quitGame Goodbye. Thank you for playing Egerfortia!</utopiascript>
 			</key>
+			<key match="savestate">
+				<utopiascript>savestate test.ues</utopiascript>
+			</key>
+			<key match="loadstate">
+				<utopiascript>loadstate test.ues</utopiascript>
+			</key>
 		</globalkeys>
 	</commands>
 	<items>
