@@ -29,6 +29,10 @@ Version 2.2 of the Utopian Engine will feature:
 	* SaveState - Save a user's position, score, inventory, roomstates
 	* LoadState - Load a state saved with the above
 * Improved game formatting:
-	* JSON instead of XML
 	* "Verb" and "object" parsing on top of existing Regular Expressions
 * Option of either a two-dimensional array of Rooms, or a developer-defined web of Rooms
+
+Version 3.0 of the Utopian Engine will feature:
+
+* JSON instead of (possibly in addition to...) XML
+* Porting the Engine to JavaScript, running as an SPA.
