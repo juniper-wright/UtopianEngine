@@ -17,7 +17,9 @@ public class Settings {
 		if (!f.exists())
 		{
 			CreateDefaultSettings();
-		}else{
+		}
+		else
+		{
 			try
 			{
 				FileReader in = new FileReader("ue.ini");
@@ -39,7 +41,8 @@ public class Settings {
 						String setting = parts[0].trim().toLowerCase();
 						String value = parts[1].trim();
 						
-						if (setting.equals("linelength")){
+						if (setting.equals("linelength"))
+						{
 							try
 							{
 								lineLength = Integer.parseInt(value);	
@@ -49,7 +52,7 @@ public class Settings {
 							}
 						}
 						
-						//add other settings
+						//TODO: add other settings
 					}
 				}
 				

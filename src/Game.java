@@ -170,7 +170,8 @@ public class Game {
 		return true;
 	}
 	
-	private static boolean fileExists(String filename){
+	private static boolean fileExists(String filename)
+	{
 		File f = new File(filename);
 		return f.exists();
 	}
@@ -229,14 +230,18 @@ public class Game {
 			if(score_display.equalsIgnoreCase("on") || score_display.equalsIgnoreCase("true"))
 			{
 				displayScore = true;
-			}else{
+			}
+			else
+			{
 				displayScore = false;
 			}
 			
 			if(name.equals(""))
 			{
 				throw new LoadGameException("Name of game is not specified, or empty string.");
-			}else{
+			}
+			else
+			{
 				gameName = name;
 			}
 			

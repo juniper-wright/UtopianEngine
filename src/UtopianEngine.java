@@ -37,7 +37,7 @@ public class UtopianEngine
 	
 	static ScriptEngineManager mgr = new ScriptEngineManager();
 	static ScriptEngine js_engine = mgr.getEngineByName("js");
-    static Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
+	static Bindings js_binding = js_engine.getBindings(ScriptContext.ENGINE_SCOPE);
 	static HashMap<Integer, String> gameFiles;
 	
 	public static void main(String[] args)

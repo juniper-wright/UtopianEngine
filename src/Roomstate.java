@@ -35,7 +35,6 @@ public class Roomstate
 			this._longDescription = "";
 		}
 		
-
 		try
 		{
 			this._shortDescription = ((Element)roomstateNode).getElementsByTagName("shortdescription").item(0).getTextContent().trim();

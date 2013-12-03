@@ -175,7 +175,7 @@ public class UtopiaScript {
 		return true;
 	}
 
-  public static boolean Print(String args)
+	public static boolean Print(String args)
 	{
 		return Print(args, true);
 	}
