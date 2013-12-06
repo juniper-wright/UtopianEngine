@@ -35,5 +35,3 @@ Version 2.2 of the Utopian Engine will feature:
 Version 3.0 of the Utopian Engine will feature:
 
 * JSON instead of (most likely in addition to, for the sake of backwards-compatibility) XML
-* Porting the Engine to JavaScript, running as an SPA.
-* Improved JavaScript handling - the ability to affect UtopianEngine state variables
