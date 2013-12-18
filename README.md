@@ -1,5 +1,8 @@
 Utopian Engine
 =============
+
+# Important note: The Utopian Engine has been put on hold. See instead phoenixfyre/UtopiaJS.
+
 A text adventure game engine, written in Java.
 
 Version 2.0 of the Utopian Engine features:
